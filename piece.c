@@ -15,11 +15,10 @@ typedef struct const struct piece_s*{
 
 typedef enum dir_e {UP,LEFT,DOWN,RIGHT} dir;
 
-
-piece new_piece_rh (int x, int y, bool small, bool horizontal){ // Création d'une nouvelle pièce
-	if(x<0 || y<0 || x>5 || y>5) // Vérification des variables données
+piece new_piece_rh (int x, int y, bool small, bool horizontal){
+	if(x<0 || y<0 || x>5 || y>5)
 		exit(EXIT_FAILURE);
-	piece p = malloc(sizeof(struct piece_s)); // allocation de mémoire pour notre nouvelle pièce
+	piece p = malloc(sizeof(struct piece_s));
 	p->x = x;
 	p->y = y;
 	p->small = small;
@@ -27,12 +26,12 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){ // Création d'u
 	return p;
 }
 
-void delete_piece (piece p){ // libération de la mémoire allouée pour la nouvelle pièce
+void delete_piece (piece p){
 	if(p!=NULL)
 		free(p);
 }
 
-void copy_piece (cpiece src, piece dst){ // copie d'une pièce src dans une nouvelle pièce nommée dst
+void copy_piece (cpiece src, piece dst){
 	if(src==NULL || dst==NULL)
 		exit(EXIT_FAILURE);
 	dst->x = src->x;
@@ -41,10 +40,10 @@ void copy_piece (cpiece src, piece dst){ // copie d'une pièce src dans une nouv
 	dst->horizontal = src->horizontal;
 }
 
-void move_piece (piece p, dir d, int distance){ // déplacement d'une pièce
-	if(p==NULL || distance<0) // vérification de l'existence de la pièce et de la pertinence de la distance donnée
+void move_piece (piece p, dir d, int distance){
+	if(p==NULL || distance<0)
 		exit(EXIT_FAILURE);
-	switch(d){ // on vérifie pour chaque cas que le déplacement est autorisé et que la pièce ne sort pas des dimensions données
+	switch(d){
 		case LEFT:
 			if(p->y+distance<=5 && p->horizontal)
 				p->y+=distance;
@@ -60,11 +59,13 @@ void move_piece (piece p, dir d, int distance){ // déplacement d'une pièce
 	}
 }
 
-bool intersect(cpiece p1, cpiece p2){ // On vérifie qu'il n'y a pas d'intersection entre les pièces p1 et p2
-	if (p1==NULL || p2==NULL) // vérification de l'existence des paramètres
+bool intersect(cpiece p1, cpiece p2){
+	if (p1==NULL || p2==NULL)
 		exit(EXIT_FAILURE);
-	bool tmp[6][6]; // création d'un tableau de booléen de la taille du plateau de jeu
-	tmp[p1->x][p1->y]==true; 
+
+	bool tmp[6][6];
+	tmp[p1->x][p1->y]==true;
+
 	if(p1->horizontal){
 		tmp[(p1->x)+1][p1->y]==true;
 		if(!p1->small)
@@ -77,9 +78,8 @@ bool intersect(cpiece p1, cpiece p2){ // On vérifie qu'il n'y a pas d'intersect
 
 	if(p2->horizontal){
 		if(tmp[p2->x][p2->y] || tmp[(p2->x)+1][p2->y]){return true;}
-		if(!p2->small){
+		if(!p2->small)
 			if(tmp[(p1->x)+2][p1->y]){return true;}
-		}
 	}
 
 }
@@ -108,29 +108,14 @@ int get_height(cpiece p)
 	}
 }
 
-
-bool is_horizontal(cpiece p)
-{
-	
+int get_width(cpiece p){
+	if(!p->horizontal)
+		return 1;
+	if(p->small)
+		return 2;
+	return 3;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+bool is_horizontal(cpiece p){
+	return p->horizontal;
+}
