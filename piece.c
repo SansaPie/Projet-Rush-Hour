@@ -84,6 +84,30 @@ bool intersect(cpiece p1, cpiece p2){
 
 }
 
+int get_x(cpiece p)
+{
+	return p->x;
+}
+
+
+int get_y(cpiece p)
+{
+	return p->y;
+}
+
+
+int get_height(cpiece p)
+{
+	if (p->horizontal)
+		return 1;
+	else 
+	{
+		if (p->small)
+			return 2;
+		return 3;
+	}
+}
+
 int get_width(cpiece p){
 	if(!p->horizontal)
 		return 1;
@@ -95,3 +119,28 @@ int get_width(cpiece p){
 bool is_horizontal(cpiece p){
 	return p->horizontal;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 3ee792b38b6c96d11a9d98ca488018260ac6bbbb
