@@ -16,9 +16,9 @@ typedef struct const struct piece_s*{
 typedef enum dir_e {UP,LEFT,DOWN,RIGHT} dir;
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
-	if(x<0 || y<0)
+	if(x<0 || y<0 || x>5 || y>5)
 		exit(EXIT_FAILURE);
-	piece p = malloc(sizeof(struct piece));
+	piece p = malloc(sizeof(struct piece_s));
 	p->x = x;
 	p->y = y;
 	p->small = small;
@@ -45,16 +45,40 @@ void move_piece (piece p, dir d, int distance){
 		exit(EXIT_FAILURE);
 	switch(d){
 		case LEFT:
-			if(y+distance<=6)
-				y+=distance;
+			if(p->y+distance<=5 && p->horizontal)
+				p->y+=distance;
 		case RIGHT:
-			if(y-distance>=0)
-				y-=distance;
+			if(p->y-distance>=0 && p->horizontal)
+				p->y-=distance;
 		case TOP:
-			if(x+distance<=6)
-				x+=distance;
+			if(p->x+distance<=5 && !p->horizontal)
+				p->x+=distance;
 		case BOTTOM:
-			if(x-distance>=0)
-				x-=distance;
+			if(p->x-distance>=0 && !p->horizontal)
+				p->x-=distance;
 	}
+}
+
+bool intersect(cpiece p1, cpiece p2){
+	if (p1==NULL || p2==NULL)
+		exit(EXIT_FAILURE);
+	bool tmp[6][6];
+	tmp[p1->x][p1->y]==true;
+	if(p1->horizontal){
+		tmp[(p1->x)+1][p1->y]==true;
+		if(!p1->small)
+			tmp[(p1->x)+2][p1->y]==true;
+	}else{
+		tmp[p1->x][(p1->y)+1]==true;
+		if(!p1->small)
+			tmp[p1->x][(p1->y)+2]==true;
+	}
+
+	if(p2->horizontal){
+		if(tmp[p2->x][p2->y] || tmp[(p2->x)+1][p2->y]){return true;}
+		if(!p2->small){
+			if(tmp[(p1->x)+2][p1->y]){return true;}
+		}
+	}
+
 }
