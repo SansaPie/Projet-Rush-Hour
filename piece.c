@@ -15,10 +15,11 @@ typedef struct const struct piece_s*{
 
 typedef enum dir_e {UP,LEFT,DOWN,RIGHT} dir;
 
-piece new_piece_rh (int x, int y, bool small, bool horizontal){
-	if(x<0 || y<0 || x>5 || y>5)
+
+piece new_piece_rh (int x, int y, bool small, bool horizontal){ // Création d'une nouvelle pièce
+	if(x<0 || y<0 || x>5 || y>5) // Vérification des variables données
 		exit(EXIT_FAILURE);
-	piece p = malloc(sizeof(struct piece_s));
+	piece p = malloc(sizeof(struct piece_s)); // allocation de mémoire pour notre nouvelle pièce
 	p->x = x;
 	p->y = y;
 	p->small = small;
@@ -26,12 +27,12 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	return p;
 }
 
-void delete_piece (piece p){
+void delete_piece (piece p){ // libération de la mémoire allouée pour la nouvelle pièce
 	if(p!=NULL)
 		free(p);
 }
 
-void copy_piece (cpiece src, piece dst){
+void copy_piece (cpiece src, piece dst){ // copie d'une pièce src dans une nouvelle pièce nommée dst
 	if(src==NULL || dst==NULL)
 		exit(EXIT_FAILURE);
 	dst->x = src->x;
@@ -40,10 +41,10 @@ void copy_piece (cpiece src, piece dst){
 	dst->horizontal = src->horizontal;
 }
 
-void move_piece (piece p, dir d, int distance){
-	if(p==NULL || distance<0)
+void move_piece (piece p, dir d, int distance){ // déplacement d'une pièce
+	if(p==NULL || distance<0) // vérification de l'existence de la pièce et de la pertinence de la distance donnée
 		exit(EXIT_FAILURE);
-	switch(d){
+	switch(d){ // on vérifie pour chaque cas que le déplacement est autorisé et que la pièce ne sort pas des dimensions données
 		case LEFT:
 			if(p->y+distance<=5 && p->horizontal)
 				p->y+=distance;
@@ -59,11 +60,11 @@ void move_piece (piece p, dir d, int distance){
 	}
 }
 
-bool intersect(cpiece p1, cpiece p2){
-	if (p1==NULL || p2==NULL)
+bool intersect(cpiece p1, cpiece p2){ // On vérifie qu'il n'y a pas d'intersection entre les pièces p1 et p2
+	if (p1==NULL || p2==NULL) // vérification de l'existence des paramètres
 		exit(EXIT_FAILURE);
-	bool tmp[6][6];
-	tmp[p1->x][p1->y]==true;
+	bool tmp[6][6]; // création d'un tableau de booléen de la taille du plateau de jeu
+	tmp[p1->x][p1->y]==true; 
 	if(p1->horizontal){
 		tmp[(p1->x)+1][p1->y]==true;
 		if(!p1->small)
@@ -108,8 +109,10 @@ int get_height(cpiece p)
 }
 
 
-
-
+bool is_horizontal(cpiece p)
+{
+	
+}
 
 
 
