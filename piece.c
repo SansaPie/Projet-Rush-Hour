@@ -62,8 +62,10 @@ void move_piece (piece p, dir d, int distance){
 bool intersect(cpiece p1, cpiece p2){
 	if (p1==NULL || p2==NULL)
 		exit(EXIT_FAILURE);
+
 	bool tmp[6][6];
 	tmp[p1->x][p1->y]==true;
+
 	if(p1->horizontal){
 		tmp[(p1->x)+1][p1->y]==true;
 		if(!p1->small)
@@ -76,9 +78,20 @@ bool intersect(cpiece p1, cpiece p2){
 
 	if(p2->horizontal){
 		if(tmp[p2->x][p2->y] || tmp[(p2->x)+1][p2->y]){return true;}
-		if(!p2->small){
+		if(!p2->small)
 			if(tmp[(p1->x)+2][p1->y]){return true;}
-		}
 	}
 
+}
+
+int get_width(cpiece p){
+	if(!p->horizontal)
+		return 1;
+	if(p->small)
+		return 2;
+	return 3;
+}
+
+bool is_horizontal(cpiece p){
+	return p->horizontal;
 }
