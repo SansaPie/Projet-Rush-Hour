@@ -119,28 +119,3 @@ int get_width(cpiece p){
 bool is_horizontal(cpiece p){
 	return p->horizontal;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 3ee792b38b6c96d11a9d98ca488018260ac6bbbb
