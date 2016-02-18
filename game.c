@@ -25,7 +25,8 @@ game new_game_hr (int nb_pieces, piece *pieces){
 }
 
 void delete_game(game g){
-	free(g);
+	if ( g != NULL) // ajout test
+		free(g);
 }
 
 void copy_game (cgame src, game dst){
