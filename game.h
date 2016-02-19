@@ -71,6 +71,10 @@ cpiece game_piece(cgame g, int piece_num);
 */
 bool game_over_hr(cgame g);
 
+bool test_equality_bool(bool expected, bool value, char * msg);
+
+bool test_intersect(game g, int piece_num);
+
 
 /**
  * @brief Tries to move the piece of number piece_num in direction d for distance cells.
