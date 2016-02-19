@@ -56,16 +56,16 @@ bool intersect(cpiece p1, cpiece p2){
 		exit(EXIT_FAILURE);
 
 	bool tmp[6][6];
-	tmp[p1->x][p1->y]==true;
+	tmp[p1->x][p1->y]=true;
 
 	if(p1->horizontal){
-		tmp[(p1->x)+1][p1->y]==true;
+		tmp[(p1->x)+1][p1->y]=true;
 		if(!p1->small)
-			tmp[(p1->x)+2][p1->y]==true;
+			tmp[(p1->x)+2][p1->y]=true;
 	}else{
-		tmp[p1->x][(p1->y)+1]==true;
+		tmp[p1->x][(p1->y)+1]=true;
 		if(!p1->small)
-			tmp[p1->x][(p1->y)+2]==true;
+			tmp[p1->x][(p1->y)+2]=true;
 	}
 
 	if(p2->horizontal){
@@ -73,7 +73,7 @@ bool intersect(cpiece p1, cpiece p2){
 		if(!p2->small)
 			if(tmp[(p1->x)+2][p1->y]){return true;}
 	}
-
+	return false;
 }
 
 int get_x(cpiece p)
