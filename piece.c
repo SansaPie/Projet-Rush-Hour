@@ -42,10 +42,10 @@ void move_piece (piece p, dir d, int distance){
 		case RIGHT:
 			if(p->y-distance>=0 && p->horizontal)
 				p->y-=distance;
-		case TOP:
+		case UP:
 			if(p->x+distance<=5 && !p->horizontal)
 				p->x+=distance;
-		case BOTTOM:
+		case DOWN:
 			if(p->x-distance>=0 && !p->horizontal)
 				p->x-=distance;
 	}
@@ -56,58 +56,58 @@ bool intersect(cpiece p1, cpiece p2){
 		exit(EXIT_FAILURE);
 
 	bool tmp[6][6];
-	tmp[p1->x][p1->y]=true;
+	tmp[p1->cPiece->x][p1->cPiece->y]=true;
 
-	if(p1->horizontal){
-		tmp[(p1->x)+1][p1->y]=true;
-		if(!p1->small)
-			tmp[(p1->x)+2][p1->y]=true;
+	if(p1->cPiece->horizontal){
+		tmp[(p1->cPiece->x)+1][p1->cPiece->y]=true;
+		if(!p1->cPiece->small)
+			tmp[(p1->cPiece->x)+2][p1->cPiece->y]=true;
 	}else{
-		tmp[p1->x][(p1->y)+1]=true;
-		if(!p1->small)
-			tmp[p1->x][(p1->y)+2]=true;
+		tmp[p1->cPiece->x][(p1->cPiece->y)+1]=true;
+		if(!p1->cPiece->small)
+			tmp[p1->cPiece->x][(p1->cPiece->y)+2]=true;
 	}
 
-	if(p2->horizontal){
-		if(tmp[p2->x][p2->y] || tmp[(p2->x)+1][p2->y]){return true;}
-		if(!p2->small)
-			if(tmp[(p1->x)+2][p1->y]){return true;}
+	if(p2->cPiece->horizontal){
+		if(tmp[p2->cPiece->x][p2->cPiece->y] || tmp[(p2->cPiece->x)+1][p2->cPiece->y]){return true;}
+		if(!p2->cPiece->small)
+			if(tmp[(p1->cPiece->x)+2][p1->cPiece->y]){return true;}
 	}
 	return false;
 }
 
 int get_x(cpiece p)
 {
-	return p->x;
+	return p->cPiece->x;
 }
 
 
 int get_y(cpiece p)
 {
-	return p->y;
+	return p->cPiece->y;
 }
 
 
 int get_height(cpiece p)
 {
-	if (p->horizontal)
+	if (p->cPiece->horizontal)
 		return 1;
 	else 
 	{
-		if (p->small)
+		if (p->cPiece->small)
 			return 2;
 		return 3;
 	}
 }
 
 int get_width(cpiece p){
-	if(!p->horizontal)
+	if(!p->cPiece->horizontal)
 		return 1;
-	if(p->small)
+	if(p->cPiece->small)
 		return 2;
 	return 3;
 }
 
 bool is_horizontal(cpiece p){
-	return p->horizontal;
+	return p->cPiece->horizontal;
 }
