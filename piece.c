@@ -2,18 +2,10 @@
 #include <stdio.h>
 #include "piece.h"
 
-typedef struct piece_s*{
-	int x;
-	int y;
-	bool small;
-	bool horizontal;
-} piece;
-
-typedef struct const struct piece_s*{
-	piece cPiece;
-} cpiece;
-
-typedef enum dir_e {UP,LEFT,DOWN,RIGHT} dir;
+int main()
+{
+	return 1;
+}
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || x>5 || y>5)
@@ -34,10 +26,10 @@ void delete_piece (piece p){
 void copy_piece (cpiece src, piece dst){
 	if(src==NULL || dst==NULL)
 		exit(EXIT_FAILURE);
-	dst->x = src->x;
-	dst->y = src->y;
-	dst->small = src->small;
-	dst->horizontal = src->horizontal;
+	dst->x = src->cPiece->x;
+	dst->y = src->cPiece->y;
+	dst->small = src->cPiece->small;
+	dst->horizontal = src->cPiece->horizontal;
 }
 
 void move_piece (piece p, dir d, int distance){
