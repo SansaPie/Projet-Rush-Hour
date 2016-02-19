@@ -96,15 +96,19 @@ bool play_move(game g, int piece_num, dir d, int distance){ // A REVOIR
 		case LEFT:
 			if(g->pieces[piece_num]->y+distance>5 || !g->pieces[piece_num]->horizontal || !test_intersect(g, piece_num))
 				return false;
+			break;
 		case RIGHT:
 			if(g->pieces[piece_num]->y-distance<0 || !g->pieces[piece_num]->horizontal || !test_intersect(g, piece_num))
 				return false;
-		case TOP:
+			break;
+		case UP:
 			if(g->pieces[piece_num]->x+distance>5 || g->pieces[piece_num]->horizontal || !test_intersect(g, piece_num))
 				return false;
-		case BOTTOM:
+			break;
+		case DOWN:
 			if(g->pieces[piece_num]->x-distance<0 || g->pieces[piece_num]->horizontal || !test_intersect(g, piece_num))
 				return false;
+			break;
 	}
 
 }
