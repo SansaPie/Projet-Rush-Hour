@@ -46,18 +46,21 @@ void move_piece (piece p, dir d, int distance){
 		case LEFT:
 			if(p->y+distance<=5 && p->horizontal)
 				p->y+=distance;
+			break;
 		case RIGHT:
 			if(p->y-distance>=0 && p->horizontal)
 				p->y-=distance;
+			break;
 		case UP:
 			if(p->x+distance<=5 && !p->horizontal)
 				p->x+=distance;
+			break;
 		case DOWN:
 			if(p->x-distance>=0 && !p->horizontal)
 				p->x-=distance;
+			break;
 	}
 }
-
 bool intersect(cpiece p1, cpiece p2){
 	if (p1==NULL || p2==NULL)
 		exit(EXIT_FAILURE);
