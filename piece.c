@@ -78,10 +78,15 @@ bool intersect(cpiece p1, cpiece p2){
 			tmp[p1->cPiece->x][(p1->cPiece->y)+2]=true;
 	}
 
-	if(p2->cPiece->horizontal){
-		if(tmp[p2->cPiece->x][p2->cPiece->y] || tmp[(p2->cPiece->x)+1][p2->cPiece->y]){return true;}
-		if(!p2->cPiece->small)
-			if(tmp[(p1->cPiece->x)+2][p1->cPiece->y]){return true;}
+	if (p2->cPiece->horizontal) {
+		if (tmp[p2->cPiece->x][p2->cPiece->y] || tmp[(p2->cPiece->x) + 1][p2->cPiece->y]) { return true; }
+		if (!p2->cPiece->small)
+			if (tmp[(p1->cPiece->x) + 2][p1->cPiece->y]) { return true; }
+	}
+	else {
+		if (tmp[p2->cPiece->x][p2->cPiece->y] || tmp[p2->cPiece->x][(p2->cPiece->y)+1]) { return true; }
+		if (!p2->cPiece->small)
+			if (tmp[p1->cPiece->x][(p1->cPiece->y)+2]) { return true; }
 	}
 	return false;
 }
