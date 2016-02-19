@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include "game.h"
 
-/* bool test_equality_bool(bool expected, bool value, char * msg);
+/* 
+bool test_equality_bool(bool expected, bool value, char * msg);
 
 bool test_intersect(game g, int piece_num); 
 
-Ces deux fonctions, codées plus bas, sont en lien avec la fonction play_move. Ce sont des ébauches d'idées mais je suis pas du tout sûre que ce soit intelligent, donc si l'un d'entre vous pouvait y jeter un oeil, ce serait cool. Dans le cas où vous les supprimeriez, n'oubliez pas de les virer également de game.h
+Ces deux fonctions, codées plus bas, sont en lien avec la fonction play_move. Ce sont des ébauches d'idées mais je suis pas du tout sûre que ce soit intelligent, 
+donc si l'un d'entre vous pouvait y jeter un oeil, ce serait cool. Dans le cas où vous les supprimeriez, n'oubliez pas de les virer également de game.h
 
 ~ Lisa
 
@@ -61,8 +63,10 @@ bool game_over_hr(cgame g){
 
 
 bool test_equality_bool(bool expected, bool value, char * msg) { // A REVOIR
-	if (expected != value)
+	if (expected != value){
 		fprintf(stderr,"ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
+		exit(EXIT_FAILURE);
+	}
 	return expected == value;
 }
 
