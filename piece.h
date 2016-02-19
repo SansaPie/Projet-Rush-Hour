@@ -23,8 +23,19 @@
  * See also this more technical discussion: http://stackoverflow.com/questions/8504411/typedef-pointer-const-weirdness
  *
  */
-typedef struct piece_s* piece;
-typedef const struct piece_s* cpiece;
+
+typedef struct piece_s{
+	int x;
+	int y;
+	bool small;
+	bool horizontal;
+} *piece;
+
+
+typedef const struct pieces{
+	piece cPiece;
+} *cpiece;
+
 
 /**
  * @enum dir_e
