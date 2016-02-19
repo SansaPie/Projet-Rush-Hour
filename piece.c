@@ -50,10 +50,10 @@ void move_piece (piece p, dir d, int distance){
 		case RIGHT:
 			if(p->y-distance>=0 && p->horizontal)
 				p->y-=distance;
-		case TOP:
+		case UP:
 			if(p->x+distance<=5 && !p->horizontal)
 				p->x+=distance;
-		case BOTTOM:
+		case DOWN:
 			if(p->x-distance>=0 && !p->horizontal)
 				p->x-=distance;
 	}
