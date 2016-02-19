@@ -12,16 +12,6 @@ Ces deux fonctions, codées plus bas, sont en lien avec la fonction play_move. C
 
 */
 
-typedef struct game_s*{
-	int nb_pieces;
-	piece *pieces;
-	int moves;
-} game;
-
-typedef const struct game_s*{
-	game_s* game;
-} cgame;
-
 game new_game_hr (int nb_pieces, piece *pieces){
 	if(nb_pieces<0 || pieces==NULL)
 		exit(EXIT_FAILURE);

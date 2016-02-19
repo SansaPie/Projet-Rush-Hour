@@ -25,9 +25,16 @@
  * See also this more technical discussion: http://stackoverflow.com/questions/8504411/typedef-pointer-const-weirdness
  *
  **/
-typedef struct game_s* game;
-typedef const struct game_s* cgame;
 
+typedef struct game_s*{
+	int nb_pieces;
+	piece *pieces;
+	int moves;
+} game;
+
+typedef const struct game_s*{
+	game_s* game;
+} cgame;
 
 /**
  * @brief Creates a new game given a starting position defined by a set of pieces.
