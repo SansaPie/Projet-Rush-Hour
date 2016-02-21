@@ -34,7 +34,7 @@ void copy_game (cgame src, game dst){
 		exit(EXIT_FAILURE);
 	dst->moves = src->moves;
 	dst->nb_pieces = src->nb_pieces;
-	for(int i=0 ; i<nb_pieces ; i++){
+	for(int i=0 ; i<src->nb_pieces ; i++){
 		dst->pieces[i]=src->pieces[i];
 	}
 }
@@ -46,7 +46,7 @@ int game_nb_pieces(cgame g){
 }
 
 cpiece game_piece(cgame g, int piece_num){
-	if(g==NULL || piece_num>0 && piece_num<g->nb_pieces)
+	if(g==NULL || (piece_num>0 && piece_num<g->nb_pieces))
 		exit(EXIT_FAILURE);
 	return g->pieces[piece_num];
 }

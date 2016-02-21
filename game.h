@@ -26,15 +26,15 @@
  *
  **/
 
-typedef struct game_s*{
+typedef struct game_s{
 	int nb_pieces;
 	piece *pieces;
 	int moves;
-} game;
+} *game;
 
-typedef const struct game_s*{
-	game_s* game;
-} cgame;
+typedef const struct game_s{
+	game game;
+} *cgame;
 
 /**
  * @brief Creates a new game given a starting position defined by a set of pieces.
