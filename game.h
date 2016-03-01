@@ -33,7 +33,7 @@ typedef struct game_s{
 } *game;
 
 typedef const struct game_s{
-	game game;
+	game const game;
 } *cgame;
 
 /**
