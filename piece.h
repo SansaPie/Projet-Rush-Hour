@@ -31,7 +31,6 @@ typedef struct piece_s{
 	bool horizontal;
 } *piece;
 
-
 typedef const struct pieces_s* cpiece;
 
 
