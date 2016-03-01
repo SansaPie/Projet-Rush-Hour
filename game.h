@@ -32,9 +32,7 @@ typedef struct game_s{
 	int moves;
 } *game;
 
-typedef const struct game_s{
-	game game;
-} *cgame;
+typedef const struct game_s* cgame;
 
 /**
  * @brief Creates a new game given a starting position defined by a set of pieces.

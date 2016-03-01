@@ -32,9 +32,7 @@ typedef struct piece_s{
 } *piece;
 
 
-typedef const struct pieces_s{
-	piece cPiece;
-} *cpiece;
+typedef const struct pieces_s* cpiece;
 
 
 /**
