@@ -32,10 +32,6 @@ typedef struct piece_s{
 } *piece;
 
 typedef const struct piece_s* cpiece;
-<<<<<<< HEAD
-
-=======
->>>>>>> 31c453da6c5d02aec6cecff1ed3997f69495f066
 
 /**
  * @enum dir_e
@@ -64,7 +60,7 @@ void delete_piece (piece p);
  * @param[out] src the piece to copy
  * @param[in]  dst the copied piece
  */
-void copy_piece (cpiece src, piece dst);
+void copy_piece (cpiece src, piece * dst);
 
 /**
  *
