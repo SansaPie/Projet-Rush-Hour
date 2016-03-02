@@ -63,7 +63,7 @@ bool game_over_hr(cgame g){
 	return false;
 }
 
-
+/*
 bool test_equality_bool(bool expected, bool value, char * msg) { // A REVOIR
 	if (expected != value){
 		fprintf(stderr,"ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
@@ -82,10 +82,10 @@ bool test_intersect(game g, int piece_num) { // A REVOIR
 	}
 	return result;
 }
-
+*/
 
 bool play_move(game g, int piece_num, dir d, int distance){ 
-	if (piece_num >= g->nb_pieces || piece_num <0 || distance < 0)
+	if (piece_num >= g->nb_pieces || piece_num <0 || distance < 0)
 		return false;
 
 	piece piece_moved = NULL;
@@ -94,14 +94,14 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	game gTmp = NULL;
 	copy_game(g, gTmp);
 
-	if((d==LEFT||d==RIGHT && isHorizontal(piece_moved))||
-		(d==UP||d==DOWN && !isHorizontal(piece_moved))){
+	if(((d==LEFT||d==RIGHT )&& (is_horizontal(piece_moved)))||
+		((d==UP||d==DOWN) && (!is_horizontal(piece_moved)))){
 		move_piece(piece_moved, d, distance);
 	}
 
-	if(piece_moved->x<0 || piece_moved->x>6 && 
-		piece_moved->y<0 || piece_moved->y>6 &&
-		!game_valid(gTmp))
+	if((piece_moved->x<0 || piece_moved->x>6) && 
+		(piece_moved->y<0 || piece_moved->y>6) &&
+		(!game_valid(gTmp)))
 		return false;
 
 	g = gTmp;
@@ -116,7 +116,7 @@ int game_nb_moves(cgame g){
 bool game_valid(cgame g){
 	for(int i=0 ; i<g->nb_pieces-1 ; i++){
 		for(int j=i+1 ; j<g->nb_pieces ; j++){
-			if(intersect(g->pieces[i], g->pieces[j])
+			if(intersect(g->pieces[i], g->pieces[j]))
 				return false;
 		}
 	}
