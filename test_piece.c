@@ -9,7 +9,7 @@ void afficher_piece(piece p);
 int main()
 {
 	piece test2 = new_piece_rh(5,5,true,false);
-	piece test = new_piece_rh(6,6,false, true);
+	piece test = new_piece_rh(2,2,false, true);
 	afficher_piece(test);
 	afficher_piece(test2);
 	//copy_piece(test2, test);
