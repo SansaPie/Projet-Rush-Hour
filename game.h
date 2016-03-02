@@ -56,7 +56,7 @@ void delete_game (game g);
  * @param src the game to copy
  * @param dst the copied game.
  */
-void copy_game (cgame src, game dst);
+void copy_game (cgame src, game * dst);
 
 /**
  * @brief Return the number of pieces on the game board g
@@ -76,11 +76,6 @@ cpiece game_piece(cgame g, int piece_num);
  * @return true if the piece number 0 has coordinates (4,3)
 */
 bool game_over_hr(cgame g);
-
-bool test_equality_bool(bool expected, bool value, char * msg);
-
-bool test_intersect(game g, int piece_num);
-
 
 /**
  * @brief Tries to move the piece of number piece_num in direction d for distance cells.
