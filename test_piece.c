@@ -10,17 +10,15 @@ void test_intersection(void);
 
 int main()
 {
-<<<<<<< HEAD
 	test_intersection();
-=======
 	piece test = new_piece_rh(5,5,true,false); /* on créé une première pièce test */
 	piece test2 = new_piece_rh(2,2,false, false); /* on créé une seconde pièce test2 */
 	afficher_piece(test); /* on affiche la première pièce*/
 	afficher_piece(test2); /* on affiche la seconde pièce. Les deux pièces ont bien été créées. */
-	copy_piece(test, test2); /* on teste la fonction copy, censée copier test dans test2 */
-	afficher_piece(test2); /* on affiche test2, afin de vérifier que test2 est désormais 
+	piece test3 = NULL;
+	copy_piece(test, &test3); /* on teste la fonction copy, censée copier test dans test3 */
+	afficher_piece(test3); /* on affiche test2, afin de vérifier que test2 est désormais 
 				égal à test. C'est le cas ! */
->>>>>>> 31c453da6c5d02aec6cecff1ed3997f69495f066
 	return EXIT_SUCCESS;
 }
 
