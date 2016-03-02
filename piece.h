@@ -102,6 +102,8 @@ int get_width(cpiece p);
  */
 bool is_horizontal(cpiece p);
 
+bool is_small(cpiece p);
+
 bool is_in_board(cpiece p);
 
 #endif

@@ -76,24 +76,24 @@ bool intersect(cpiece p1, cpiece p2){
 	}
 	tmp[p1->x][p1->y]=true;
 
-	if(p1->horizontal){
+	if(is_horizontal(p1)){
 		tmp[(p1->x)+1][p1->y]=true;
-		if(!p1->small)
+		if(!is_small(p1))
 			tmp[(p1->x)+2][p1->y]=true;
 	}else{
 		tmp[p1->x][(p1->y)+1]=true;
-		if(!p1->small)
+		if(!is_small(p1))
 			tmp[p1->x][(p1->y)+2]=true;
 	}
 
-	if (p2->horizontal) {
+	if (is_horizontal(p2)) {
 		if (tmp[p2->x][p2->y] || tmp[(p2->x) + 1][p2->y]) { return true; }
-		if (!p2->small)
+		if (!is_small(p2))
 			if (tmp[(p1->x) + 2][p1->y]) { return true; }
 	}
 	else {
 		if (tmp[p2->x][p2->y] || tmp[p2->x][(p2->y)+1]) { return true; }
-		if (!p2->small)
+		if (!is_small(p2))
 			if (tmp[p1->x][(p1->y)+2]) { return true; }
 	}
 	return false;
@@ -125,11 +125,11 @@ int get_height(cpiece p)
 		fprintf(stderr, "get_height : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if (p->horizontal)
+	if (is_horizontal(p))
 		return 1;
 	else 
 	{
-		if (p->small)
+		if (is_small(p))
 			return 2;
 		return 3;
 	}
@@ -140,9 +140,9 @@ int get_width(cpiece p){
 		fprintf(stderr, "get_width : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if(!p->horizontal)
+	if(!is_horizontal(p))
 		return 1;
-	if(p->small)
+	if(is_small(p))
 		return 2;
 	return 3;
 }
@@ -153,6 +153,14 @@ bool is_horizontal(cpiece p){
 		exit(EXIT_FAILURE);
 	}
 	return p->horizontal;
+}
+
+bool is_small(cpiece p) {
+	if (p == NULL) {
+		fprintf(stderr, "is_small : p invalide\n");
+		exit(EXIT_FAILURE);
+	}
+	return p->small;
 }
 
 bool is_in_board(cpiece p){
