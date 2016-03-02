@@ -13,7 +13,10 @@
 *
 */
 
+//fonction a inserer je pense dans test_piece
 bool test_equality_piece(cpiece expected, cpiece value, char *msg) {
+	if ( (get_x(expected) != get_x(value)) || (get_y(expected) != get_y(value)) 
+		|| (is_horizontal(expected) != is_horizontal(value)) 
 	if ( expected != value )	
 		exit(EXIT_FAILURE);
 	return expected == value;
@@ -47,8 +50,7 @@ void set_up() {
 bool test_new_game_hr() {
 	bool result = true;
 	game test = new_game_hr(NB_PIECES , pieces);
-	for (int i = 0; i < NB_PIECES; i++)
-		result = result && test_equality_piece(pieces[i], game_piece(test, i), "game_piece");
+	result = result && test_game_piece(test);
 	result = result && test_equality_int(NB_PIECES, game_nb_pieces(test), "game_nb_pieces");
 	result = result && test_equality_int(0, game_nb_moves(test) , "game_nb_moves");
 	delete_game(test);
@@ -74,12 +76,11 @@ bool test_game_nb_pieces() {
 	return result;
 }
 
-bool test_game_piece() {
+bool test_game_piece(cgame gtest) {
 	bool result = true;
-	/* attention ne pas refaire le meme test que pour 
-	* la fonction de test new_game_hr
-	*/
-	}
+	for (int i = 0; i < NB_PIECES; i ++)
+		result = result && test_equality_piece(pieces[i], game_piece(test, i), "game_piece");
+	return result;
 }
 
 bool test_
