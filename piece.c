@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include "piece.h"
 
-
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || x>5 || y>5)
 		exit(EXIT_FAILURE);

@@ -1,16 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "test_piece1.c"
 #include "game.h"
 #include "piece.h" // Si on inclut les .h, pas besoin d'inclure les .c
 
 #define NB_PIECES 4
 
+/*
+* @brief test if value is equal to expected ; if not program abort
+* @return true if expected == value
+*
+*/
+
 bool test_equality_piece(cpiece expected, cpiece value, char *msg) {
 	if ( expected != value )	
-		fprintf(stderr , "ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
+		exit(EXIT_FAILURE);
 	return expected == value;
 }
+
+/*
+* @brief same test as test_equality_piece
+*
+*/
 
 bool test_equality_game(cgame expected, cgame value, char * msg) {
 	bool result = true;
@@ -18,7 +30,7 @@ bool test_equality_game(cgame expected, cgame value, char * msg) {
 		result = result && test_equality_piece(game_piece(expected, i), game_piece(value, i) , msg);
 	}
 	if ( !result )
-		fprintf(stderr, "ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
+		exit(EXIT_FAILURE);
 	return result;
 }
 
@@ -51,16 +63,25 @@ bool test_copy_game() {
 	delete_game(test);
 	delete_game(copy_test);
 	return result;
-
-
-
 }
 
+bool test_game_nb_pieces() {
+	bool result = true;
+	game test = new_game_hr(NB_PIECES, pieces);
+	result = result && test_equality_int(NB_PIECES, game_nb_pieces(test), "game_nb_piece");
+	return result;
+}
 
+bool test_game_piece() {
+	bool result = true;
+	/* attention ne pas refaire le meme test que pour 
+	* la fonction de test new_game_hr
+	*/
+	}
+}
 
+bool test_
 
 int main(){
+	
 }
-
-
-

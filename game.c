@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "piece.h"
 #include "game.h"
 
 /* 
@@ -29,8 +30,12 @@ game new_game_hr (int nb_pieces, piece *pieces){
 }
 
 void delete_game(game g){
-	if ( g != NULL) // ajout test
+	if ( g != NULL){
+		for(int i=0 ; i<g->nb_pieces ; i++){
+			delete_piece(g->pieces[i]);
+		}
 		free(g);
+	}
 }
 
 void copy_game (cgame src, game dst){
@@ -81,8 +86,7 @@ bool test_intersect(game g, int piece_num) { // A REVOIR
 			return result;
 	}
 	return result;
-}
-*/
+}*/
 
 bool play_move(game g, int piece_num, dir d, int distance){ 
 	if (piece_num >= g->nb_pieces || piece_num <0 || distance < 0)
@@ -94,8 +98,8 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	game gTmp = NULL;
 	copy_game(g, gTmp);
 
-	if(((d==LEFT||d==RIGHT )&& (is_horizontal(piece_moved)))||
-		((d==UP||d==DOWN) && (!is_horizontal(piece_moved)))){
+	if(((d==LEFT||d==RIGHT) && is_horizontal(piece_moved))||
+		((d==UP||d==DOWN) && !is_horizontal(piece_moved))){
 		move_piece(piece_moved, d, distance);
 	}
 
