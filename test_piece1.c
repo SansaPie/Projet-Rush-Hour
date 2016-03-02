@@ -11,7 +11,7 @@
  */
 bool test_equality_int(int expected, int value, char * msg) {
   if (expected != value)
-    fprintf(stderr,"ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
+    exit(EXIT_FAILURE);
   return expected == value;
 }
 
@@ -20,7 +20,7 @@ bool test_equality_int(int expected, int value, char * msg) {
  */
 bool test_equality_bool(bool expected, bool value, char * msg) {
   if (expected != value)
-    fprintf(stderr,"ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
+    exit(EXIT_FAILURE);
   return expected == value;
 }
 

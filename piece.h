@@ -32,7 +32,6 @@ typedef struct piece_s{
 } *piece;
 
 typedef const struct piece_s* cpiece;
-
 /**
  * @enum dir_e
  * @brief The enumeration of possible directions of a move
@@ -101,5 +100,7 @@ int get_width(cpiece p);
  * @brief Returns true if the piece is
  */
 bool is_horizontal(cpiece p);
+
+bool is_in_board(cpiece p);
 
 #endif
