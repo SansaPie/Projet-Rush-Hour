@@ -11,7 +11,7 @@
  */
 bool test_equality_int(int expected, int value, char * msg) {
   if (expected != value)
-    exit(EXIT_FAILURE);
+    exit(EXIT_FAILURE); //non
   return expected == value;
 }
 
@@ -20,7 +20,7 @@ bool test_equality_int(int expected, int value, char * msg) {
  */
 bool test_equality_bool(bool expected, bool value, char * msg) {
   if (expected != value)
-    exit(EXIT_FAILURE);
+    exit(EXIT_FAILURE); //non
   return expected == value;
 }
 
