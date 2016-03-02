@@ -103,4 +103,6 @@ bool play_move(game g, int piece_num, dir d, int distance);
  */
 int game_nb_moves(cgame g);
 
+bool game_valid(cgame g);
+
 #endif

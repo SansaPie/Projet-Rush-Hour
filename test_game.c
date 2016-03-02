@@ -8,7 +8,7 @@
 
 bool test_equality_piece(cpiece expected, cpiece value, char *msg) {
 	if ( expected != value )	
-		fprintf(stderr , "ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
+		exit(EXIT_FAILURE);
 	return expected == value;
 }
 
@@ -18,7 +18,7 @@ bool test_equality_game(cgame expected, cgame value, char * msg) {
 		result = result && test_equality_piece(game_piece(expected, i), game_piece(value, i) , msg);
 	}
 	if ( !result )
-		fprintf(stderr, "ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
+		exit(EXIT_FAILURE);
 	return result;
 }
 
@@ -51,16 +51,8 @@ bool test_copy_game() {
 	delete_game(test);
 	delete_game(copy_test);
 	return result;
-
-
-
 }
-
-
-
 
 int main(){
+	
 }
-
-
-
