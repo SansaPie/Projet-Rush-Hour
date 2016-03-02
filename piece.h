@@ -32,6 +32,10 @@ typedef struct piece_s{
 } *piece;
 
 typedef const struct piece_s* cpiece;
+<<<<<<< HEAD
+
+=======
+>>>>>>> 31c453da6c5d02aec6cecff1ed3997f69495f066
 
 /**
  * @enum dir_e

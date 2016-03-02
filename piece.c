@@ -6,6 +6,8 @@
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || x>5 || y>5)
 		exit(EXIT_FAILURE);
+	if((x==5 && !horizontal) || (y=5 && horizontal) || (x>=4 && !horizontal && !small) || (y>=4 && horizontal && !small))
+		exit(EXIT_FAILURE);
 	piece p = malloc(sizeof(struct piece_s));
 	if(p==NULL){
 		fprintf(stderr, "p non alloue\n");
@@ -52,7 +54,7 @@ void move_piece (piece p, dir d, int distance){
 }
 
 bool intersect(cpiece p1, cpiece p2){
-	if (p1==NULL || p2==NULL)
+if (p1==NULL || p2==NULL)
 		exit(EXIT_FAILURE);
 
 	bool tmp[6][6];
