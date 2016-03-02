@@ -3,13 +3,16 @@
 #include <stdbool.h>
 #include "piece.h"
 
+#define L 5 //Longueur de la grille
+#define H 5 //Hauteur de la grille
+
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
-	if(x<0 || y<0 || x>5 || y>5){
+	if(x<0 || y<0 || x>H || y>L){
 		fprintf(stderr, "new_piece_hr : hors board\n");
 		exit(EXIT_FAILURE);
 	}
-	if((x==5 && !horizontal) || (y==5 && horizontal) || 
-		(x>=4 && !horizontal && !small) || (y>=4 && horizontal && !small)){
+	if((x==H && !horizontal) || (y==L && horizontal) || 
+		(x>=H-1 && !horizontal && !small) || (y>=L-1 && horizontal && !small)){
 		fprintf(stderr,"new_piece_hr : il y a un bout qui depasse\n");
 		exit(EXIT_FAILURE);
 	}
@@ -65,9 +68,9 @@ bool intersect(cpiece p1, cpiece p2){
 		exit(EXIT_FAILURE);
 	}
 
-	bool tmp[6][6];
-	for(int i=0;i<6;i++){
-		for(int j=0;j<6;j++){
+	bool tmp[H][L];
+	for(int i=0;i<H;i++){
+		for(int j=0;j<L;j++){
 			tmp[i][j]=false;
 		}
 	}

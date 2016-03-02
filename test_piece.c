@@ -4,7 +4,7 @@
 #include "game.h"
 #include "piece.h" 
 
-void afficher_piece(piece p);
+void display_piece(piece p);
 void test_move_piece(void);
 void test_intersection(void);
 
@@ -13,16 +13,16 @@ int main()
 	test_intersection();
 	piece test = new_piece_rh(5,5,true,false); /* on créé une première pièce test */
 	piece test2 = new_piece_rh(2,2,false, false); /* on créé une seconde pièce test2 */
-	afficher_piece(test); /* on affiche la première pièce*/
-	afficher_piece(test2); /* on affiche la seconde pièce. Les deux pièces ont bien été créées. */
+	display_piece(test); /* on affiche la première pièce*/
+	display_piece(test2); /* on affiche la seconde pièce. Les deux pièces ont bien été créées. */
 	piece test3 = NULL;
 	copy_piece(test, &test3); /* on teste la fonction copy, censée copier test dans test3 */
-	afficher_piece(test3); /* on affiche test2, afin de vérifier que test2 est désormais 
+	display_piece(test3); /* on affiche test2, afin de vérifier que test2 est désormais 
 				égal à test. C'est le cas ! */
 	return EXIT_SUCCESS;
 }
 
-void afficher_piece(piece p)
+void display_piece(piece p)
 {
 	printf("x : %d \n", p->x);
 	printf("y : %d \n", p->y);
@@ -40,11 +40,11 @@ void test_move_piece(void)
 	piece test2 = new_piece_rh(1,2,true,false);
 	// move_piece(test2, UP, -2); /* exit_failure car distance < 0 */
 	move_piece(test2, UP, 2); /* bouge la pièce de 2 vers le haut */
-	afficher_piece(test2); /* affiche la pièce test pour vérifier que le mouvement s'est bien fait */
+	display_piece(test2); /* affiche la pièce test pour vérifier que le mouvement s'est bien fait */
 	move_piece(test2, LEFT, 2); /* ne bouge pas la pièce car la direction de la pièce
 				   n'est pas compatible avec la direction donnée */
 	move_piece (test2, UP, 3); /* ne bouge pas la pièce car sinon elle sortirait du jeu */
-	afficher_piece(test2); /* afficher la pièce test pour vérifier que le 
+	display_piece(test2); /* afficher la pièce test pour vérifier que le 
 				mouvement ne s'est pas fait */
 }
 
