@@ -4,10 +4,15 @@
 #include "piece.h"
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
-	if(x<0 || y<0 || x>5 || y>5)
+	if(x<0 || y<0 || x>5 || y>5){
+		fprintf(stderr, "Hors board\n");
 		exit(EXIT_FAILURE);
-	if((x==5 && !horizontal) || (y=5 && horizontal) || (x>=4 && !horizontal && !small) || (y>=4 && horizontal && !small))
+	}
+	if((x==5 && !horizontal) || (y==5 && horizontal) || 
+		(x>=4 && !horizontal && !small) || (y>=4 && horizontal && !small)){
+		fprintf(stderr,"Il y a un bout qui depasse\n");
 		exit(EXIT_FAILURE);
+	}
 	piece p = malloc(sizeof(struct piece_s));
 	if(p==NULL){
 		fprintf(stderr, "p non alloue\n");
@@ -133,4 +138,5 @@ bool is_in_board(cpiece p){
 		if(p->x+size>5)
 			return false;
 	}
+	return true;
 }

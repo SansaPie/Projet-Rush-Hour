@@ -4,20 +4,25 @@
 #include "game.h"
 
 game new_game_hr (int nb_pieces, piece *pieces){
-	if(nb_pieces<0 || pieces==NULL)
+	if(nb_pieces<0 || pieces==NULL){
+		fprintf(stderr, "Parametres incorrects\n");
 		exit(EXIT_FAILURE);
+	}
 	game g = malloc(sizeof(struct game_s));
 	if(g==NULL){
 		fprintf(stderr,"g non alloue\n");
 		exit(EXIT_FAILURE);
 	}
 	g->nb_pieces = nb_pieces;
+	g->pieces = malloc(sizeof(struct piece_s)*nb_pieces);
 	for(int i=0 ; i<nb_pieces ; i++){
 		g->pieces[i] = pieces[i];
 	}
 	g->moves = 0;
-	if(!game_valid(g))
+	if(!game_valid(g)){
+		fprintf(stderr, "Jeu non valide\n");
 		exit(EXIT_FAILURE);
+	}
 	return g;
 }
 
