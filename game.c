@@ -35,13 +35,13 @@ void delete_game(game g){
 	}
 }
 
-void copy_game (cgame src, game dst){
-	if(src==NULL || dst!=NULL){
+void copy_game (cgame src, game * dst){
+	if(src==NULL || dst==NULL){
 		fprintf(stderr, "copy_game : parametres invalides\n");
 		exit(EXIT_FAILURE);
 	}
-	dst = new_game_hr(src->nb_pieces, src->pieces);
-	dst->moves = src->moves;
+	*dst = new_game_hr(src->nb_pieces, src->pieces);
+	(*dst)->moves = src->moves;
 }
 
 int game_nb_pieces(cgame g){
@@ -72,10 +72,10 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	}
 
 	piece piece_moved = NULL;
-	copy_piece(g->pieces[piece_num], piece_moved);
+	copy_piece(g->pieces[piece_num], &piece_moved);
 
 	game gTmp = NULL;
-	copy_game(g, gTmp);
+	copy_game(g, &gTmp);
 
 	if(((d==LEFT||d==RIGHT) && is_horizontal(piece_moved))||
 		((d==UP||d==DOWN) && !is_horizontal(piece_moved))){

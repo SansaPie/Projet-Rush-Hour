@@ -132,7 +132,7 @@ bool test_copy() {
   bool result = true;
   set_up();
   for (int i = 0 ; i < NB_PIECES; i++) {
-    copy_piece(pieces[i],p);
+    copy_piece(pieces[i],&p);
     result = result && test_equality_int(get_height(pieces[i]), get_height(p), "copy get_height");
     result = result && test_equality_int(get_width(pieces[i]), get_width(p), "copy get_width");
     result = result && test_equality_int(get_x(pieces[i]), get_x(p), "copy get_x");
