@@ -3,22 +3,14 @@
 #include "piece.h"
 #include "game.h"
 
-/* 
-bool test_equality_bool(bool expected, bool value, char * msg);
-
-bool test_intersect(game g, int piece_num); 
-
-Ces deux fonctions, codées plus bas, sont en lien avec la fonction play_move. Ce sont des ébauches d'idées mais je suis pas du tout sûre que ce soit intelligent, 
-donc si l'un d'entre vous pouvait y jeter un oeil, ce serait cool. Dans le cas où vous les supprimeriez, n'oubliez pas de les virer également de game.h
-
-~ Lisa
-
-*/
-
 game new_game_hr (int nb_pieces, piece *pieces){
 	if(nb_pieces<0 || pieces==NULL)
 		exit(EXIT_FAILURE);
 	game g = malloc(sizeof(struct game_s));
+	if(g==NULL){
+		fprintf(stderr,"g non alloue\n");
+		exit(EXIT_FAILURE);
+	}
 	g->nb_pieces = nb_pieces;
 	for(int i=0 ; i<nb_pieces ; i++){
 		g->pieces[i] = pieces[i];
@@ -63,31 +55,10 @@ cpiece game_piece(cgame g, int piece_num){
 bool game_over_hr(cgame g){
 	if(g==NULL)
 		exit(EXIT_FAILURE);
-	if(g->pieces[0]->x == 4 && g->pieces[0]->y == 3)
+	if(g->pieces[0]->x == 3 && g->pieces[0]->y == 4)
 		return true;
 	return false;
 }
-
-
-bool test_equality_bool(bool expected, bool value, char * msg) { // A REVOIR
-	if (expected != value){
-		fprintf(stderr,"ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
-		exit(EXIT_FAILURE);
-	}
-	return expected == value;
-}
-
-
-/*bool test_intersect(game g, int piece_num) { // A REVOIR
-	bool result = true;
-    	for (int j =0; j<NB_PIECES; j++) {
-     		result = result && test_equality_bool(i==j, intersect(g->pieces[piece_num], pieces[j]),"intersect");
-		if result = false
-			return result;
-	}
-	return result;
-}*/
-
 
 bool play_move(game g, int piece_num, dir d, int distance){ 
 	if (piece_num >= g->nb_pieces || piece_num <0 || distance < 0)
@@ -104,10 +75,9 @@ bool play_move(game g, int piece_num, dir d, int distance){
 		move_piece(piece_moved, d, distance);
 	}
 
-	if((piece_moved->x<0 || piece_moved->x>6) && 
-		(piece_moved->y<0 || piece_moved->y>6) &&
-		!game_valid(gTmp))
+	if(!game_valid(gTmp))
 		return false;
+	gTmp->moves += distance;
 
 	g = gTmp;
 
@@ -124,6 +94,11 @@ bool game_valid(cgame g){
 			if(intersect(g->pieces[i], g->pieces[j]))
 				return false;
 		}
+	}
+
+	for(int k=0 ; k<g->nb_pieces ; k++){
+		if(!is_in_board(g->pieces[k]))
+			return false;
 	}
 	return true;
 }

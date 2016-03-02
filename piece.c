@@ -7,6 +7,10 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || x>5 || y>5)
 		exit(EXIT_FAILURE);
 	piece p = malloc(sizeof(struct piece_s));
+	if(p==NULL){
+		fprintf(stderr, "p non alloue\n");
+		exit(EXIT_FAILURE);
+	}
 	p->x = x;
 	p->y = y;
 	p->small = small;
@@ -32,21 +36,17 @@ void move_piece (piece p, dir d, int distance){
 	if(p==NULL || distance<0)
 		exit(EXIT_FAILURE);
 	switch(d){
-		case LEFT:
-			if(p->y+distance<=5 && p->horizontal)
-				p->y+=distance;
-			break;
 		case RIGHT:
-			if(p->y-distance>=0 && p->horizontal)
-				p->y-=distance;
+			p->y+=distance;
+			break;
+		case LEFT:
+			p->y-=distance;
 			break;
 		case UP:
-			if(p->x+distance<=5 && !p->horizontal)
-				p->x+=distance;
+			p->x+=distance;
 			break;
 		case DOWN:
-			if(p->x-distance>=0 && !p->horizontal)
-				p->x-=distance;
+			p->x-=distance;
 			break;
 	}
 }
@@ -115,4 +115,20 @@ int get_width(cpiece p){
 
 bool is_horizontal(cpiece p){
 	return p->horizontal;
+}
+
+bool is_in_board(cpiece p){
+	if(p->y<0 || p->x<0)
+		return false;
+	int size = 1;
+	if(!p->small)
+		size = 2;
+
+	if(p->horizontal){
+		if(p->y+size>5)
+			return false;
+	}else{
+		if(p->x+size>5)
+			return false;
+	}
 }
