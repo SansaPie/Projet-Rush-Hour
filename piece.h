@@ -31,8 +31,7 @@ typedef struct piece_s{
 	bool horizontal;
 } *piece;
 
-typedef const struct pieces_s* cpiece;
-
+typedef const struct piece_s* cpiece;
 
 /**
  * @enum dir_e
