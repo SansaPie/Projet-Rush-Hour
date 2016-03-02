@@ -23,6 +23,8 @@ game new_game_hr (int nb_pieces, piece *pieces){
 		g->pieces[i] = pieces[i];
 	}
 	g->moves = 0;
+	if(!game_valid(g))
+		exit(EXIT_FAILURE);
 	return g;
 }
 
@@ -82,31 +84,41 @@ bool test_intersect(game g, int piece_num) { // A REVOIR
 }
 
 
-bool play_move(game g, int piece_num, dir d, int distance){ // A REVOIR 
+bool play_move(game g, int piece_num, dir d, int distance){ 
 	if (piece_num >= g->nb_pieces || piece_num <0 || distance < 0)
 		return false;
 
-	switch(d){
-		case LEFT:
-			if(g->pieces[piece_num]->y+distance>5 || !g->pieces[piece_num]->horizontal || !test_intersect(g, piece_num))
-				return false;
-			break;
-		case RIGHT:
-			if(g->pieces[piece_num]->y-distance<0 || !g->pieces[piece_num]->horizontal || !test_intersect(g, piece_num))
-				return false;
-			break;
-		case UP:
-			if(g->pieces[piece_num]->x+distance>5 || g->pieces[piece_num]->horizontal || !test_intersect(g, piece_num))
-				return false;
-			break;
-		case DOWN:
-			if(g->pieces[piece_num]->x-distance<0 || g->pieces[piece_num]->horizontal || !test_intersect(g, piece_num))
-				return false;
-			break;
+	piece piece_moved = NULL;
+	copy_piece(g->pieces[piece_num], piece_moved);
+
+	game gTmp = NULL;
+	copy_game(g, gTmp);
+
+	if((d==LEFT||d==RIGHT && isHorizontal(piece_moved))||
+		(d==UP||d==DOWN && !isHorizontal(piece_moved))){
+		move_piece(piece_moved, d, distance);
 	}
 
+	if(piece_moved->x<0 || piece_moved->x>6 && 
+		piece_moved->y<0 || piece_moved->y>6 &&
+		!game_valid(gTmp))
+		return false;
+
+	g = gTmp;
+
+	return true;
 }
 
 int game_nb_moves(cgame g){
 	return g->moves;
+}
+
+bool game_valid(cgame g){
+	for(int i=0 ; i<g->nb_pieces-1 ; i++){
+		for(int j=i+1 ; j<g->nb_pieces ; j++){
+			if(intersect(g->pieces[i], g->pieces[j])
+				return false;
+		}
+	}
+	return true;
 }

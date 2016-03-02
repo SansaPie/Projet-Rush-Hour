@@ -3,11 +3,14 @@
 #include <stdbool.h>
 #include "piece.h"
 
+<<<<<<< HEAD
 int main()
 {
 	return 1;
 }
 
+=======
+>>>>>>> daf19412b639531cc4196220af2b70c7071dc961
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || x>5 || y>5)
 		exit(EXIT_FAILURE);
