@@ -3,6 +3,10 @@
 #include <stdbool.h>
 #include "piece.h"
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> ec6fe4ed5129026e8f8d58a5eb26f757cce511e6
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || x>5 || y>5)
 		exit(EXIT_FAILURE);
@@ -50,6 +54,7 @@ void move_piece (piece p, dir d, int distance){
 			break;
 	}
 }
+
 bool intersect(cpiece p1, cpiece p2){
 	if (p1==NULL || p2==NULL)
 		exit(EXIT_FAILURE);
