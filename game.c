@@ -27,11 +27,14 @@ game new_game_hr (int nb_pieces, piece *pieces){
 }
 
 void delete_game(game g){
-	if ( g != NULL){
+	if (g != NULL){
 		for(int i=0 ; i<g->nb_pieces ; i++){
 			delete_piece(g->pieces[i]);
 		}
 		free(g);
+	}else{
+		fprintf(stderr, "delete_game : g null\n");
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -45,20 +48,26 @@ void copy_game (cgame src, game * dst){
 }
 
 int game_nb_pieces(cgame g){
-	if(g==NULL)
+	if(g==NULL){
+		fprintf(stderr, "game_nb_pieces : g invalide\n");
 		exit(EXIT_FAILURE);
+	}
 	return g->nb_pieces;
 }
 
 cpiece game_piece(cgame g, int piece_num){
-	if(g==NULL || (piece_num>0 && piece_num<g->nb_pieces))
+	if(g==NULL || (piece_num>0 && piece_num<g->nb_pieces)){
+		fprintf(stderr, "game_piece : g invalide\n");
 		exit(EXIT_FAILURE);
+	}
 	return g->pieces[piece_num];
 }
 
 bool game_over_hr(cgame g){
-	if(g==NULL)
+	if(g==NULL){
+		fprintf(stderr, "game_over_hr : g invalide\n");
 		exit(EXIT_FAILURE);
+	}
 	if(g->pieces[0]->x == 3 && g->pieces[0]->y == 4)
 		return true;
 	return false;
@@ -66,7 +75,7 @@ bool game_over_hr(cgame g){
 
 
 bool play_move(game g, int piece_num, dir d, int distance){ 
-	if (piece_num >= g->nb_pieces || piece_num <0 || distance < 0){
+	if (g == NULL || piece_num >= g->nb_pieces || piece_num <0 || distance < 0){
 		fprintf(stderr, "play_move : parametres invalides\n");
 		return false;
 	}
@@ -91,10 +100,18 @@ bool play_move(game g, int piece_num, dir d, int distance){
 }
 
 int game_nb_moves(cgame g){
+	if(g==NULL){
+		fprintf(stderr, "game_nb_moves : g invalide\n");
+		exit(EXIT_FAILURE);
+	}
 	return g->moves;
 }
 
 bool game_valid(cgame g){
+	if(g==NULL){
+		fprintf(stderr, "game_valid : g invalide\n");
+		exit(EXIT_FAILURE);
+	}
 	for(int i=0 ; i<g->nb_pieces-1 ; i++){
 		for(int j=i+1 ; j<g->nb_pieces ; j++){
 			if(intersect(g->pieces[i], g->pieces[j])){

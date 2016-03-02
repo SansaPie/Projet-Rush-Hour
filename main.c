@@ -3,7 +3,7 @@
 #include "game.h"
 #include "piece.h"
 
-void display_game(cgame g){
+void display_game(cgame g){ // A modifier
 	char disp[6][6];
 	for(int i=0 ; i<6 ; i++){
 		for(int j=0 ; j<6 ; j++){
@@ -65,6 +65,8 @@ int main(){
 	display_game(g);
 
 	printf("GG easy\n");
+
+	delete_game(g);
 
 	return 1;
 }
