@@ -49,6 +49,8 @@ bool test_new_game_hr() {
 	game test = new_game_hr(NB_PIECES , pieces);
 	for (int i = 0; i < NB_PIECES; i++)
 		result = result && test_equality_piece(pieces[i], game_piece(test, i), "game_piece");
+	result = result && test_equality_int(NB_PIECES, game_nb_pieces(test), "game_nb_pieces");
+	result = result && test_equality_int(0, game_nb_moves(test) , "game_nb_moves");
 	delete_game(test);
 	return result;
 }
