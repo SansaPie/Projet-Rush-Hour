@@ -6,7 +6,6 @@
 int main()
 {
 	piece test2 = new_piece_rh(5,5,true,false);
-	cpiece autre = test2;
 	piece test = new_piece_rh(6,6,false, true);
 	printf("%d %d %d %d \n", test->x, test->y, test->small, test->horizontal);
 	copy_piece(test2, test);
