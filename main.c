@@ -56,7 +56,8 @@ int main(){
 	pieces_test[4] = new_piece_rh(4,4,true,false);
 	game g = new_game_hr(5, pieces_test);
 
-	while(game_over_hr(g)){
+	while(!game_over_hr(g)){
+		display_game(g);
 		int number_piece=0;
 		int distance = 0;
 		char direction[6] = "";
@@ -91,9 +92,6 @@ int main(){
 			printf("Merci d'entrer une direction valide. UP, DOWN, RIGHT ou LEFT");
 		}
 	}
-	display_game(g);
-
-	printf("GG easy\n");
 
 	delete_game(g);
 

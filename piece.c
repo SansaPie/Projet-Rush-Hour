@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include "piece.h"
 
-#define L 5 //Longueur de la grille
-#define H 5 //Hauteur de la grille
+#define L 6 //Longueur de la grille
+#define H 6 //Hauteur de la grille
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || x>H || y>L){
