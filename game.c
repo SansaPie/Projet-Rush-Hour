@@ -16,7 +16,8 @@ game new_game_hr (int nb_pieces, piece *pieces){
 	g->nb_pieces = nb_pieces;
 	g->pieces = malloc(sizeof(struct piece_s)*nb_pieces);
 	for(int i=0 ; i<nb_pieces ; i++){
-		g->pieces[i] = pieces[i];
+		g->pieces[i] = new_piece_rh(0,0,true,true);
+		copy_piece(pieces[i],g->pieces[i]);
 	}
 	g->moves = 0;
 	if(!game_valid(g)){
@@ -43,9 +44,23 @@ void copy_game (cgame src, game dst){
 		fprintf(stderr, "copy_game : parametres invalides\n");
 		exit(EXIT_FAILURE);
 	}
-	game * dstTmp = &dst;
-	*dstTmp = new_game_hr(src->nb_pieces, src->pieces);
-	(*dstTmp)->moves = src->moves;
+	for(int i=0;i<dst->nb_pieces;i++){
+			delete_piece(dst->pieces[i]);
+	}
+	
+	piece * ptr_tmp = realloc(dst->pieces, sizeof(struct piece_s)*src->nb_pieces);
+	if(ptr_tmp == NULL){
+		fprintf(stderr, "copy_game : erreur realloc dst->pieces\n");
+		exit(EXIT_FAILURE);
+	}
+	dst->pieces = ptr_tmp;
+	dst->nb_pieces=src->nb_pieces;
+
+	for(int j=0;j<src->nb_pieces;j++){
+		dst->pieces[j] = src->pieces[j];
+	}
+
+	dst->moves = src->moves;
 }
 
 int game_nb_pieces(cgame g){
@@ -76,16 +91,20 @@ bool game_over_hr(cgame g){
 
 
 bool play_move(game g, int piece_num, dir d, int distance){ 
-	if (g == NULL || piece_num >= g->nb_pieces || piece_num <0 || distance < 0){
+	if (g == NULL || piece_num >= game_nb_pieces(g) || piece_num <0 || distance < 0){
 		fprintf(stderr, "play_move : parametres invalides\n");
 		return false;
 	}
 
-	piece piece_moved = NULL;
-	copy_piece(g->pieces[piece_num], piece_moved);
+	/*piece * t_pieces = malloc(sizeof(struct piece_s)*game_nb_pieces(g));
+	for(int i=0;i<game_nb_pieces(g);i++){
+		t_pieces[i] = new_piece_rh(0,0,true,true);
+	}*/
 
-	game gTmp = NULL;
+	game gTmp = new_game_hr(game_nb_pieces(g), g->pieces);
 	copy_game(g, gTmp);
+
+	piece piece_moved = gTmp->pieces[piece_num];
 
 	if(((d==LEFT||d==RIGHT) && is_horizontal(piece_moved))||
 		((d==UP||d==DOWN) && !is_horizontal(piece_moved))){
