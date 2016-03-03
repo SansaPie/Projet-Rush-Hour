@@ -88,7 +88,6 @@ bool intersect(cpiece p1, cpiece p2){
 		if(!is_small(p1))
 			tmp[p1->x][(p1->y)+2]=true;
 	}
-
 	if (is_horizontal(p2)) {
 		if (tmp[p2->x][p2->y] || tmp[(p2->x) + 1][p2->y]) { return true; }
 		if (!is_small(p2))
