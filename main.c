@@ -58,9 +58,10 @@ int main(){
 	pieces_test[4] = new_piece_rh(4,4,true,false);
 	game g = new_game_hr(5, pieces_test);
 
-	while(game_over_hr(g)){
+	while(!game_over_hr(g)){
 		play_move(g, 3, UP, 1);
 		play_move(g, 0, RIGHT, 3);
+		break;
 	}
 	display_game(g);
 

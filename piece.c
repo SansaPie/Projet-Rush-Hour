@@ -38,8 +38,10 @@ void copy_piece (cpiece src, piece dst){
 		fprintf(stderr, "copy_piece : pieces invalides\n");
 		exit(EXIT_FAILURE);
 	}
-	piece * dstTmp = &dst;
-	*dstTmp = new_piece_rh(src->x, src->y, src->small, src->horizontal);
+	dst->x = src->x;
+	dst->y = src->y;
+	dst->small = src->small;
+	dst->horizontal = src->horizontal;
 }
 
 void move_piece (piece p, dir d, int distance){

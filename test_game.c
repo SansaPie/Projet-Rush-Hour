@@ -94,7 +94,7 @@ bool test_copy_game() {
 	bool result = true;
 	game test = new_game_hr(NB_PIECES, pieces);
 	game copy_test = NULL;
-	copy_game(test, &copy_test);
+	copy_game(test, copy_test);
 	result = result && test_equality_game(test, copy_test, "copy_game");
 	delete_game(test);
 	delete_game(copy_test);
