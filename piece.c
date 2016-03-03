@@ -11,8 +11,8 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 		fprintf(stderr, "new_piece_hr : hors board\n");
 		exit(EXIT_FAILURE);
 	}
-	if((x==H && !horizontal) || (y==L && horizontal) || 
-		(x>=H-1 && !horizontal && !small) || (y>=L-1 && horizontal && !small)){
+	if((x==H-1 && !horizontal) || (y==L-1 && horizontal) || 
+		(x>=H-2 && !horizontal && !small) || (y>=L-2 && horizontal && !small)){
 		fprintf(stderr,"new_piece_hr : il y a un bout qui depasse\n");
 		exit(EXIT_FAILURE);
 	}

@@ -93,25 +93,25 @@ bool test_move() {
   set_up();
   for (int dist = 1; dist < NB_PIECES; dist++)
     for (int i=0; i < NB_PIECES; i++) {
-      copy_piece(pieces[i],&p);
+      copy_piece(pieces[i],p);
       move_piece(p, LEFT, dist);
       if (is_horizontal(pieces[i]))
         result = result && test_equality_int(get_x(pieces[i])-dist,get_x(p),"move LEFT");
       else
         result = result && test_equality_int(get_x(pieces[i]),get_x(p),"move LEFT");
-      copy_piece(pieces[i],&p);
+      copy_piece(pieces[i],p);
       move_piece(p, RIGHT, dist);
       if (is_horizontal(pieces[i]))
         result = result && test_equality_int(get_x(pieces[i])+dist,get_x(p),"move RIGHT");
       else
         result = result && test_equality_int(get_x(pieces[i]),get_x(p),"move RIGHT");
-      copy_piece(pieces[i],&p);
+      copy_piece(pieces[i],p);
       move_piece(p, UP, dist);
       if (!is_horizontal(pieces[i]))
         result = result && test_equality_int(get_y(pieces[i])+dist,get_y(p),"move UP");
       else
         result = result && test_equality_int(get_y(pieces[i]),get_y(p),"move UP");
-      copy_piece(pieces[i],&p);
+      copy_piece(pieces[i],p);
       move_piece(p, DOWN, dist);
       if (!is_horizontal(pieces[i]))
         result = result && test_equality_int(get_y(pieces[i])-dist,get_y(p),"move DOWN");
@@ -132,7 +132,7 @@ bool test_copy() {
   bool result = true;
   set_up();
   for (int i = 0 ; i < NB_PIECES; i++) {
-    copy_piece(pieces[i],&p);
+    copy_piece(pieces[i],p);
     result = result && test_equality_int(get_height(pieces[i]), get_height(p), "copy get_height");
     result = result && test_equality_int(get_width(pieces[i]), get_width(p), "copy get_width");
     result = result && test_equality_int(get_x(pieces[i]), get_x(p), "copy get_x");
