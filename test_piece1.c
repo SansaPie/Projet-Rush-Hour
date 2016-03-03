@@ -11,7 +11,7 @@
  */
 bool test_equality_int(int expected, int value, char * msg) {
   if (expected != value)
-    exit(EXIT_FAILURE); //non
+    fprintf(stderr, "ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
   return expected == value;
 }
 
@@ -20,7 +20,7 @@ bool test_equality_int(int expected, int value, char * msg) {
  */
 bool test_equality_bool(bool expected, bool value, char * msg) {
   if (expected != value)
-    exit(EXIT_FAILURE); //non
+    fprintf(stderr, "ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
   return expected == value;
 }
 
@@ -50,6 +50,10 @@ bool test_new_piece() {
     for (int y= 0 ; y < 5; y++)
       for (bool small=false; !small ; small= !small)
         for (bool horizontal=false; !horizontal ; horizontal= !horizontal) {
+          if((y>=4 && !horizontal && !small) || (x>=4 && horizontal && !small)){
+            break; // Si l'on ne met pas cette condition et ce break, le programme va créer des pièces en 
+                  // dehors du tableau, ce qui va déclencher une sécurité dans la fonction new_piece_rh
+          }
           int size;
           if (small)
             size = 2;

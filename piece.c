@@ -7,12 +7,12 @@
 #define H 6 //Hauteur de la grille
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
-	if(x<0 || y<0 || x>H || y>L){
+	if(x<0 || y<0 || y>H || x>L){
 		fprintf(stderr, "new_piece_hr : hors board\n");
 		exit(EXIT_FAILURE);
 	}
-	if((x==H-1 && !horizontal) || (y==L-1 && horizontal) || 
-		(x>=H-2 && !horizontal && !small) || (y>=L-2 && horizontal && !small)){
+	if((y==H-1 && !horizontal) || (x==L-1 && horizontal) || 
+		(y>=H-2 && !horizontal && !small) || (x>=L-2 && horizontal && !small)){
 		fprintf(stderr,"new_piece_hr : il y a un bout qui depasse\n");
 		exit(EXIT_FAILURE);
 	}
@@ -51,16 +51,20 @@ void move_piece (piece p, dir d, int distance){
 	}
 	switch(d){
 		case RIGHT:
-			p->y+=distance;
+			if(is_horizontal(p))
+				p->x+=distance;
 			break;
 		case LEFT:
-			p->y-=distance;
+			if(is_horizontal(p))
+				p->x-=distance;
 			break;
 		case UP:
-			p->x+=distance;
+			if(!is_horizontal(p))
+				p->y+=distance;
 			break;
 		case DOWN:
-			p->x-=distance;
+			if(!is_horizontal(p))
+				p->y-=distance;
 			break;
 	}
 }
@@ -72,8 +76,8 @@ bool intersect(cpiece p1, cpiece p2){
 	}
 
 	bool tmp[H][L];
-	for(int i=0;i<H;i++){
-		for(int j=0;j<L;j++){
+	for(int i=0;i<L;i++){
+		for(int j=0;j<H;j++){
 			tmp[i][j]=false;
 		}
 	}
@@ -88,16 +92,15 @@ bool intersect(cpiece p1, cpiece p2){
 		if(!is_small(p1))
 			tmp[p1->x][(p1->y)+2]=true;
 	}
-
 	if (is_horizontal(p2)) {
 		if (tmp[p2->x][p2->y] || tmp[(p2->x) + 1][p2->y]) { return true; }
 		if (!is_small(p2))
-			if (tmp[(p1->x) + 2][p1->y]) { return true; }
+			if (tmp[(p2->x) + 2][p2->y]) { return true; }
 	}
 	else {
 		if (tmp[p2->x][p2->y] || tmp[p2->x][(p2->y)+1]) { return true; }
 		if (!is_small(p2))
-			if (tmp[p1->x][(p1->y)+2]) { return true; }
+			if (tmp[p2->x][(p2->y)+2]) { return true; }
 	}
 	return false;
 }
@@ -178,10 +181,10 @@ bool is_in_board(cpiece p){
 		size = 2;
 
 	if(p->horizontal){
-		if(p->y+size>5)
+		if(p->x+size>5)
 			return false;
 	}else{
-		if(p->x+size>5)
+		if(p->y+size>5)
 			return false;
 	}
 	return true;

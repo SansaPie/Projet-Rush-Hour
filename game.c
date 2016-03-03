@@ -84,7 +84,7 @@ bool game_over_hr(cgame g){
 		fprintf(stderr, "game_over_hr : g invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if(get_x(game_piece(g, 0)) == 3 && get_y(game_piece(g,0)) == 4)
+	if(get_x(game_piece(g, 0)) == 4 && get_y(game_piece(g,0)) == 3)
 		return true;
 	return false;
 }
@@ -95,11 +95,6 @@ bool play_move(game g, int piece_num, dir d, int distance){
 		fprintf(stderr, "play_move : parametres invalides\n");
 		return false;
 	}
-
-	/*piece * t_pieces = malloc(sizeof(struct piece_s)*game_nb_pieces(g));
-	for(int i=0;i<game_nb_pieces(g);i++){
-		t_pieces[i] = new_piece_rh(0,0,true,true);
-	}*/
 
 	game gTmp = new_game_hr(game_nb_pieces(g), g->pieces);
 	copy_game(g, gTmp);
