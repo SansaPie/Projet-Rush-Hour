@@ -57,13 +57,11 @@ int main(){
 	game g = new_game_hr(5, pieces_test); /* initialisation d'un premier jeu */
 
 	while(game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande à l'utilisateur ce qu'il veut jouer */
-		int number_piece=0;
-		int distance = 0;
 		char direction[6] = "";
-		printf("Quelle piece voulez-vous jouer ?");
-		scanf("%d", &number_piece);
+		printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. ");
+		int number_piece= fgetc(stdin);
 		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5.", number_piece);
-		scanf("%d", &distance);
+		int distance = fgetc(stdin);
 		printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ?", number_piece, distance);
 		fgets(direction, sizeof(direction), stdin);
 		if (strcmp(direction, "RIGHT") ==0)
