@@ -39,8 +39,51 @@ void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
 	}
 }
 
+/*
+void lisa_prompt() {
+	display_game(g);
+	char tmp[6] = "";
+	printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
+	int number_piece = atoi(fgets(tmp, sizeof(tmp), stdin));
+	printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);
+	int distance = atoi(fgets(tmp, sizeof(tmp), stdin));
+	printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ? \n", number_piece, distance);
+	fgets(tmp, sizeof(tmp), stdin);
+}
+*/
+
+/*
+* @brief fonction permettant d'enlever la possible pollution du buffer lors de la saisie de caracteres.
+*/
+
+void clear_buffer() {
+	int i;
+	printf("Veuillez confirmer votre choix <ENTER>");//pas de vraie confirmation (juste pour combler le vide lors du nettoyage du buffer )
+	while (i != '\n' && i != EOF) // il faut que l'utilisateur appuye sur ENTER.
+		i = getchar();
+}
+
+
+/*
+* @brief demande a l'utilisateur de saisir une chaine de caractere et de confirmer en appuyant sur "ENTER"
+* @return la chaine de caractere saisie
+*/
+
+char * scan(char * buffer , int size) {
+	char * result = fgets(buffer, size, stdin);
+	
+	if ( result != NULL) {
+		char * lresult = strchr(buffer, '\n');
+		if (lresult != NULL)
+			*lresult = '\0';
+	}
+	clear_buffer();
+	return result;
+}
+
+
 int main(){
-	piece *pieces_test = malloc(sizeof(struct piece_s)*4); /* on créé un tableau qui contient les pièces */
+	piece *pieces_test = malloc(sizeof(struct piece_s)*5); /* on créé un tableau qui contient les pièces */
 	if(pieces_test==NULL){ /* on vérifie que ce tableau a bien été alloué */
 		fprintf(stderr,"main : pieces_test non alloue\n");
 		exit(EXIT_FAILURE);
@@ -54,29 +97,30 @@ int main(){
 
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande à l'utilisateur ce qu'il veut jouer */
 		display_game(g);
-		char tmp[6] = "";
+		int size = 6;
+		char * anwser = malloc(sizeof(char)*size) ;		
 		printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
-		int number_piece = atoi(fgets(tmp, sizeof(tmp), stdin));
-		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);		
-		int distance = atoi(fgets(tmp, sizeof(tmp), stdin));		
+		int number_piece = atoi(scan(anwser, size));
+		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);
+		int distance = atoi(scan(anwser, size));
 		printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ? \n", number_piece, distance);
-		fgets(tmp, sizeof(tmp), stdin);
-		if (strcmp(tmp, "RIGHT") ==0)
+		anwser = scan(anwser, size);
+		if (strcmp(anwser, "RIGHT") == 0)
 		{
 			printf("Vous voulez bouger la piece %d de %d cases vers la droite. \n", number_piece, distance);
 			play_move(g, number_piece, RIGHT, distance);
 		}
-		else if (strcmp(tmp, "LEFT") ==0)
+		else if (strcmp(anwser, "LEFT") == 0)
 		{
 			printf("Vous voulez bouger la piece %d de %d cases vers la gauche. \n", number_piece, distance);
 			play_move(g, number_piece, LEFT, distance);
 		}
-		else if (strcmp(tmp, "UP") ==0)
+		else if (strcmp(anwser, "UP") == 0)
 		{
 			printf("Vous voulez bouger la piece %d de %d cases vers le haut. \n", number_piece, distance);
 			play_move(g, number_piece, UP, distance);
 		}
-		else if (strcmp(tmp, "DOWN") ==0)
+		else if (strcmp(anwser, "DOWN") == 0)
 		{
 			printf("Vous voulez bouger la piece %d de %d cases vers le bas. \n", number_piece, distance);
 			play_move(g, number_piece, DOWN, distance);
@@ -85,7 +129,10 @@ int main(){
 		{
 			printf("Merci d'entrer une direction valide. UP, DOWN, RIGHT ou LEFT \n");
 		}
+		free(anwser);
 	}
+	for (int i = 0; i < 5; i++)
+		delete_piece(pieces_test[i]);
 	delete_game(g);
 
 	return 1;
