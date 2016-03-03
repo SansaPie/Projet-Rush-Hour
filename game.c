@@ -114,7 +114,7 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	gTmp->moves += distance;
 
 	g = gTmp;
-	*/
+	
 	return true;
 }
 
