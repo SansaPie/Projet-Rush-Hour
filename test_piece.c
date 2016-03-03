@@ -17,7 +17,7 @@ int main()
 	display_piece(test); /* on affiche la première pièce*/
 	display_piece(test2); /* on affiche la seconde pièce. Les deux pièces ont bien été créées. */
 	piece test3 = NULL;
-	copy_piece(test, &test3); /* on teste la fonction copy, censée copier test dans test3 */
+	copy_piece(test, test3); /* on teste la fonction copy, censée copier test dans test3 */
 	display_piece(test3); /* on affiche test3, afin de vérifier que test3 est désormais 
 				égal à test. C'est le cas ! */
 	delete_piece(test);

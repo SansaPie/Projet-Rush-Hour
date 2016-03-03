@@ -57,7 +57,7 @@ int game_nb_pieces(cgame g){
 }
 
 cpiece game_piece(cgame g, int piece_num){
-	if(g==NULL || (piece_num>0 && piece_num<g->nb_pieces)){
+	if(g==NULL || (piece_num<0 && piece_num>game_nb_pieces(g))){
 		fprintf(stderr, "game_piece : g invalide\n");
 		exit(EXIT_FAILURE);
 	}
