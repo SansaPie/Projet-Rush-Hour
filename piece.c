@@ -81,26 +81,32 @@ bool intersect(cpiece p1, cpiece p2){
 			tmp[i][j]=false;
 		}
 	}
-	tmp[p1->x][p1->y]=true;
+
+	int xCoor1 = get_x(p1);
+	int yCoor1 = get_y(p1);
+	int xCoor2 = get_x(p2);
+	int yCoor2 = get_y(p2);
+
+	tmp[xCoor1][yCoor1]=true;
 
 	if(is_horizontal(p1)){
-		tmp[(p1->x)+1][p1->y]=true;
+		tmp[(xCoor1)+1][yCoor1]=true;
 		if(!is_small(p1))
-			tmp[(p1->x)+2][p1->y]=true;
+			tmp[(xCoor1)+2][yCoor1]=true;
 	}else{
-		tmp[p1->x][(p1->y)+1]=true;
+		tmp[xCoor1][(yCoor1)+1]=true;
 		if(!is_small(p1))
-			tmp[p1->x][(p1->y)+2]=true;
+			tmp[xCoor1][(yCoor1)+2]=true;
 	}
 	if (is_horizontal(p2)) {
-		if (tmp[p2->x][p2->y] || tmp[(p2->x) + 1][p2->y]) { return true; }
+		if (tmp[xCoor2][yCoor2] || tmp[(xCoor2) + 1][yCoor2]) { return true; }
 		if (!is_small(p2))
-			if (tmp[(p2->x) + 2][p2->y]) { return true; }
+			if (tmp[(xCoor2) + 2][yCoor2]) { return true; }
 	}
 	else {
-		if (tmp[p2->x][p2->y] || tmp[p2->x][(p2->y)+1]) { return true; }
+		if (tmp[xCoor2][yCoor2] || tmp[xCoor2][(yCoor2)+1]) { return true; }
 		if (!is_small(p2))
-			if (tmp[p2->x][(p2->y)+2]) { return true; }
+			if (tmp[xCoor2][(yCoor2)+2]) { return true; }
 	}
 	return false;
 }
@@ -174,17 +180,17 @@ bool is_in_board(cpiece p){
 		fprintf(stderr, "is_in_board : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if(p->y<0 || p->x<0)
+	if(get_y(p) < 0 || get_x(p) <0)
 		return false;
 	int size = 1;
-	if(!p->small)
+	if(!is_small(p))
 		size = 2;
 
-	if(p->horizontal){
-		if(p->x+size>5)
+	if(is_horizontal(p)){
+		if(get_x(p) + size > 5)
 			return false;
 	}else{
-		if(p->y+size>5)
+		if(get_y(p) + size > 5)
 			return false;
 	}
 	return true;
