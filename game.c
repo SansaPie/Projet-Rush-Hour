@@ -29,7 +29,7 @@ game new_game_hr (int nb_pieces, piece *pieces){
 
 void delete_game(game g){
 	if (g != NULL){
-		for(int i=0 ; i<g->nb_pieces ; i++){
+		for(int i=0 ; i<game_nb_pieces(g) ; i++){
 			delete_piece(g->pieces[i]);
 		}
 		free(g);
@@ -44,23 +44,23 @@ void copy_game (cgame src, game dst){
 		fprintf(stderr, "copy_game : parametres invalides\n");
 		exit(EXIT_FAILURE);
 	}
-	for(int i=0;i<dst->nb_pieces;i++){
+	for(int i=0;i<game_nb_pieces(dst) ;i++){
 			delete_piece(dst->pieces[i]);
 	}
 	
-	piece * ptr_tmp = realloc(dst->pieces, sizeof(struct piece_s)*src->nb_pieces);
+	piece * ptr_tmp = realloc(dst->pieces, sizeof(struct piece_s)*game_nb_pieces(src));
 	if(ptr_tmp == NULL){
 		fprintf(stderr, "copy_game : erreur realloc dst->pieces\n");
 		exit(EXIT_FAILURE);
 	}
 	dst->pieces = ptr_tmp;
-	dst->nb_pieces=src->nb_pieces;
+	dst->nb_pieces=game_nb_pieces(src);
 
-	for(int j=0;j<src->nb_pieces;j++){
+	for(int j=0;j<game_nb_pieces(src);j++){
 		dst->pieces[j] = src->pieces[j];
 	}
 
-	dst->moves = src->moves;
+	dst->moves = game_nb_moves(src);
 }
 
 int game_nb_pieces(cgame g){
@@ -84,7 +84,7 @@ bool game_over_hr(cgame g){
 		fprintf(stderr, "game_over_hr : g invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if(g->pieces[0]->x == 3 && g->pieces[0]->y == 4)
+	if(get_x(game_piece(g, 0)) == 3 && get_y(game_piece(g,0)) == 4)
 		return true;
 	return false;
 }
@@ -134,7 +134,7 @@ bool game_valid(cgame g){
 	}
 	for(int i=0 ; i<game_nb_pieces(g)-1 ; i++){
 		for(int j=i+1 ; j<game_nb_pieces(g) ; j++){
-			if(intersect(g->pieces[i], g->pieces[j])){
+			if(intersect(game_piece(g,i), game_piece(g,j))){
 				fprintf(stderr, "game_valid : la piece %d et la piece %d se chevauchent\n", i, j);
 				return false;
 			}
@@ -142,7 +142,7 @@ bool game_valid(cgame g){
 	}
 
 	for(int k=0 ; k<game_nb_pieces(g) ; k++){
-		if(!is_in_board(g->pieces[k])){
+		if(!is_in_board(game_piece(g,k))){
 			fprintf(stderr, "game_valid : la piece %d est hors du tableau\n", k);
 			return false;
 		}
