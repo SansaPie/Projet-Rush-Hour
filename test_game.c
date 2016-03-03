@@ -1,11 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "test_piece1.c"
 #include "game.h"
 #include "piece.h" // Si on inclut les .h, pas besoin d'inclure les .c
 
 #define NB_PIECES 4
+
+bool test_game_piece(cgame gtest);
+
+bool test_equality_int(int expected, int value, char * msg) {
+	if (expected != value)
+		exit(EXIT_FAILURE); //non
+	return expected == value;
+}
+
+/**
+* @brief test if value is equal to expected; if not, displays an error message containing msg to standard error output
+*/
+bool test_equality_bool(bool expected, bool value, char * msg) {
+	if (expected != value)
+		exit(EXIT_FAILURE); //non
+	return expected == value;
+}
+
 
 /*
 * @brief test if value is equal to expected ; if not program abort
@@ -13,7 +30,6 @@
 *
 */
 
-//fonction a inserer je pense dans test_piece
 bool test_equality_piece(cpiece expected, cpiece value, char *msg) {
 	if ((get_x(expected) != get_x(value)) || (get_y(expected) != get_y(value))
 		|| (is_horizontal(expected) != is_horizontal(value)) || (is_small(expected) != is_small(value))) {
@@ -47,14 +63,14 @@ void set_up() {
 	pieces[2] = new_piece_rh(4, 1, true, true);
 	pieces[3] = new_piece_rh(5, 3, false, false);
 }
-
-void set_up_win() {
-	pieces[0] = new_piece_rh(3, 4, true, true);
-}
-
 void tear_down() {
 	for (int i = 0; i < NB_PIECES; i++)
 		delete_piece(pieces[i]);
+}
+
+
+void set_up_win() {
+	pieces[0] = new_piece_rh(3, 4, true, true);
 }
 
 void tear_down_win() {
@@ -95,7 +111,7 @@ bool test_game_nb_pieces() {
 bool test_game_piece(cgame gtest) {
 	bool result = true;
 	for (int i = 0; i < NB_PIECES; i ++)
-		result = result && test_equality_piece(pieces[i], game_piece(test, i), "game_piece");
+		result = result && test_equality_piece(pieces[i], game_piece(gtest, i), "game_piece");
 	return result;
 }
 
@@ -109,10 +125,11 @@ bool test_game_over_hr() {
 	delete_game(test);
 	tear_down();
 	set_up_win();
-	game test = new_game_hr(1, test);
+	test = new_game_hr(1, pieces);
 	result = result && test_equality_bool(true, game_over_hr(test), "game_over_hr end");
 	delete_game(test);
 	tear_down_win();
+	return result;
 
 }
 
