@@ -132,8 +132,8 @@ bool game_valid(cgame g){
 		fprintf(stderr, "game_valid : g invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	for(int i=0 ; i<g->nb_pieces-1 ; i++){
-		for(int j=i+1 ; j<g->nb_pieces ; j++){
+	for(int i=0 ; i<game_nb_pieces(g)-1 ; i++){
+		for(int j=i+1 ; j<game_nb_pieces(g) ; j++){
 			if(intersect(g->pieces[i], g->pieces[j])){
 				fprintf(stderr, "game_valid : la piece %d et la piece %d se chevauchent\n", i, j);
 				return false;
@@ -141,7 +141,7 @@ bool game_valid(cgame g){
 		}
 	}
 
-	for(int k=0 ; k<g->nb_pieces ; k++){
+	for(int k=0 ; k<game_nb_pieces(g) ; k++){
 		if(!is_in_board(g->pieces[k])){
 			fprintf(stderr, "game_valid : la piece %d est hors du tableau\n", k);
 			return false;

@@ -56,7 +56,14 @@ int main(){
 	pieces_test[4] = new_piece_rh(4,4,true,false);
 	game g = new_game_hr(5, pieces_test); /* initialisation d'un premier jeu */
 
+<<<<<<< HEAD
 	while(game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande à l'utilisateur ce qu'il veut jouer */
+=======
+	while(!game_over_hr(g)){//tant que le jeu n'est pas fini, on demande à l'utilisateur ce qu'il veut jouer */
+		display_game(g);
+		int number_piece=0;
+		int distance = 0;
+>>>>>>> 1dd71b4a23040fbf99944a81066f576d90efed88
 		char direction[6] = "";
 		printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. ");
 		int number_piece= fgetc(stdin);
@@ -89,7 +96,6 @@ int main(){
 			printf("Merci d'entrer une direction valide. UP, DOWN, RIGHT ou LEFT");
 		}
 	}
-	display_game(g);
 	delete_game(g);
 
 	return 1;
