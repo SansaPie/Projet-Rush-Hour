@@ -60,7 +60,7 @@ void delete_piece (piece p);
  * @param[out] src the piece to copy
  * @param[in]  dst the copied piece
  */
-void copy_piece (cpiece src, piece * dst);
+void copy_piece (cpiece src, piece dst);
 
 /**
  *

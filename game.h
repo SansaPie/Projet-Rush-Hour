@@ -56,7 +56,7 @@ void delete_game (game g);
  * @param src the game to copy
  * @param dst the copied game.
  */
-void copy_game (cgame src, game * dst);
+void copy_game (cgame src, game dst);
 
 /**
  * @brief Return the number of pieces on the game board g

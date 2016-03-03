@@ -33,12 +33,13 @@ void delete_piece (piece p){
 		free(p);
 }
 
-void copy_piece (cpiece src, piece * dst){
+void copy_piece (cpiece src, piece dst){
 	if(src==NULL || dst==NULL){
 		fprintf(stderr, "copy_piece : pieces invalides\n");
 		exit(EXIT_FAILURE);
 	}
-	*dst = new_piece_rh(src->x, src->y, src->small, src->horizontal);
+	piece * dstTmp = &dst;
+	*dstTmp = new_piece_rh(src->x, src->y, src->small, src->horizontal);
 }
 
 void move_piece (piece p, dir d, int distance){
