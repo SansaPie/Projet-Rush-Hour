@@ -84,7 +84,7 @@ bool game_over_hr(cgame g){
 		fprintf(stderr, "game_over_hr : g invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if(get_x(game_piece(g, 0)) == 3 && get_y(game_piece(g,0)) == 4)
+	if(get_x(game_piece(g, 0)) == 4 && get_y(game_piece(g,0)) == 3)
 		return true;
 	return false;
 }

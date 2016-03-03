@@ -41,7 +41,7 @@ typedef enum dir_e {UP, LEFT, DOWN, RIGHT} dir;
 
 /**
  * @brief Creates a new piece.
- * @param x,y coordinates of the lower-left corner (Remark: x-axe is oriented from bottom to top and y-axe is oriented from left to right).
+ * @param x,y coordinates of the lower-left corner (Remark: x-axe is oriented from left to right and y-axe is oriented from bottom to top).
  * @param small indicates if the vehicle is of size 2 (small=true) or 3 (small=false)
  * @param horizontal indicates whether the vehicle can move horizontally or vertically
  * @return a pointer toward the generated piece

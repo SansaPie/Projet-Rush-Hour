@@ -7,12 +7,12 @@
 #define H 6 //Hauteur de la grille
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
-	if(x<0 || y<0 || x>H || y>L){
+	if(x<0 || y<0 || y>H || x>L){
 		fprintf(stderr, "new_piece_hr : hors board\n");
 		exit(EXIT_FAILURE);
 	}
-	if((x==H-1 && !horizontal) || (y==L-1 && horizontal) || 
-		(x>=H-2 && !horizontal && !small) || (y>=L-2 && horizontal && !small)){
+	if((y==H-1 && !horizontal) || (x==L-1 && horizontal) || 
+		(y>=H-2 && !horizontal && !small) || (x>=L-2 && horizontal && !small)){
 		fprintf(stderr,"new_piece_hr : il y a un bout qui depasse\n");
 		exit(EXIT_FAILURE);
 	}
@@ -51,16 +51,16 @@ void move_piece (piece p, dir d, int distance){
 	}
 	switch(d){
 		case RIGHT:
-			p->y+=distance;
-			break;
-		case LEFT:
-			p->y-=distance;
-			break;
-		case UP:
 			p->x+=distance;
 			break;
-		case DOWN:
+		case LEFT:
 			p->x-=distance;
+			break;
+		case UP:
+			p->y+=distance;
+			break;
+		case DOWN:
+			p->y-=distance;
 			break;
 	}
 }
@@ -72,8 +72,8 @@ bool intersect(cpiece p1, cpiece p2){
 	}
 
 	bool tmp[H][L];
-	for(int i=0;i<H;i++){
-		for(int j=0;j<L;j++){
+	for(int i=0;i<L;i++){
+		for(int j=0;j<H;j++){
 			tmp[i][j]=false;
 		}
 	}
@@ -178,10 +178,10 @@ bool is_in_board(cpiece p){
 		size = 2;
 
 	if(p->horizontal){
-		if(p->y+size>5)
+		if(p->x+size>5)
 			return false;
 	}else{
-		if(p->x+size>5)
+		if(p->y+size>5)
 			return false;
 	}
 	return true;
