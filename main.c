@@ -16,7 +16,7 @@ void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
 
 	for (int i = 0; i < nbpieces; i++){
 
-		if (is_horizontal(game_piece(g,i))) {
+		if (!is_horizontal(game_piece(g,i))) {
 			grid[nbpieces - get_x(game_piece(g,i)) + 1][get_y(game_piece(g,i))] = i + '0';
 			if (!is_small(game_piece(g, i)))
 				grid[nbpieces - get_x(game_piece(g, i)) + 2][get_y(game_piece(g,i))] = i + '0';
@@ -27,9 +27,6 @@ void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
 				grid[nbpieces - get_x(game_piece(g, i))][get_y(game_piece(g, i)) + 2] = i + '0';
 			
 		}
-
-
-		grid[nbpieces - get_x(game_piece(g,i))][get_y(game_piece(g,i))] = i + '0';
 		
 
 	}
