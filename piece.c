@@ -51,16 +51,20 @@ void move_piece (piece p, dir d, int distance){
 	}
 	switch(d){
 		case RIGHT:
-			p->x+=distance;
+			if(is_horizontal(p))
+				p->x+=distance;
 			break;
 		case LEFT:
-			p->x-=distance;
+			if(is_horizontal(p))
+				p->x-=distance;
 			break;
 		case UP:
-			p->y+=distance;
+			if(!is_horizontal(p))
+				p->y+=distance;
 			break;
 		case DOWN:
-			p->y-=distance;
+			if(!is_horizontal(p))
+				p->y-=distance;
 			break;
 	}
 }
