@@ -6,7 +6,6 @@
 
 void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
 	char grid[6][6]; /* on créé un tableau à deux dimensions qui représente notre plateau de jeu */
-	int nbpieces = game_nb_pieces(g);
 	
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {
@@ -14,24 +13,22 @@ void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
 		}
 	}
 
-	for (int i = 0; i < nbpieces; i++){
+	for (int i = 0; i < game_nb_pieces(g); i++){
 
-		if (is_horizontal(game_piece(g,i))) {
-			grid[nbpieces - get_x(game_piece(g,i)) + 1][get_y(game_piece(g,i))] = i + '0';
+		int xCoordDisplay = game_nb_pieces(g) - get_x(game_piece(g,i)); /* Inversion de la coordonnée 
+																		x pour l'affichage du jeu*/
+
+		grid[xCoordDisplay][get_y(game_piece(g,i))] = i + '0';
+		if (!is_horizontal(game_piece(g,i))) {
+			grid[xCoordDisplay - 1][get_y(game_piece(g,i))] = i + '0';
 			if (!is_small(game_piece(g, i)))
-				grid[nbpieces - get_x(game_piece(g, i)) + 2][get_y(game_piece(g,i))] = i + '0';
+				grid[xCoordDisplay - 2][get_y(game_piece(g,i))] = i + '0';
 		}
 		else {
-			grid[nbpieces - get_x(game_piece(g, i))][get_y(game_piece(g, i)) + 1] = i + '0';
+			grid[xCoordDisplay][get_y(game_piece(g, i)) + 1] = i + '0';
 			if (!is_small(game_piece(g, i)))
-				grid[nbpieces - get_x(game_piece(g, i))][get_y(game_piece(g, i)) + 2] = i + '0';
-			
+				grid[xCoordDisplay][get_y(game_piece(g, i)) + 2] = i + '0';	
 		}
-
-
-		grid[nbpieces - get_x(game_piece(g,i))][get_y(game_piece(g,i))] = i + '0';
-		
-
 	}
 	
 	for (int x = 0; x<6; x++) {
