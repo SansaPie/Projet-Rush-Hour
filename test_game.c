@@ -93,7 +93,7 @@ bool test_new_game_hr() {
 bool test_copy_game() {
 	bool result = true;
 	game test = new_game_hr(NB_PIECES, pieces);
-	game copy_test = NULL;
+	game copy_test = new_game_hr(1, pieces);
 	copy_game(test, copy_test);
 	result = result && test_equality_game(test, copy_test, "copy_game");
 	delete_game(test);
@@ -105,6 +105,7 @@ bool test_game_nb_pieces() {
 	bool result = true;
 	game test = new_game_hr(NB_PIECES, pieces);
 	result = result && test_equality_int(NB_PIECES, game_nb_pieces(test), "game_nb_piece");
+	delete_game(test);
 	return result;
 }
 
@@ -114,8 +115,6 @@ bool test_game_piece(cgame gtest) {
 		result = result && test_equality_piece(pieces[i], game_piece(gtest, i), "game_piece");
 	return result;
 }
-
-//tester avec valgrind delete_game()
 
 bool test_game_over_hr() {
 	bool result = true;

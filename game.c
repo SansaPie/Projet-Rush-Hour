@@ -96,11 +96,6 @@ bool play_move(game g, int piece_num, dir d, int distance){
 		return false;
 	}
 
-	/*piece * t_pieces = malloc(sizeof(struct piece_s)*game_nb_pieces(g));
-	for(int i=0;i<game_nb_pieces(g);i++){
-		t_pieces[i] = new_piece_rh(0,0,true,true);
-	}*/
-
 	game gTmp = new_game_hr(game_nb_pieces(g), g->pieces);
 	copy_game(g, gTmp);
 
