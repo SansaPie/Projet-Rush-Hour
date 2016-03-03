@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "test_piece1.c"
 #include "game.h"
 #include "piece.h" // Si on inclut les .h, pas besoin d'inclure les .c
 
