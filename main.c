@@ -38,8 +38,6 @@ void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
 		printf("\n");
 	}
 }
-
-<<<<<<< HEAD
 void move(char *tmp, game g, int number_piece, int distance)
 {
 		char down[] = "DOWN";
@@ -72,11 +70,6 @@ void move(char *tmp, game g, int number_piece, int distance)
 		}
 }
 
-
-int main()
-{
-	piece *pieces_test = malloc(sizeof(struct piece_s)*4); /* on créé un tableau qui contient les pièces */
-=======
 /*
 void lisa_prompt() {
 	display_game(g);
@@ -122,7 +115,6 @@ char * scan(char * buffer , int size) {
 
 int main(){
 	piece *pieces_test = malloc(sizeof(struct piece_s)*5); /* on créé un tableau qui contient les pièces */
->>>>>>> 02bb8025da1f6dfc6f4c8e5b88ef364cd85dc69b
 	if(pieces_test==NULL){ /* on vérifie que ce tableau a bien été alloué */
 		fprintf(stderr,"main : pieces_test non alloue\n");
 		exit(EXIT_FAILURE);
@@ -140,17 +132,6 @@ int main(){
 		int size = 6;
 		char * anwser = malloc(sizeof(char)*size) ;		
 		printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
-<<<<<<< HEAD
-		number_piece = atoi(fgets(tmp, sizeof(tmp), stdin));
-		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);		
-		int distance = atoi(fgets(tmp, sizeof(tmp), stdin));		
-		printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ? \n", number_piece, distance);
-		scanf("%s", tmp);
-		move(tmp, g, number_piece, distance);
-		for (int i=0;i<6;i++)
-		{
-			tmp[i]='\0';
-=======
 		int number_piece = atoi(scan(anwser, size));
 		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);
 		int distance = atoi(scan(anwser, size));
@@ -179,7 +160,6 @@ int main(){
 		else
 		{
 			printf("Merci d'entrer une direction valide. UP, DOWN, RIGHT ou LEFT \n");
->>>>>>> 02bb8025da1f6dfc6f4c8e5b88ef364cd85dc69b
 		}
 		free(anwser);
 	}
