@@ -111,15 +111,6 @@ bool test_game_nb_pieces() {
 
 bool test_game_piece(cgame gtest) {
 	bool result = true;
-	for (int i = 0; i < NB_PIECES; i ++)
-		result = result && test_equality_piece(pieces[i], game_piece(gtest, i), "game_piece");
-	return result;
-}
-
-bool test_game_over_hr() {
-	bool result = true;
-	set_up();
-	game test = new_game_hr(NB_PIECES, pieces);
 	result = result && test_equality_bool(false, game_over_hr(test), "game_over_hr not end");
 	delete_game(test);
 	tear_down();
