@@ -45,7 +45,11 @@ typedef const struct game_s* cgame;
  */
 game new_game_hr (int nb_pieces, piece *pieces);
 
-
+/**
+ * @brief Destroys pieces and frees allocated memory.
+ * @param nb_pieces number of pieces to destroy.
+ * @param pieces the pieces to destroy.
+ */
 
 void delete_pieces(int nb_pieces, piece * pieces);
 
@@ -101,6 +105,11 @@ bool play_move(game g, int piece_num, dir d, int distance);
  * Remind that move of a single piece of k cells in a single direction counts for k.
  */
 int game_nb_moves(cgame g);
+
+/**
+* @brief test if the pieces of g are not in collision and if are not out .
+* @return true if the game is valid.
+*/
 
 bool game_valid(cgame g);
 
