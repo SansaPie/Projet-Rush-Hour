@@ -6,7 +6,7 @@
 
 /*
 * @brief fonction affichant le jeu dans le terminal
-*
+* 
 */
 
 void display_game(cgame g) {
@@ -47,7 +47,9 @@ void display_game(cgame g) {
 
 /*
 * @brief fonction testant si le mouvement choisi par l'utilisateur est possible ou non.
-*
+* @param number_piece etant la piece que l'on souhaite bouger.
+* @param distance etant le nombre de case duquel on souhaite se deplacer.
+* @param d etant la direction dans laquelle on souhaite se deplacer.
 */
 
 void display_success_movement(game g, int number_piece, int distance, dir d){
@@ -67,7 +69,8 @@ void display_success_movement(game g, int number_piece, int distance, dir d){
 
 /*
 * @brief fonction permettant de bouger la piece dans la direction et la distance choisie.
-*
+* @param number_piece etant la piece que l'on va bouger.
+* @param distance etant la direction dans laquelle on va bouger number_piece.
 */
 
 void move(game g, int number_piece, int distance)
@@ -87,7 +90,9 @@ void move(game g, int number_piece, int distance)
 
 
 /*
-* @brief demande a l'utilisateur de saisir une chaine de caractere et de confirmer en appuyant sur "ENTER"
+* @brief demande a l'utilisateur de saisir une chaine de caractere.
+* @param buffer etant la chaine de caractere dans laquelle on stocke la valeur saisie par l'utilisateur.
+* @param size etant la taille de la chaine de caractere buffer.
 * @return la chaine de caractere saisie
 */
 

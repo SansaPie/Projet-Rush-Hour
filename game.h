@@ -45,6 +45,8 @@ typedef const struct game_s* cgame;
  */
 game new_game_hr (int nb_pieces, piece *pieces);
 
+
+
 void delete_pieces(int nb_pieces, piece * pieces);
 
 /**
