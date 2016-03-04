@@ -132,7 +132,7 @@ int main(){
 		int size = 6;
 		char * anwser = malloc(sizeof(char)*size) ;		
 		printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
-		int number_piece = atoi(scan(anwser, size));
+		number_piece = atoi(scan(anwser, size));
 		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);
 		int distance = atoi(scan(anwser, size));
 		printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ? \n", number_piece, distance);

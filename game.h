@@ -28,7 +28,7 @@
 
 typedef struct game_s{
 	int nb_pieces;
-	piece *pieces;
+	piece * pieces;
 	int moves;
 } *game;
 

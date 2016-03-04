@@ -14,15 +14,17 @@ game new_game_hr (int nb_pieces, piece *pieces){
 		exit(EXIT_FAILURE);
 	}
 	g->nb_pieces = nb_pieces;
-	g->pieces = malloc(sizeof(struct piece_s)*nb_pieces);
+	g->pieces = malloc(sizeof(int)*nb_pieces); // Ligne source de tous les problèmes
 	if(g->pieces == NULL){
 		fprintf(stderr, "new_game_hr : g->pieces non alloue\n");
 		exit(EXIT_FAILURE);
 	}
+	/*
 	for(int i=0 ; i<nb_pieces ; i++){
 		g->pieces[i] = new_piece_rh(0,0,true,true);
 		copy_piece(pieces[i],g->pieces[i]);
-	}
+	}*/
+	g->pieces = pieces; // Mauvaise version
 	g->moves = 0;
 	if(!game_valid(g)){
 		fprintf(stderr, "new_game_hr : jeu non valide\n");
@@ -107,6 +109,10 @@ bool play_move(game g, int piece_num, dir d, int distance){
 
 	game gTmp = new_game_hr(game_nb_pieces(g), t_pieces);
 	copy_game(g, gTmp);
+	/*for(int i=0;i<game_nb_pieces(g) ; i++){
+		delete_piece(t_pieces[i]);
+		free(t_pieces);
+	}*/
 
 	piece piece_moved = gTmp->pieces[piece_num];
 	
