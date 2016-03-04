@@ -46,7 +46,7 @@ bool test_equality_piece(cpiece expected, cpiece value, char *msg) {
 bool test_equality_game(cgame expected, cgame value, char * msg) {   
 	bool result = true;
 	for (int i = 0; i < NB_PIECES; i++) {
-		printf("%d\n",i);
+		// printf("%d\n",i); A quoi ça sert ?
 		result = result && test_equality_piece(game_piece(expected, i), game_piece(value, i) , msg);
 	}
 	if ( !result )
@@ -94,7 +94,13 @@ bool test_copy_game() { //KO
 	bool result = true;
 	set_up();
 	game test = new_game_hr(NB_PIECES, pieces);
-	game copy_test = new_game_hr(1, pieces);
+
+	piece * t_pieces = malloc(sizeof(struct piece_s)*game_nb_pieces(test));
+	for(int i=0 ; i<game_nb_pieces(test) ; i++){
+		t_pieces[i] = new_piece_rh(0,0,true,true);
+	}
+	game copy_test = new_game_hr(1, t_pieces);
+
 	copy_game(test, copy_test);
 	result = result && test_equality_game(test, copy_test, "copy_game");
 	tear_down();
@@ -131,6 +137,7 @@ bool test_game_over_hr() {
 	
 	set_up_win();
 	game test2 = new_game_hr(1, pieces);
+
 	result = result && test_equality_bool(true, game_over_hr(test2), "game_over_hr end");
 	delete_game(test2);
 	tear_down_win();
