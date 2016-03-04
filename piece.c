@@ -3,9 +3,6 @@
 #include <stdbool.h>
 #include "piece.h"
 
-#define L 6 //Longueur de la grille
-#define H 6 //Hauteur de la grille
-
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || y>H || x>L){
 		fprintf(stderr, "new_piece_hr : hors board\n");
