@@ -49,7 +49,7 @@ void copy_piece (cpiece src, piece dst){
 }
 
 void move_piece (piece p, dir d, int distance){
-	if(p==NULL || distance<0){
+	if(p==NULL){
 		fprintf(stderr, "move_piece : parametres invalides\n");
 		exit(EXIT_FAILURE);
 	}

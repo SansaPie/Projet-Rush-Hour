@@ -106,17 +106,14 @@ bool game_over_hr(cgame g){
 
 
 bool play_move(game g, int piece_num, dir d, int distance){ 
-	if (g == NULL || piece_num >= game_nb_pieces(g) || piece_num <0 || distance < 0){
+	if (g == NULL || piece_num >= game_nb_pieces(g) || piece_num <0){
 		fprintf(stderr, "play_move : parametres invalides\n");
 		return false;
 	}
 
-	piece * t_pieces = malloc(sizeof(struct piece_s)*game_nb_pieces(g));
-	for(int i=0 ; i<game_nb_pieces(g) ; i++){
-		t_pieces[i] = new_piece_rh(0,0,true,true);
-	}
-
-	game gTmp = new_game_hr(game_nb_pieces(g), t_pieces);
+	piece * t_pieces = malloc(sizeof(piece));
+	t_pieces[0] = new_piece_rh(0,0,true,true);
+	game gTmp = new_game_hr(1, t_pieces);
 	copy_game(g, gTmp);
 
 	piece piece_moved = gTmp->pieces[piece_num];

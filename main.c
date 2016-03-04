@@ -3,6 +3,7 @@
 #include <string.h>
 #include "game.h"
 #include "piece.h"
+#include "math.h"
 
 /*
 * @brief fonction affichant le jeu dans le terminal
@@ -53,8 +54,8 @@ void display_game(cgame g) {
 */
 
 void display_success_movement(game g, int number_piece, int distance, dir d){
-	if(play_move(g, number_piece, d, distance)){
-		printf("Vous avez bouge la piece %d de %d cases vers ", number_piece, distance);
+	if(play_move(g, number_piece, d, abs(distance))){
+		printf("Vous avez bouge la piece %d de %d cases vers ", number_piece, abs(distance));
 		if(d==RIGHT)
 			printf("la droite.\n");
 		else if(d==LEFT)
@@ -141,10 +142,11 @@ int main(){
 		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?" 
 				"Entrez un nombre entre 0 et 4. \n", number_piece);
 		int distance = atoi(scan(answer, size));
-		printf("Vous voulez bouger la piece %d de %d cases.\n", number_piece, distance);
+		printf("Vous voulez bouger la piece %d de %d cases.\n", number_piece, abs(distance));
 		move(g, number_piece, distance);
 		free(answer);
 	}
+	printf("Felicitations : vous avez battu le jeu en %d coups !\n", g->moves);
 	
 	delete_pieces(5, pieces_test);
 	delete_game(g);
