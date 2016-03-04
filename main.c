@@ -134,12 +134,23 @@ int main(){
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande à l'utilisateur ce qu'il veut jouer */
 		display_game(g);
 		int size = 6;
-		char * answer = malloc(sizeof(char)*size) ;		
-		printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
-		int number_piece = atoi(scan(answer, size));
-		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?" 
-				"Entrez un nombre entre 0 et 4. \n", number_piece);
-		int distance = atoi(scan(answer, size));
+		char * answer = malloc(sizeof(char)*size) ;
+
+		int number_piece = -1;
+		while(number_piece<0 || number_piece>game_nb_pieces(g)){
+			printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
+			number_piece = atoi(scan(answer, size));
+			if(number_piece<0 || number_piece>game_nb_pieces(g))
+				printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g));
+		}
+		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?\n"
+			, number_piece);
+		int distance = 5;
+		while(distance<-4 || distance>4){
+			distance = atoi(scan(answer, size));
+			if(distance<-4 || distance>4)
+				printf("Veuillez rentrer une distance valide. (-4 a 4)\n");
+		}
 		printf("Vous voulez bouger la piece %d de %d cases.\n", number_piece, abs(distance));
 		move(g, number_piece, distance);
 		free(answer);
