@@ -122,7 +122,6 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	}
 
 	if (!game_valid(gTmp)) {
-		printf("test\n");
 		return false;
 	}
 	
