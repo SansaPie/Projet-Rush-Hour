@@ -45,6 +45,8 @@ typedef const struct game_s* cgame;
  */
 game new_game_hr (int nb_pieces, piece *pieces);
 
+void delete_pieces(int nb_pieces, piece * pieces);
+
 /**
  * @brief Destroys the game and free allocated memory
  * @param g the game to destroy
@@ -99,7 +101,5 @@ bool play_move(game g, int piece_num, dir d, int distance);
 int game_nb_moves(cgame g);
 
 bool game_valid(cgame g);
-
-void delete_pieces(int nb_pieces, piece * pieces);
 
 #endif

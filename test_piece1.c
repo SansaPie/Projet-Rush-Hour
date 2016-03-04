@@ -127,7 +127,6 @@ bool test_move() {
   tear_down();
   delete_piece(p);
   return result;
-  return false;
 }
 
 

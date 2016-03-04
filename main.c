@@ -4,15 +4,21 @@
 #include "game.h"
 #include "piece.h"
 
-void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
+/*
+* @brief fonction affichant le jeu dans le terminal
+*
+*
+*/
+
+void display_game(cgame g) {
 	char grid[6][6]; /* on créé un tableau à deux dimensions qui représente notre plateau de jeu */
-	
+	/* initialisation de toutes les cases du tableau precedement creer avec des '.' */
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {
 			grid[i][j] ='.';
 		}
 	}
-
+	/* Replissage du tableau avec */
 	for (int i = 0; i < game_nb_pieces(g); i++){
 
 		int xCoordDisplay = get_x(game_piece(g,i));
@@ -70,29 +76,6 @@ void move(char *tmp, game g, int number_piece, int distance)
 			printf("Merci d'entrer une direction valide. UP, DOWN, RIGHT ou LEFT \n");
 		}
 }
-/*
-void lisa_prompt() {
-	display_game(g);
-	char tmp[6] = "";
-	printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
-	int number_piece = atoi(fgets(tmp, sizeof(tmp), stdin));
-	printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);
-	int distance = atoi(fgets(tmp, sizeof(tmp), stdin));
-	printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ? \n", number_piece, distance);
-	fgets(tmp, sizeof(tmp), stdin);
-}
-*/
-
-/*
-* @brief fonction permettant d'enlever la possible pollution du buffer lors de la saisie de caracteres.
-*/
-
-void clear_buffer() {
-	int i;
-	printf("Veuillez confirmer votre choix <ENTER> \n");//pas de vraie confirmation (juste pour combler le vide lors du nettoyage du buffer )
-	while (i != '\n' && i != EOF) // il faut que l'utilisateur appuie sur ENTER.
-		i = getchar();
-}
 
 
 /*
@@ -108,7 +91,7 @@ char * scan(char * buffer , int size) {
 		if (lresult != NULL)
 			*lresult = '\0';
 	}
-	clear_buffer();
+	rewind(stdin); // on se place au debut de stdin
 	return result;
 }
 
@@ -162,8 +145,8 @@ int main(){
 		}
 		free(answer);
 	}
-	for (int i = 0; i < 5; i++)
-		delete_piece(pieces_test[i]);
+	
+	delete_pieces(5, pieces_test);
 	delete_game(g);
 
 	return EXIT_SUCCESS;

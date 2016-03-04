@@ -31,9 +31,21 @@ game new_game_hr (int nb_pieces, piece *pieces){
 	return g;
 }
 
+void delete_pieces(int nb_pieces, piece * pieces){
+	if(pieces!=NULL){
+		for(int i=0 ; i<nb_pieces ; i++){
+			delete_piece(pieces[i]);		
+		}
+		free(pieces);
+	}else{
+		fprintf(stderr, "delete_pieces : pieces null\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
 void delete_game(game g){
 	if (g != NULL){
-		delete_pieces(g->nb_pieces, g->pieces);
+		delete_pieces(game_nb_pieces(g), g->pieces);
 		free(g);
 	}else{
 		fprintf(stderr, "delete_game : g null\n");
@@ -48,9 +60,7 @@ void copy_game (cgame src, game dst){
 		exit(EXIT_FAILURE);
 	}
 
-	/*for(int i=0;i<game_nb_pieces(dst) ;i++){
-			delete_piece(dst->pieces[i]);
-	} Ne sait pas si c'est utile*/
+	delete_pieces(dst->nb_pieces, dst->pieces);
 	
 	piece * ptr_tmp = realloc(dst->pieces, sizeof(struct piece_s)*game_nb_pieces(src));
 	
@@ -60,10 +70,12 @@ void copy_game (cgame src, game dst){
 	}
 	
 	dst->pieces = ptr_tmp;
+	free(ptr_tmp);
 	dst->nb_pieces=game_nb_pieces(src);
 
-	for(int j=0;j<game_nb_pieces(src);j++){
-		dst->pieces[j] = src->pieces[j];
+	for(int i=0;i<game_nb_pieces(src);i++){
+		dst->pieces[i] = new_piece_rh(0,0,true,true);
+		copy_piece(game_piece(src,i), dst->pieces[i]);
 	}
 
 	dst->moves = game_nb_moves(src);
@@ -152,23 +164,11 @@ bool game_valid(cgame g){
 		}
 	}
 
-	for(int k=0 ; k<game_nb_pieces(g) ; k++){
-		if(!is_in_board(game_piece(g,k))){
-			fprintf(stderr, "game_valid : la piece %d est hors du tableau\n", k);
+	for(int i=0 ; i<game_nb_pieces(g) ; i++){
+		if(!is_in_board(game_piece(g,i))){
+			fprintf(stderr, "game_valid : la piece %d est hors du tableau\n", i);
 			return false;
 		}
 	}
 	return true;
-}
-
-void delete_pieces(int nb_pieces, piece * pieces){
-	if(pieces!=NULL){
-		for(int i=0 ; i<nb_pieces ; i++){
-			delete_piece(pieces[i]);		
-		}
-		free(pieces);
-	}else{
-		fprintf(stderr, "delete_pieces : pieces null\n");
-		exit(EXIT_FAILURE);
-	}
 }
