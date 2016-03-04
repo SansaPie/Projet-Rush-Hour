@@ -39,7 +39,6 @@ void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
 	}
 }
 
-<<<<<<< HEAD
 void move(char *tmp, game g, int number_piece, int distance)
 {
 		char down[] = "DOWN";
@@ -73,22 +72,6 @@ void move(char *tmp, game g, int number_piece, int distance)
 }
 
 
-int main()
-{
-	piece *pieces_test = malloc(sizeof(struct piece_s)*4); /* on créé un tableau qui contient les pièces */
-=======
-/*
-void lisa_prompt() {
-	display_game(g);
-	char tmp[6] = "";
-	printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
-	int number_piece = atoi(fgets(tmp, sizeof(tmp), stdin));
-	printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);
-	int distance = atoi(fgets(tmp, sizeof(tmp), stdin));
-	printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ? \n", number_piece, distance);
-	fgets(tmp, sizeof(tmp), stdin);
-}
-*/
 
 /*
 * @brief fonction permettant d'enlever la possible pollution du buffer lors de la saisie de caracteres.
@@ -96,8 +79,8 @@ void lisa_prompt() {
 
 void clear_buffer() {
 	int i;
-	printf("Veuillez confirmer votre choix <ENTER>");//pas de vraie confirmation (juste pour combler le vide lors du nettoyage du buffer )
-	while (i != '\n' && i != EOF) // il faut que l'utilisateur appuye sur ENTER.
+	printf("Veuillez confirmer votre choix <ENTER> \n");//pas de vraie confirmation (juste pour combler le vide lors du nettoyage du buffer )
+	while (i != '\n' && i != EOF) // il faut que l'utilisateur appuie sur ENTER.
 		i = getchar();
 }
 
@@ -122,7 +105,6 @@ char * scan(char * buffer , int size) {
 
 int main(){
 	piece *pieces_test = malloc(sizeof(struct piece_s)*5); /* on créé un tableau qui contient les pièces */
->>>>>>> 02bb8025da1f6dfc6f4c8e5b88ef364cd85dc69b
 	if(pieces_test==NULL){ /* on vérifie que ce tableau a bien été alloué */
 		fprintf(stderr,"main : pieces_test non alloue\n");
 		exit(EXIT_FAILURE);
@@ -135,53 +117,17 @@ int main(){
 	game g = new_game_hr(5, pieces_test); /* initialisation d'un premier jeu */
 
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande à l'utilisateur ce qu'il veut jouer */
-		int number_piece = 0;
 		display_game(g);
 		int size = 6;
-		char * anwser = malloc(sizeof(char)*size) ;		
+		char * answer = malloc(sizeof(char)*size) ;		
 		printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
-<<<<<<< HEAD
-		number_piece = atoi(fgets(tmp, sizeof(tmp), stdin));
-		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);		
-		int distance = atoi(fgets(tmp, sizeof(tmp), stdin));		
-		printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ? \n", number_piece, distance);
-		scanf("%s", tmp);
-		move(tmp, g, number_piece, distance);
-		for (int i=0;i<6;i++)
-		{
-			tmp[i]='\0';
-=======
-		int number_piece = atoi(scan(anwser, size));
+		int number_piece = atoi(scan(answer, size));
 		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);
-		int distance = atoi(scan(anwser, size));
+		int distance = atoi(scan(answer, size));
 		printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ? \n", number_piece, distance);
-		anwser = scan(anwser, size);
-		if (strcmp(anwser, "RIGHT") == 0)
-		{
-			printf("Vous voulez bouger la piece %d de %d cases vers la droite. \n", number_piece, distance);
-			play_move(g, number_piece, RIGHT, distance);
-		}
-		else if (strcmp(anwser, "LEFT") == 0)
-		{
-			printf("Vous voulez bouger la piece %d de %d cases vers la gauche. \n", number_piece, distance);
-			play_move(g, number_piece, LEFT, distance);
-		}
-		else if (strcmp(anwser, "UP") == 0)
-		{
-			printf("Vous voulez bouger la piece %d de %d cases vers le haut. \n", number_piece, distance);
-			play_move(g, number_piece, UP, distance);
-		}
-		else if (strcmp(anwser, "DOWN") == 0)
-		{
-			printf("Vous voulez bouger la piece %d de %d cases vers le bas. \n", number_piece, distance);
-			play_move(g, number_piece, DOWN, distance);
-		}
-		else
-		{
-			printf("Merci d'entrer une direction valide. UP, DOWN, RIGHT ou LEFT \n");
->>>>>>> 02bb8025da1f6dfc6f4c8e5b88ef364cd85dc69b
-		}
-		free(anwser);
+		answer = scan(answer, size);
+		move(answer, g, number_piece, distance);
+		free(answer);
 	}
 	for (int i = 0; i < 5; i++)
 		delete_piece(pieces_test[i]);

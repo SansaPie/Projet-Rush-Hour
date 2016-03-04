@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "game.h"
-#include "piece.h" // Si on inclut les .h, pas besoin d'inclure les .c
+#include "piece.h" 
 
 #define NB_PIECES 4
 
