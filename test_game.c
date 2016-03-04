@@ -103,6 +103,7 @@ bool test_copy_game() { //KO
 
 	copy_game(test, copy_test);
 	result = result && test_equality_game(test, copy_test, "copy_game");
+	delete_pieces(game_nb_pieces(test), t_pieces);
 	tear_down();
 	delete_game(test);
 	delete_game(copy_test);

@@ -59,15 +59,14 @@ void copy_game (cgame src, game dst){
 		exit(EXIT_FAILURE);
 	}
 	
-	delete_pieces(dst->nb_pieces, dst->pieces);
+	delete_pieces(game_nb_pieces(dst), dst->pieces);
 	
-	piece * ptr_tmp = realloc(dst->pieces, sizeof(struct piece_s)*game_nb_pieces(src));
-	if(ptr_tmp == NULL){
-		fprintf(stderr, "copy_game : erreur realloc dst->pieces\n");
+	dst->pieces = malloc(sizeof(piece)*game_nb_pieces(src));
+	if(dst->pieces == NULL){
+		fprintf(stderr, "copy_game : erreur malloc dst->pieces\n");
 		exit(EXIT_FAILURE);
 	}
-	dst->pieces = ptr_tmp;
-	free(ptr_tmp);
+
 	dst->nb_pieces=game_nb_pieces(src);
 
 	for(int i=0;i<game_nb_pieces(src);i++){
@@ -133,8 +132,7 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	
 	gTmp->moves += distance;
 
-	g = gTmp;
-
+	copy_game(gTmp, g);
 	delete_game(gTmp);
 	return true;
 }

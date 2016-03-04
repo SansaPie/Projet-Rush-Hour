@@ -39,36 +39,34 @@ void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
 	}
 }
 
-void move(char *tmp, game g, int number_piece, int distance)
-{
-		char down[] = "DOWN";
-		char right[] = "RIGHT";
-		char left[] = "LEFT";
-		char up[] = "UP";
-		if (strcmp(tmp, right) ==0)
-		{
-			printf("Vous avez bougé la piece %d de %d cases vers la droite. \n", number_piece, distance);
-			play_move(g, number_piece, RIGHT, distance);
-		}
-		else if (strcmp(tmp, left) ==0)
-		{
-			printf("Vous avez bougé la piece %d de %d cases vers la gauche. \n", number_piece, distance);
-			play_move(g, number_piece, LEFT, distance);
-		}
-		else if (strcmp(tmp, up) ==0)
-		{
-			printf("Vous avez bougé la piece %d de %d cases vers le haut. \n", number_piece, distance);
-			play_move(g, number_piece, UP, distance);
-		}
-		else if (strcmp(tmp, down) ==0)
-		{
-			printf("Vous avez bougé la piece %d de %d cases vers le bas. \n", number_piece, distance);
-			play_move(g, number_piece, DOWN, distance);
-		}
+void display_success_movement(game g, int number_piece, int distance, dir d){
+	if(play_move(g, number_piece, d, distance)){
+		printf("Vous avez bouge la piece %d de %d cases vers ", number_piece, distance);
+		if(d==RIGHT)
+			printf("la droite.\n");
+		else if(d==LEFT)
+			printf("la gauche.\n");
+		else if(d==UP)
+			printf("le haut.\n");
 		else
-		{
-			printf("Merci d'entrer une direction valide. UP, DOWN, RIGHT ou LEFT \n");
-		}
+			printf("le bas.\n");
+	}else
+		printf("Mouvement impossible.\n");
+}
+
+void move(game g, int number_piece, int distance)
+{
+	if(distance>0){
+		if(is_horizontal(game_piece(g, number_piece)))
+			display_success_movement(g, number_piece, distance, RIGHT);
+		else
+			display_success_movement(g, number_piece, distance, UP);
+	}else{
+		if(is_horizontal(game_piece(g, number_piece)))
+			display_success_movement(g, number_piece, distance, LEFT);
+		else
+			display_success_movement(g, number_piece, distance, DOWN);
+	}
 }
 
 /*
@@ -114,40 +112,24 @@ int main(){
 	pieces_test[4] = new_piece_rh(4,4,true,false);
 	game g = new_game_hr(5, pieces_test); /* initialisation d'un premier jeu */
 
+	if(!game_valid(g)){
+		fprintf(stderr, "main : game invalid\n");
+		exit(EXIT_FAILURE);
+	}else{
+		printf("Le jeu est valide.\n");
+	}
+
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande à l'utilisateur ce qu'il veut jouer */
 		display_game(g);
 		int size = 6;
 		char * answer = malloc(sizeof(char)*size) ;		
 		printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
 		int number_piece = atoi(scan(answer, size));
-		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);
+		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?" 
+				"Entrez un nombre entre 0 et 4. \n", number_piece);
 		int distance = atoi(scan(answer, size));
-		printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ? \n", number_piece, distance);
-		answer = scan(answer, size);
-		if (strcmp(answer, "RIGHT") == 0)
-		{
-			printf("Vous voulez bouger la piece %d de %d cases vers la droite. \n", number_piece, distance);
-			play_move(g, number_piece, RIGHT, distance);
-		}
-		else if (strcmp(answer, "LEFT") == 0)
-		{
-			printf("Vous voulez bouger la piece %d de %d cases vers la gauche. \n", number_piece, distance);
-			play_move(g, number_piece, LEFT, distance);
-		}
-		else if (strcmp(answer, "UP") == 0)
-		{
-			printf("Vous voulez bouger la piece %d de %d cases vers le haut. \n", number_piece, distance);
-			play_move(g, number_piece, UP, distance);
-		}
-		else if (strcmp(answer, "DOWN") == 0)
-		{
-			printf("Vous voulez bouger la piece %d de %d cases vers le bas. \n", number_piece, distance);
-			play_move(g, number_piece, DOWN, distance);
-		}
-		else
-		{
-			printf("Merci d'entrer une direction valide. UP, DOWN, RIGHT ou LEFT \n");
-		}
+		printf("Vous voulez bouger la piece %d de %d cases.\n", number_piece, distance);
+		move(g, number_piece, distance);
 		free(answer);
 	}
 	

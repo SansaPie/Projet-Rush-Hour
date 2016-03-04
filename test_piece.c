@@ -16,7 +16,7 @@ int main()
 	piece test2 = new_piece_rh(2,2,false, false); /* on créé une seconde pièce test2 */
 	display_piece(test); /* on affiche la première pièce*/
 	display_piece(test2); /* on affiche la seconde pièce. Les deux pièces ont bien été créées. */
-	piece test3 = NULL;
+	piece test3 = new_piece_rh(0,0,true,true);
 	copy_piece(test, test3); /* on teste la fonction copy, censée copier test dans test3 */
 	display_piece(test3); /* on affiche test3, afin de vérifier que test3 est désormais 
 				égal à test. C'est le cas ! */
@@ -25,6 +25,8 @@ int main()
 	printf("\nx : %d \ny : %d \nhauteur : %d \nlongueur : %d\n", get_x(test2), get_y(test2), get_height(test2), get_width(test2)); /* On teste les fonctions get */
 	printf("\nhorizontal : %d \n", is_horizontal(test2)); /* on teste la fonction is_horizontal */
 	printf("\nin board : %d \n", is_in_board(test2)); /* on teste la fonction is_in_board */
+	delete_piece(test2);
+	delete_piece(test3);
 	return EXIT_SUCCESS;
 }
 
@@ -52,20 +54,22 @@ void test_move_piece(void)
 	move_piece (test2, UP, 3); /* ne bouge pas la pièce car sinon elle sortirait du jeu */
 	display_piece(test2); /* afficher la pièce test pour vérifier que le 
 				mouvement ne s'est pas fait */
+	delete_piece(test2);
 }
 
 void test_intersection(void)
 {
 	piece test = new_piece_rh(1,2,true,false);
-	piece test2 = new_piece_rh(2,2,true,false);
-	delete_piece(test);
 	// intersect(test, test2); /* exit_failure car test == NULL */
-	piece test3 = new_piece_rh(1,2,true,false);
-	intersect(test2, test3);
-	printf("%d \n", intersect(test2, test3)); /* affiche true car les deux pièces se croisent */
-	piece test4 = new_piece_rh(3,3,true,false);
-	printf("%d \n", intersect(test3, test4)); /* affiche false car les deux pièces 
+	piece test2 = new_piece_rh(1,2,true,false);
+	intersect(test, test2);
+	printf("%d \n", intersect(test, test2)); /* affiche true car les deux pièces se croisent */
+	piece test3 = new_piece_rh(3,3,true,false);
+	printf("%d \n", intersect(test2, test3)); /* affiche false car les deux pièces 
 						   ne se croisent pas */
+	delete_piece(test);
+	delete_piece(test2);
+	delete_piece(test3);
 }
 
 

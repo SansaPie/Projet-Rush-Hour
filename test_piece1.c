@@ -88,6 +88,8 @@ bool test_intersect() {
   result = result && test_equality_bool(true, intersect(pieces[0], pb_piece1),"intersect pb1");
   result = result && test_equality_bool(true, intersect(pb_piece2, pb_piece1),"intersect pb2");
   tear_down();
+  delete_piece(pb_piece1);
+  delete_piece(pb_piece2);
   return result;
 }
 
@@ -127,7 +129,6 @@ bool test_move() {
   tear_down();
   delete_piece(p);
   return result;
-  return false;
 }
 
 
