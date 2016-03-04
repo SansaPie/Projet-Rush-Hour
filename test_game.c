@@ -47,7 +47,6 @@ bool test_equality_piece(cpiece expected, cpiece value, char *msg) {
 bool test_equality_game(cgame expected, cgame value, char * msg) {   
 	bool result = true;
 	for (int i = 0; i < NB_PIECES; i++) {
-		// printf("%d\n",i); A quoi ça sert ?
 		result = result && test_equality_piece(game_piece(expected, i), game_piece(value, i) , msg);
 	}
 	if ( !result )
@@ -90,8 +89,7 @@ bool test_new_game_hr() {
 	return result;
 }
 
-//cette fonction n'est pas au point.
-bool test_copy_game() { //KO
+bool test_copy_game() {
 	bool result = true;
 	set_up();
 	game test = new_game_hr(NB_PIECES, pieces);

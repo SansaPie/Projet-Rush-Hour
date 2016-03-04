@@ -18,7 +18,7 @@ void display_game(cgame g) {
 			grid[i][j] ='.';
 		}
 	}
-	/* Replissage du tableau avec les pieces de g */
+	/* Remplissage du tableau avec les pieces de g */
 	for (int i = 0; i < game_nb_pieces(g); i++){
 
 		int xCoordDisplay = get_x(game_piece(g,i));
@@ -37,7 +37,7 @@ void display_game(cgame g) {
 		}
 	}
 	
-	/* affichage du tableau remplit */
+	/* affichage du tableau rempli */
 	for (int x = 0; x<6; x++) {
 		for (int y = 0; y<6; y++) {
 			printf("%c ", grid[y][x]);
@@ -100,7 +100,7 @@ void move(game g, int number_piece, int distance)
 char * scan(char * buffer , int size) {
 	char * result = fgets(buffer, size, stdin);
 	/* on cherche dans la chaine de caractere saisie le caractere d'echappement pour le remplacer par un 
-	* caractere de fin de fichier. */
+	 caractere de fin de fichier. */
 	if ( result != NULL) {
 		char * lresult = strchr(buffer, '\n');
 		if (lresult != NULL)
@@ -112,7 +112,7 @@ char * scan(char * buffer , int size) {
 
 
 int main(){
-	piece *pieces_test = malloc(sizeof(struct piece_s)*5); /* on créé un tableau qui contient les pièces */
+	piece *pieces_test = malloc(sizeof(struct piece_s)*5); /* on crée un tableau qui contient les pièces */
 	if(pieces_test==NULL){ /* on vérifie que ce tableau a bien été alloué */
 		fprintf(stderr,"main : pieces_test non alloue\n");
 		exit(EXIT_FAILURE);
@@ -129,8 +129,6 @@ int main(){
 	if(!game_valid(g)){
 		fprintf(stderr, "main : game invalid\n");
 		exit(EXIT_FAILURE);
-	}else{
-		printf("Le jeu est valide.\n");
 	}
 
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande à l'utilisateur ce qu'il veut jouer */
@@ -146,7 +144,7 @@ int main(){
 		move(g, number_piece, distance);
 		free(answer);
 	}
-	printf("Felicitations : vous avez battu le jeu en %d coups !\n", g->moves);
+	printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
 	
 	delete_pieces(5, pieces_test);
 	delete_game(g);
