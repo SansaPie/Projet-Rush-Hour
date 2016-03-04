@@ -42,19 +42,23 @@ void delete_game(game g){
 }
 
 void copy_game (cgame src, game dst){
+	
 	if(src==NULL || dst==NULL){
 		fprintf(stderr, "copy_game : parametres invalides\n");
 		exit(EXIT_FAILURE);
 	}
+
 	/*for(int i=0;i<game_nb_pieces(dst) ;i++){
 			delete_piece(dst->pieces[i]);
 	} Ne sait pas si c'est utile*/
 	
 	piece * ptr_tmp = realloc(dst->pieces, sizeof(struct piece_s)*game_nb_pieces(src));
+	
 	if(ptr_tmp == NULL){
 		fprintf(stderr, "copy_game : erreur realloc dst->pieces\n");
 		exit(EXIT_FAILURE);
 	}
+	
 	dst->pieces = ptr_tmp;
 	dst->nb_pieces=game_nb_pieces(src);
 
