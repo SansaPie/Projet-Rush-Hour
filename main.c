@@ -119,7 +119,7 @@ int main(){
 	}
 	/* creation des pieces */
 	pieces_test[0] = new_piece_rh(0,3,true,true);
-	pieces_test[1] = new_piece_rh(0,0,false,true);
+	pieces_test[1] = new_piece_rh(0,0,true,true);
 	pieces_test[2] = new_piece_rh(1,1,false,true);
 	pieces_test[3] = new_piece_rh(3,3,false,false);
 	pieces_test[4] = new_piece_rh(4,4,true,false);
