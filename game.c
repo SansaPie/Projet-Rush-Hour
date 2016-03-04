@@ -100,17 +100,21 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	copy_game(g, gTmp);
 
 	piece piece_moved = gTmp->pieces[piece_num];
-
+	
 	if(((d==LEFT||d==RIGHT) && is_horizontal(piece_moved))||
 		((d==UP||d==DOWN) && !is_horizontal(piece_moved))){
 		move_piece(piece_moved, d, distance);
 	}
-	if(!game_valid(gTmp))
+
+	if (!game_valid(gTmp)) {
+		printf("test\n");
 		return false;
+	}
+	
 	gTmp->moves += distance;
 
 	g = gTmp;
-
+	
 	return true;
 }
 
