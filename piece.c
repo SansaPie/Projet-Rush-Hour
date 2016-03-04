@@ -31,6 +31,10 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 void delete_piece (piece p){
 	if(p!=NULL)
 		free(p);
+	else{
+		fprintf(stderr, "delete_piece : p null\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
 void copy_piece (cpiece src, piece dst){

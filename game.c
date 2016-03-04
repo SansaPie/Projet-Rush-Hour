@@ -14,17 +14,15 @@ game new_game_hr (int nb_pieces, piece *pieces){
 		exit(EXIT_FAILURE);
 	}
 	g->nb_pieces = nb_pieces;
-	g->pieces = malloc(sizeof(int)*nb_pieces); // Ligne source de tous les problèmes
+	g->pieces = malloc(sizeof(piece)*nb_pieces);
 	if(g->pieces == NULL){
 		fprintf(stderr, "new_game_hr : g->pieces non alloue\n");
 		exit(EXIT_FAILURE);
 	}
-	/*
 	for(int i=0 ; i<nb_pieces ; i++){
 		g->pieces[i] = new_piece_rh(0,0,true,true);
 		copy_piece(pieces[i],g->pieces[i]);
-	}*/
-	g->pieces = pieces; // Mauvaise version
+	}
 	g->moves = 0;
 	if(!game_valid(g)){
 		fprintf(stderr, "new_game_hr : jeu non valide\n");
@@ -35,9 +33,7 @@ game new_game_hr (int nb_pieces, piece *pieces){
 
 void delete_game(game g){
 	if (g != NULL){
-		for(int i=0 ; i<game_nb_pieces(g) ; i++){
-			delete_piece(g->pieces[i]);
-		}
+		delete_pieces(g->nb_pieces, g->pieces);
 		free(g);
 	}else{
 		fprintf(stderr, "delete_game : g null\n");
@@ -50,9 +46,9 @@ void copy_game (cgame src, game dst){
 		fprintf(stderr, "copy_game : parametres invalides\n");
 		exit(EXIT_FAILURE);
 	}
-	for(int i=0;i<game_nb_pieces(dst) ;i++){
+	/*for(int i=0;i<game_nb_pieces(dst) ;i++){
 			delete_piece(dst->pieces[i]);
-	}
+	} Ne sait pas si c'est utile*/
 	
 	piece * ptr_tmp = realloc(dst->pieces, sizeof(struct piece_s)*game_nb_pieces(src));
 	if(ptr_tmp == NULL){
@@ -109,10 +105,6 @@ bool play_move(game g, int piece_num, dir d, int distance){
 
 	game gTmp = new_game_hr(game_nb_pieces(g), t_pieces);
 	copy_game(g, gTmp);
-	/*for(int i=0;i<game_nb_pieces(g) ; i++){
-		delete_piece(t_pieces[i]);
-		free(t_pieces);
-	}*/
 
 	piece piece_moved = gTmp->pieces[piece_num];
 	
@@ -122,13 +114,15 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	}
 
 	if (!game_valid(gTmp)) {
+		delete_game(gTmp);
 		return false;
 	}
 	
 	gTmp->moves += distance;
 
 	g = gTmp;
-	
+
+	delete_game(gTmp);
 	return true;
 }
 
@@ -161,4 +155,16 @@ bool game_valid(cgame g){
 		}
 	}
 	return true;
+}
+
+void delete_pieces(int nb_pieces, piece * pieces){
+	if(pieces!=NULL){
+		for(int i=0 ; i<nb_pieces ; i++){
+			delete_piece(pieces[i]);		
+		}
+		free(pieces);
+	}else{
+		fprintf(stderr, "delete_pieces : pieces null\n");
+		exit(EXIT_FAILURE);
+	}
 }

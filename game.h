@@ -100,4 +100,6 @@ int game_nb_moves(cgame g);
 
 bool game_valid(cgame g);
 
+void delete_pieces(int nb_pieces, piece * pieces);
+
 #endif
