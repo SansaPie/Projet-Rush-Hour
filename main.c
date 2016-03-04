@@ -5,15 +5,20 @@
 #include "piece.h"
 #include "math.h"
 
-void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
+/*
+* @brief fonction affichant le jeu dans le terminal
+* 
+*/
+
+void display_game(cgame g) {
 	char grid[6][6]; /* on créé un tableau à deux dimensions qui représente notre plateau de jeu */
-	
+	/* initialisation de toutes les cases du tableau precedement creer avec des '.' */
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {
 			grid[i][j] ='.';
 		}
 	}
-
+	/* Replissage du tableau avec les pieces de g */
 	for (int i = 0; i < game_nb_pieces(g); i++){
 
 		int xCoordDisplay = get_x(game_piece(g,i));
@@ -32,6 +37,7 @@ void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
 		}
 	}
 	
+	/* affichage du tableau remplit */
 	for (int x = 0; x<6; x++) {
 		for (int y = 0; y<6; y++) {
 			printf("%c ", grid[y][x]);
@@ -39,6 +45,13 @@ void display_game(cgame g) { /* la fonction affiche le jeu dans le terminal */
 		printf("\n");
 	}
 }
+
+/*
+* @brief fonction testant si le mouvement choisi par l'utilisateur est possible ou non.
+* @param number_piece etant la piece que l'on souhaite bouger.
+* @param distance etant le nombre de case duquel on souhaite se deplacer.
+* @param d etant la direction dans laquelle on souhaite se deplacer.
+*/
 
 void display_success_movement(game g, int number_piece, int distance, dir d){
 	if(play_move(g, number_piece, d, abs(distance))){
@@ -55,6 +68,12 @@ void display_success_movement(game g, int number_piece, int distance, dir d){
 		printf("Mouvement impossible.\n");
 }
 
+/*
+* @brief fonction permettant de bouger la piece dans la direction et la distance choisie.
+* @param number_piece etant la piece que l'on va bouger.
+* @param distance etant la direction dans laquelle on va bouger number_piece.
+*/
+
 void move(game g, int number_piece, int distance)
 {
 	if(distance>0){
@@ -70,32 +89,24 @@ void move(game g, int number_piece, int distance)
 	}
 }
 
-/*
-* @brief fonction permettant d'enlever la possible pollution du buffer lors de la saisie de caracteres.
-*/
-
-void clear_buffer() {
-	int i;
-	printf("Veuillez confirmer votre choix <ENTER> \n");//pas de vraie confirmation (juste pour combler le vide lors du nettoyage du buffer )
-	while (i != '\n' && i != EOF) // il faut que l'utilisateur appuie sur ENTER.
-		i = getchar();
-}
-
 
 /*
-* @brief demande a l'utilisateur de saisir une chaine de caractere et de confirmer en appuyant sur "ENTER"
+* @brief demande a l'utilisateur de saisir une chaine de caractere.
+* @param buffer etant la chaine de caractere dans laquelle on stocke la valeur saisie par l'utilisateur.
+* @param size etant la taille de la chaine de caractere buffer.
 * @return la chaine de caractere saisie
 */
 
 char * scan(char * buffer , int size) {
 	char * result = fgets(buffer, size, stdin);
-	
+	/* on cherche dans la chaine de caractere saisie le caractere d'echappement pour le remplacer par un 
+	* caractere de fin de fichier. */
 	if ( result != NULL) {
 		char * lresult = strchr(buffer, '\n');
 		if (lresult != NULL)
 			*lresult = '\0';
 	}
-	clear_buffer();
+	rewind(stdin); // on se place au debut de stdin
 	return result;
 }
 
@@ -106,6 +117,7 @@ int main(){
 		fprintf(stderr,"main : pieces_test non alloue\n");
 		exit(EXIT_FAILURE);
 	}
+	/* creation des pieces */
 	pieces_test[0] = new_piece_rh(0,3,true,true);
 	pieces_test[1] = new_piece_rh(0,0,false,true);
 	pieces_test[2] = new_piece_rh(1,1,false,true);
@@ -113,6 +125,7 @@ int main(){
 	pieces_test[4] = new_piece_rh(4,4,true,false);
 	game g = new_game_hr(5, pieces_test); /* initialisation d'un premier jeu */
 
+	/* teste si la position des pieces est conforme */
 	if(!game_valid(g)){
 		fprintf(stderr, "main : game invalid\n");
 		exit(EXIT_FAILURE);

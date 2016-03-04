@@ -17,6 +17,7 @@ bool test_equality_int(int expected, int value, char * msg) {
 /**
 * @brief test if value is equal to expected; if not, displays an error message containing msg to standard error output
 */
+
 bool test_equality_bool(bool expected, bool value, char * msg) {   
 	if (expected != value)
 		fprintf(stderr, "%s expected boolean is not equal to value boolean\n", msg);

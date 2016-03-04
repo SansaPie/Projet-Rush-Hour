@@ -54,11 +54,12 @@ void delete_game(game g){
 }
 
 void copy_game (cgame src, game dst){
+	
 	if(src==NULL || dst==NULL){
 		fprintf(stderr, "copy_game : parametres invalides\n");
 		exit(EXIT_FAILURE);
 	}
-	
+
 	delete_pieces(game_nb_pieces(dst), dst->pieces);
 	
 	dst->pieces = malloc(sizeof(piece)*game_nb_pieces(src));
