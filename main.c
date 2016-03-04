@@ -7,7 +7,6 @@
 /*
 * @brief fonction affichant le jeu dans le terminal
 *
-*
 */
 
 void display_game(cgame g) {
@@ -18,7 +17,7 @@ void display_game(cgame g) {
 			grid[i][j] ='.';
 		}
 	}
-	/* Replissage du tableau avec */
+	/* Replissage du tableau avec les pieces de g */
 	for (int i = 0; i < game_nb_pieces(g); i++){
 
 		int xCoordDisplay = get_x(game_piece(g,i));
@@ -37,6 +36,7 @@ void display_game(cgame g) {
 		}
 	}
 	
+	/* affichage du tableau remplit */
 	for (int x = 0; x<6; x++) {
 		for (int y = 0; y<6; y++) {
 			printf("%c ", grid[y][x]);
@@ -44,6 +44,11 @@ void display_game(cgame g) {
 		printf("\n");
 	}
 }
+
+/*
+* @brief fonction testant si le mouvement choisi par l'utilisateur est possible ou non.
+*
+*/
 
 void display_success_movement(game g, int number_piece, int distance, dir d){
 	if(play_move(g, number_piece, d, distance)){
@@ -59,6 +64,11 @@ void display_success_movement(game g, int number_piece, int distance, dir d){
 	}else
 		printf("Mouvement impossible.\n");
 }
+
+/*
+* @brief fonction permettant de bouger la piece dans la direction et la distance choisie.
+*
+*/
 
 void move(game g, int number_piece, int distance)
 {
@@ -83,7 +93,8 @@ void move(game g, int number_piece, int distance)
 
 char * scan(char * buffer , int size) {
 	char * result = fgets(buffer, size, stdin);
-	
+	/* on cherche dans la chaine de caractere saisie le caractere d'echappement pour le remplacer par un 
+	* caractere de fin de fichier. */
 	if ( result != NULL) {
 		char * lresult = strchr(buffer, '\n');
 		if (lresult != NULL)
@@ -100,6 +111,7 @@ int main(){
 		fprintf(stderr,"main : pieces_test non alloue\n");
 		exit(EXIT_FAILURE);
 	}
+	/* creation des pieces */
 	pieces_test[0] = new_piece_rh(0,3,true,true);
 	pieces_test[1] = new_piece_rh(0,0,false,true);
 	pieces_test[2] = new_piece_rh(1,1,false,true);
@@ -107,6 +119,7 @@ int main(){
 	pieces_test[4] = new_piece_rh(4,4,true,false);
 	game g = new_game_hr(5, pieces_test); /* initialisation d'un premier jeu */
 
+	/* teste si la position des pieces est conforme */
 	if(!game_valid(g)){
 		fprintf(stderr, "main : game invalid\n");
 		exit(EXIT_FAILURE);
