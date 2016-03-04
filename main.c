@@ -70,18 +70,6 @@ void move(char *tmp, game g, int number_piece, int distance)
 			printf("Merci d'entrer une direction valide. UP, DOWN, RIGHT ou LEFT \n");
 		}
 }
-/*
-void lisa_prompt() {
-	display_game(g);
-	char tmp[6] = "";
-	printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
-	int number_piece = atoi(fgets(tmp, sizeof(tmp), stdin));
-	printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ? Entrez un nombre entre 0 et 5. \n", number_piece);
-	int distance = atoi(fgets(tmp, sizeof(tmp), stdin));
-	printf("Vous voulez bouger la piece %d de %d cases. Dans quelle direction voulez-vous la bouger ? UP, DOWN, LEFT ou RIGHT ? \n", number_piece, distance);
-	fgets(tmp, sizeof(tmp), stdin);
-}
-*/
 
 /*
 * @brief fonction permettant d'enlever la possible pollution du buffer lors de la saisie de caracteres.
@@ -162,8 +150,8 @@ int main(){
 		}
 		free(answer);
 	}
-	for (int i = 0; i < 5; i++)
-		delete_piece(pieces_test[i]);
+	
+	delete_pieces(5, pieces_test);
 	delete_game(g);
 
 	return EXIT_SUCCESS;

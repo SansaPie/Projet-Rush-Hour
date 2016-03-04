@@ -59,10 +59,8 @@ int main(){
 	copy_game(g, gTmp);
 	printf("gTmp : \n");
 	display_game(gTmp);
-	delete_game(gTmp);
-	delete_piece(t_pieces[0]);
-	free(t_pieces);
 
+	delete_game(gTmp);
 	delete_game(g);
 	delete_pieces(1, t_pieces);
 	delete_pieces(5, pieces_test);
