@@ -1,23 +1,21 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required(VERSION 2.6)
+project(rush-hour)
+add_definitions(-std=c99 -Wall -Werror -g)
+set(CMAKE_INSTALL_PREFIX ../build)
 
-project (projet)
+add_library(game game.c piece.c)
 
-add_definitions (-std=c99 -Wall -Werror -g)
+add_executable(rush-hour main.c)
+target_link_libraries(rush-hour game)
 
-set (CMAKE_INSTALL_PREFIX .)
+add_executable(test_game test_game.c)
+target_link_libraries(test_game game)
 
-enable_testing ()
+add_executable(test_game1 test_game1.c)
+target_link_libraries(test_game1 game)
 
-add_library(piece piece.c)
+add_executable(test_piece test_piece.c)
+target_link_libraries(test_piece game)
 
-add_library(game game.c)
-
-add_executable(test_piece piece.c test_piece.c)
-
-add_executable(test_game game.c test_game.c piece.c)
-
-add_executable(main main.c game.c piece.c)
-
-add_executable(test_piece1 test_piece1.c piece.c)
-
-add_executable(test_game1 test_game1.c game.c piece.c)
+add_executable(test_piece1 test_piece1.c)
+target_link_libraries(test_piece1 game)
