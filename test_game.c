@@ -143,7 +143,20 @@ bool test_game_over_hr() {
 	tear_down_win();
 
 	return result;
+}
 
+bool test_game_nb_moves(){
+	bool result = true;
+
+	set_up();
+	game test = new_game_hr(NB_PIECES, pieces);
+	result = result && test_equality_int(0, game_nb_moves(g), "game_nb_moves");
+	play_move(g, 0, LEFT, 3);
+	result = result && test_equality_int(3, game_nb_moves(g), "game_nb_moves");
+	delete(test);
+	tear_down();
+
+	return result;
 }
 
 int main(){
