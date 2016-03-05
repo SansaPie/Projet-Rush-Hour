@@ -5,10 +5,10 @@
 #include "piece.h"
 #include "math.h"
 
-/*
-* @brief fonction affichant le jeu dans le terminal
-* 
-*/
+/**
+ * @brief fonction affichant le jeu dans le terminal
+ * 
+ */
 
 void display_game(cgame g) {
 	char grid[6][6]; /* on crée un tableau à deux dimensions qui représente notre plateau de jeu */
@@ -47,13 +47,13 @@ void display_game(cgame g) {
 	printf("\n");
 }
 
-/*
-* @brief fonction testant si le mouvement choisi par l'utilisateur est possible ou non et 
-* l'executant dans le cas s'il est valide.
-* @param number_piece index dans le jeu de la piece que l'on souhaite bouger.
-* @param distance nombre de case dont on souhaite se deplacer.
-* @param d direction dans laquelle on souhaite se deplacer.
-*/
+/**
+ * @brief fonction testant si le mouvement choisi par l'utilisateur est possible ou non et 
+ * l'executant dans le cas s'il est valide.
+ * @param number_piece index dans le jeu de la piece que l'on souhaite bouger.
+ * @param distance nombre de case dont on souhaite se deplacer.
+ * @param d direction dans laquelle on souhaite se deplacer.
+ */
 
 void display_success_movement(game g, int number_piece, int distance, dir d){
 	if(play_move(g, number_piece, d, abs(distance))){
@@ -70,11 +70,11 @@ void display_success_movement(game g, int number_piece, int distance, dir d){
 		printf("Mouvement impossible.\n");
 }
 
-/*
-* @brief fonction permettant de bouger la piece dans la direction et la distance choisies.
-* @param number_piece index dans le jeu de la piece que l'on va bouger.
-* @param distance direction dans laquelle on va bouger la piece.
-*/
+/**
+ * @brief fonction permettant de bouger la piece dans la direction et la distance choisies.
+ * @param number_piece index dans le jeu de la piece que l'on va bouger.
+ * @param distance direction dans laquelle on va bouger la piece.
+ */
 
 void move(game g, int number_piece, int distance)
 {
@@ -92,12 +92,12 @@ void move(game g, int number_piece, int distance)
 }
 
 
-/*
-* @brief demande a l'utilisateur de saisir une chaine de caractere.
-* @param buffer chaine de caractere dans laquelle on stocke la valeur saisie par l'utilisateur.
-* @param size taille de la chaine de caractere buffer.
-* @return chaine de caractere saisie
-*/
+/**
+ * @brief demande a l'utilisateur de saisir une chaine de caractere.
+ * @param buffer chaine de caractere dans laquelle on stocke la valeur saisie par l'utilisateur.
+ * @param size taille de la chaine de caractere buffer.
+ * @return chaine de caractere saisie
+ */
 
 char * scan(char * buffer , int size) {
 	char * result = fgets(buffer, size, stdin);
@@ -108,7 +108,7 @@ char * scan(char * buffer , int size) {
 		if (lresult != NULL)
 			*lresult = '\0';
 	}
-	rewind(stdin); // on se place au debut du flux d'entree
+	rewind(stdin); /* on se place au debut du flux d'entree */
 	return result;
 }
 
@@ -152,7 +152,7 @@ int main(){
 
 		int number_piece = -1;
 		while(number_piece<0 || number_piece>game_nb_pieces(g)){
-			printf("Quelle piece voulez-vous jouer ? Rentrez son numéro.\n");
+			printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
 			number_piece = atoi(scan(answer, size));
 			if(number_piece<0 || number_piece>game_nb_pieces(g))
 				printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g));
