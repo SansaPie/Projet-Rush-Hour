@@ -57,8 +57,6 @@ piece pieces[NB_PIECES];
 /**
  * @brief Initialisation de 4 pieces.
  */
-
-
 void set_up() {   
 	pieces[0] = new_piece_rh(3, 3, true, true);
 	pieces[1] = new_piece_rh(3, 0, true, false);
@@ -93,7 +91,6 @@ void tear_down_win() {
  * @brief Teste de l'initialisation du jeu.
  * @return vrai si l'initialisation est correcte, faux sinon.
  */
-
 bool test_new_game_hr() {
 	bool result = true;
 	set_up();
@@ -110,7 +107,6 @@ bool test_new_game_hr() {
  * @brief Teste de la copie du jeu.
  * @return vrai si la copie est correcte, faux sinon.
  */
-
 bool test_copy_game() {
 	bool result = true;
 	set_up();
@@ -135,7 +131,6 @@ bool test_copy_game() {
  * @brief Teste le nombre de pieces du jeu.
  * @return vrai si le nombre de pieces est correct, faux sinon.
  */
-
 bool test_game_nb_pieces() {   
 	bool result = true;
 	set_up();
@@ -150,7 +145,6 @@ bool test_game_nb_pieces() {
  * @brief Teste les toutes pieces du jeu.
  * @return vrai si les pieces sont correctes, faux sinon.
  */
-
 bool test_game_piece(cgame gtest) {
 	bool result = true;
 	for (int i = 0; i < NB_PIECES; i ++)
@@ -184,7 +178,6 @@ bool test_game_over_hr() {
  * @brief Teste le nombre de mouvements.
  * @return vrai si le nombre de mouvements est correct, faux sinon.
  */
-
 bool test_game_nb_moves(){
 	bool result = true;
 
