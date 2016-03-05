@@ -131,6 +131,10 @@ int main(){
 		exit(EXIT_FAILURE);
 	}
 
+	/* affichage des règles du jeu */
+
+	printf("Ce jeu a été codé par Lucas, Lisa et Clément. \nLe but de ce jeu est d'amener la voiture 0 sur le côté droit du plateau. \nVous ne pouvez bouger les pièces horizontales que de gauche à droite, et les verticales que de haut en bas. \nUn nombre négatif fera bouger une voiture horizontale à gauche, un nombre positif la fera bouger à droite.\nUn nombre négatif fera bouger une voiture verticale vers le bas, et un nombre positif la fera bouger vers le haut.\nEssayez de résoudre ce puzzle en un minimum de coups possible !\n\n");
+
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande à l'utilisateur ce qu'il veut jouer */
 		display_game(g);
 		int size = 6;
