@@ -150,10 +150,10 @@ bool test_game_nb_moves(){
 
 	set_up();
 	game test = new_game_hr(NB_PIECES, pieces);
-	result = result && test_equality_int(0, game_nb_moves(g), "game_nb_moves");
-	play_move(g, 0, LEFT, 3);
-	result = result && test_equality_int(3, game_nb_moves(g), "game_nb_moves");
-	delete(test);
+	result = result && test_equality_int(0, game_nb_moves(test), "game_nb_moves");
+	play_move(test, 0, LEFT, 3);
+	result = result && test_equality_int(3, game_nb_moves(test), "game_nb_moves");
+	delete_game(test);
 	tear_down();
 
 	return result;
