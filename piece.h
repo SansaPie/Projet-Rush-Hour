@@ -100,16 +100,18 @@ int get_height(cpiece p);
 int get_width(cpiece p);
 
 /**
- * @brief Returns true if the piece is
+ * @brief Returns true if the piece is horizontal
  */
 bool is_horizontal(cpiece p);
 
-/* return true if the piece is small */
-
+/**
+ * @brief Returns true if the piece is small
+ */
 bool is_small(cpiece p);
 
-/* return false if the piece isn't entirely in the board */
-
+/**
+ * @brief Returns false if the piece isn't entirely in the board
+ */
 bool is_in_board(cpiece p);
 
 #endif

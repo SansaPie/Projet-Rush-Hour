@@ -28,7 +28,6 @@ bool test_equality_bool(bool expected, bool value, char * msg) {
 /*
 * @brief test if value is equal to expected ; if not program abort
 * @return true if expected == value
-*
 */
 
 bool test_equality_piece(cpiece expected, cpiece value, char *msg) {   
@@ -41,7 +40,6 @@ bool test_equality_piece(cpiece expected, cpiece value, char *msg) {
 
 /*
 * @brief same test as test_equality_piece
-*
 */
 
 bool test_equality_game(cgame expected, cgame value, char * msg) {   
@@ -53,7 +51,6 @@ bool test_equality_game(cgame expected, cgame value, char * msg) {
 		fprintf(stderr, "%s expected game is not equal to value game\n", msg);
 	return result;
 }
-
 
 piece pieces[NB_PIECES];
 
@@ -67,7 +64,6 @@ void tear_down() {
 	for (int i = 0; i < NB_PIECES; i++)
 		delete_piece(pieces[i]);
 }
-
 
 void set_up_win() {  
 	pieces[0] = new_piece_rh(4, 3, true, true);

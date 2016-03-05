@@ -68,21 +68,21 @@ void copy_game (cgame src, game dst);
 
 /**
  * @brief Return the number of pieces on the game board g
-*/
+ */
 int game_nb_pieces(cgame g);
 
 
 /**
  * @brief Return the piece of g with number bum
  * @param piece_num the num of the piece. This value must be between 0 and game_nb_pieces(g)-1.
-*/
+ */
 cpiece game_piece(cgame g, int piece_num);
 
 
 /**
- * @brief Test is the game is over (i.e. if the piece 0 has reached the exit).
+ * @brief Tests if the game is over (i.e. if the piece 0 has reached the exit).
  * @return true if the piece number 0 has coordinates (4,3)
-*/
+ */
 bool game_over_hr(cgame g);
 
 /**
@@ -97,20 +97,19 @@ bool game_over_hr(cgame g);
  * @param distance length of the move. This value must be strictly positive.
  * @param piece_num the number of the piece to move. This value must be between 0 and game_nb_pieces(g)-1.
  * @return true if the move is valid, false otherwise.
-*/
+ */
 bool play_move(game g, int piece_num, dir d, int distance);
 
 /**
- * @brief Return the number of moves this the beginning of the game g.
+ * @brief Returns the number of moves this the beginning of the game g.
  * Remind that move of a single piece of k cells in a single direction counts for k.
  */
 int game_nb_moves(cgame g);
 
 /**
-* @brief test if the pieces of g are not in collision and if are not out .
-* @return true if the game is valid.
-*/
-
+ * @brief Tests if the pieces of g are not in collision or out .
+ * @return true if the game is valid.
+ */
 bool game_valid(cgame g);
 
 #endif

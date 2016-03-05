@@ -5,12 +5,12 @@
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || y>H || x>L){
-		fprintf(stderr, "new_piece_hr : hors board\n");
+		fprintf(stderr, "new_piece_hr : hors tableau\n");
 		exit(EXIT_FAILURE);
 	}
 	if((y==H-1 && !horizontal) || (x==L-1 && horizontal) || 
 		(y>=H-2 && !horizontal && !small) || (x>=L-2 && horizontal && !small)){
-		fprintf(stderr,"new_piece_hr : il y a un bout qui depasse\n");
+		fprintf(stderr,"new_piece_hr : piece sortant en partie du tableau\n");
 		exit(EXIT_FAILURE);
 	}
 	piece p = malloc(sizeof(struct piece_s));
