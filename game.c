@@ -118,13 +118,14 @@ bool play_move(game g, int piece_num, dir d, int distance){
 
 	piece piece_moved = gTmp->pieces[piece_num];
 	
-	for (int i = 0; i <= distance; i++) {
+	for (int i = 0; i < distance; i++) {
 		if (((d == LEFT || d == RIGHT) && is_horizontal(piece_moved)) ||
 			((d == UP || d == DOWN) && !is_horizontal(piece_moved))) {
-			move_piece(piece_moved, d,i);
+			move_piece(piece_moved, d,1);
 		}
 		if (!game_valid(gTmp)) {
 			delete_game(gTmp);
+			delete_pieces(1,t_pieces);
 			return false;
 		}
 	}
