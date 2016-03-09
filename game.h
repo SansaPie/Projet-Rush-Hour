@@ -112,4 +112,26 @@ int game_nb_moves(cgame g);
  */
 bool game_valid(cgame g);
 
+///////////// version 2 /////////////////
+game new_game (int width, int height, int nb_pieces, piece *pieces);
+
+
+/**
+ *@brief return the width of the grid
+ */
+int game_width(cgame g);
+
+/**
+ *@brief return the height of the grid
+ */
+int game_height(cgame g);
+
+/**
+ * @brief return the number of then piece located on this square (-1 if no piece is present)
+ * @param game
+ * @param x-coor of the square
+ * @param y-coor of the square
+ */
+int game_square_piece (game g, int x, int y);
+
 #endif
