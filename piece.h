@@ -48,7 +48,8 @@ typedef enum dir_e {UP, LEFT, DOWN, RIGHT} dir;
  * @param horizontal indicates whether the vehicle can move horizontally or vertically
  * @return a pointer toward the generated piece
  */
-piece new_piece_rh (int x, int y, bool small, bool horizontal);
+
+// piece new_piece_rh (int x, int y, bool small, bool horizontal);
 
 
 /**

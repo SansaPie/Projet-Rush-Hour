@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "piece.h"
 
-piece new_piece_rh (int x, int y, bool small, bool horizontal){
+/* piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || y>H || x>L){
 		fprintf(stderr, "new_piece_hr : hors tableau\n");
 		exit(EXIT_FAILURE);
@@ -23,7 +23,7 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	p->small = small;
 	p->horizontal = horizontal; 
 	return p;
-}
+} */
 
 void delete_piece (piece p){
 	if(p!=NULL)
@@ -209,12 +209,27 @@ bool can_move_y(cpiece p)
 
 piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 {
+	if(x<0 || y<0 || y>H || x>L){
+		fprintf(stderr, "new_piece : hors tableau\n");
+		exit(EXIT_FAILURE);
+	}
+	if(((height+y)>H) || ((width+x)>L))
+	{
+		fprintf(stderr,"new_piece : piece sortant en partie du tableau\n");
+		exit(EXIT_FAILURE);
+	}
+	piece p = malloc(sizeof(struct piece_s));
+	if(p==NULL){
+		fprintf(stderr, "new_piece : p non alloue\n");
+		exit(EXIT_FAILURE);
+	}
 	p->x = x;
 	p->y = y;
 	p->width = width;
 	p->height = height;
 	p->move_x = move_x;
 	p->move_y = move_y;
+	return p;
 }
 
 
