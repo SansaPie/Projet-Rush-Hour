@@ -115,4 +115,18 @@ bool is_small(cpiece p);
  */
 bool is_in_board(cpiece p);
 
+/////////////////// VERSION 2 /////////////////////////////
+
+bool can_move_x(cpiece p);
+bool can_move_y(cpiece p);
+/**
+ * @brief Initialized piece structure
+ * @param x,y: coordinates of the bottom left corner of the piece
+ * @param move_x: indicates if the piece is allowed to move horizontally
+ * @param move_y: indicates if the piece is allowed to move vertically
+ * @return created piece at a given position
+ */
+piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y);
+
+
 #endif
