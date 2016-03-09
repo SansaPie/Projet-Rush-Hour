@@ -196,3 +196,34 @@ bool is_in_board(cpiece p){
 	}
 	return true;
 }
+
+bool can_move_x(cpiece p)
+{
+	return p->move_x;
+}
+
+bool can_move_y(cpiece p)
+{
+	return p->move_y;
+}
+
+piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
+{
+	p->x = x;
+	p->y = y;
+	p->width = width;
+	p->height = height;
+	p->move_x = move_x;
+	p->move_y = move_y;
+}
+
+
+
+
+
+
+
+
+
+
+
