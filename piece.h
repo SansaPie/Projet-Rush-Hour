@@ -29,8 +29,10 @@
 typedef struct piece_s{
 	int x;
 	int y;
-	bool small;
-	bool horizontal;
+	bool move_x;
+	bool move_y;
+	int width;
+	int height;	
 } *piece;
 
 typedef const struct piece_s* cpiece;
