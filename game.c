@@ -108,7 +108,7 @@ bool game_over_hr(cgame g){
 bool play_move(game g, int piece_num, dir d, int distance){ 
 	if (g == NULL || piece_num >= game_nb_pieces(g) || piece_num <0){
 		fprintf(stderr, "play_move : parametres invalides\n");
-		return false;
+		exit(EXIT_FAILURE);
 	}
 
 	piece * t_pieces = malloc(sizeof(piece));
@@ -153,14 +153,14 @@ bool game_valid(cgame g){
 	}
 	for(int i=0 ; i<game_nb_pieces(g) ; i++){
 		if(!is_in_board(game_piece(g,i))){
-			fprintf(stderr, "game_valid : la piece %d est hors du tableau\n", i);
+			printf("La piece %d se trouverait hors du tableau.\n", i);
 			return false;
 		}
 	}
 	for(int i=0 ; i<game_nb_pieces(g)-1 ; i++){
 		for(int j=i+1 ; j<game_nb_pieces(g) ; j++){
 			if(intersect(game_piece(g,i), game_piece(g,j))){
-				fprintf(stderr, "game_valid : la piece %d et la piece %d se chevauchent\n", i, j);
+				printf("La piece %d et la piece %d se chevaucheraient.\n", i, j);
 				return false;
 			}
 		}

@@ -123,8 +123,6 @@ bool test_move() {
         result = result && test_equality_int(get_y(pieces[i])-dist,get_y(p),"move DOWN");
       else
         result = result && test_equality_int(get_y(pieces[i]),get_y(p),"move DOWN");
-
-
     }
   tear_down();
   delete_piece(p);

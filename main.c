@@ -5,13 +5,13 @@
 #include "piece.h"
 #include "math.h"
 
-/*
-* @brief fonction affichant le jeu dans le terminal
-* 
-*/
+/**
+ * @brief fonction affichant le jeu dans le terminal
+ * 
+ */
 
 void display_game(cgame g) {
-	char grid[6][6]; /* on créé un tableau à deux dimensions qui représente notre plateau de jeu */
+	char grid[6][6]; /* on crée un tableau à deux dimensions qui représente notre plateau de jeu */
 	/* initialisation de toutes les cases du tableau precedement creer avec des '.' */
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {
@@ -44,35 +44,37 @@ void display_game(cgame g) {
 		}
 		printf("\n");
 	}
+	printf("\n");
 }
 
-/*
-* @brief fonction testant si le mouvement choisi par l'utilisateur est possible ou non.
-* @param number_piece etant la piece que l'on souhaite bouger.
-* @param distance etant le nombre de case duquel on souhaite se deplacer.
-* @param d etant la direction dans laquelle on souhaite se deplacer.
-*/
+/**
+ * @brief fonction testant si le mouvement choisi par l'utilisateur est possible ou non et 
+ * l'executant dans le cas s'il est valide.
+ * @param number_piece index dans le jeu de la piece que l'on souhaite bouger.
+ * @param distance nombre de case dont on souhaite se deplacer.
+ * @param d direction dans laquelle on souhaite se deplacer.
+ */
 
 void display_success_movement(game g, int number_piece, int distance, dir d){
 	if(play_move(g, number_piece, d, abs(distance))){
 		printf("Vous avez bouge la piece %d de %d cases vers ", number_piece, abs(distance));
 		if(d==RIGHT)
-			printf("la droite.\n");
+			printf("la droite.\n\n");
 		else if(d==LEFT)
-			printf("la gauche.\n");
+			printf("la gauche.\n\n");
 		else if(d==UP)
-			printf("le haut.\n");
+			printf("le haut.\n\n");
 		else
-			printf("le bas.\n");
+			printf("le bas.\n\n");
 	}else
 		printf("Mouvement impossible.\n");
 }
 
-/*
-* @brief fonction permettant de bouger la piece dans la direction et la distance choisie.
-* @param number_piece etant la piece que l'on va bouger.
-* @param distance etant la direction dans laquelle on va bouger number_piece.
-*/
+/**
+ * @brief fonction permettant de bouger la piece dans la direction et la distance choisies.
+ * @param number_piece index dans le jeu de la piece que l'on va bouger.
+ * @param distance direction dans laquelle on va bouger la piece.
+ */
 
 void move(game g, int number_piece, int distance)
 {
@@ -90,12 +92,12 @@ void move(game g, int number_piece, int distance)
 }
 
 
-/*
-* @brief demande a l'utilisateur de saisir une chaine de caractere.
-* @param buffer etant la chaine de caractere dans laquelle on stocke la valeur saisie par l'utilisateur.
-* @param size etant la taille de la chaine de caractere buffer.
-* @return la chaine de caractere saisie
-*/
+/**
+ * @brief demande a l'utilisateur de saisir une chaine de caractere.
+ * @param buffer chaine de caractere dans laquelle on stocke la valeur saisie par l'utilisateur.
+ * @param size taille de la chaine de caractere buffer.
+ * @return chaine de caractere saisie
+ */
 
 char * scan(char * buffer , int size) {
 	char * result = fgets(buffer, size, stdin);
@@ -106,14 +108,14 @@ char * scan(char * buffer , int size) {
 		if (lresult != NULL)
 			*lresult = '\0';
 	}
-	rewind(stdin); // on se place au debut de stdin
+	rewind(stdin); /* on se place au debut du flux d'entree */
 	return result;
 }
 
 
 int main(){
-	piece *pieces_test = malloc(sizeof(struct piece_s)*5); /* on crée un tableau qui contient les pièces */
-	if(pieces_test==NULL){ /* on vérifie que ce tableau a bien été alloué */
+	piece *pieces_test = malloc(sizeof(struct piece_s)*5); /* on cree un tableau qui contient les pieces */
+	if(pieces_test==NULL){ /* on verifie que ce tableau a bien ete alloue */
 		fprintf(stderr,"main : pieces_test non alloue\n");
 		exit(EXIT_FAILURE);
 	}
@@ -131,10 +133,10 @@ int main(){
 		exit(EXIT_FAILURE);
 	}
 
-	/* affichage des règles du jeu */
+	/* affichage des regles du jeu */
 
 	printf("Ce jeu a ete code par Lucas, Lisa et Clement. \n"
-		"Le but de ce jeu est d'amener la voiture 0 sur le cote droit du plateau.\n"
+		"Le but de ce jeu est d'amener la voiture 0 toucher le cote droit du plateau.\n"
 		"Vous ne pouvez bouger les pieces horizontales que de gauche a droite, "
 		"et les verticales que de haut en bas. \n"
 		"Un nombre negatif fera bouger une voiture horizontale a gauche, "
@@ -143,14 +145,14 @@ int main(){
 		"et un nombre positif la fera bouger vers le haut.\n"
 		"Essayez de resoudre ce puzzle en un minimum de coups possible !\n\n");
 
-	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande à l'utilisateur ce qu'il veut jouer */
+	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
 		display_game(g);
 		int size = 6;
 		char * answer = malloc(sizeof(char)*size) ;
 
 		int number_piece = -1;
 		while(number_piece<0 || number_piece>game_nb_pieces(g)){
-			printf("Quelle piece voulez-vous jouer ? Rentrez son numéro. \n");
+			printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
 			number_piece = atoi(scan(answer, size));
 			if(number_piece<0 || number_piece>game_nb_pieces(g))
 				printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g));
@@ -163,10 +165,11 @@ int main(){
 			if(distance<-4 || distance>4)
 				printf("Veuillez rentrer une distance valide. (-4 a 4)\n");
 		}
-		printf("Vous voulez bouger la piece %d de %d cases.\n", number_piece, abs(distance));
 		move(g, number_piece, distance);
 		free(answer);
 	}
+
+	display_game(g);
 	printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
 	
 	delete_pieces(5, pieces_test);

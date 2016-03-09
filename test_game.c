@@ -15,8 +15,8 @@ bool test_equality_int(int expected, int value, char * msg) {
 }
 
 /**
-* @brief test if value is equal to expected; if not, displays an error message containing msg to standard error output
-*/
+ * @brief test if value is equal to expected; if not, displays an error message containing msg to standard error output
+ */
 
 bool test_equality_bool(bool expected, bool value, char * msg) {   
 	if (expected != value)
@@ -25,11 +25,10 @@ bool test_equality_bool(bool expected, bool value, char * msg) {
 }
 
 
-/*
-* @brief test if value is equal to expected ; if not program abort
-* @return true if expected == value
-*
-*/
+/**
+ * @brief test if value is equal to expected ; if not program abort
+ * @return true if expected == value
+ */
 
 bool test_equality_piece(cpiece expected, cpiece value, char *msg) {   
 	if ((get_x(expected) != get_x(value)) || (get_y(expected) != get_y(value)) || (is_horizontal(expected) != is_horizontal(value)) || (is_small(expected) != is_small(value))) {
@@ -39,10 +38,9 @@ bool test_equality_piece(cpiece expected, cpiece value, char *msg) {
 	return true;
 }
 
-/*
-* @brief same test as test_equality_piece
-*
-*/
+/**
+ * @brief same test as test_equality_piece
+ */
 
 bool test_equality_game(cgame expected, cgame value, char * msg) {   
 	bool result = true;
@@ -54,29 +52,45 @@ bool test_equality_game(cgame expected, cgame value, char * msg) {
 	return result;
 }
 
-
 piece pieces[NB_PIECES];
 
+/**
+ * @brief Initialisation de 4 pieces.
+ */
 void set_up() {   
 	pieces[0] = new_piece_rh(3, 3, true, true);
 	pieces[1] = new_piece_rh(3, 0, true, false);
 	pieces[2] = new_piece_rh(4, 1, true, true);
 	pieces[3] = new_piece_rh(5, 3, false, false);
 }
+
+/**
+ * @brief Suppression des pieces.
+ */
 void tear_down() {   
 	for (int i = 0; i < NB_PIECES; i++)
 		delete_piece(pieces[i]);
 }
 
-
+/**
+ * @brief Creation de la piece zero dans la position de victoire.
+ */
 void set_up_win() {  
 	pieces[0] = new_piece_rh(4, 3, true, true);
 }
+
+/**
+ * @brief Suppression de la piece.
+ */
 
 void tear_down_win() {  
 	delete_piece(pieces[0]);
 }
 
+/**
+ * @brief Teste de l'initialisation du jeu.
+ * @return vrai si l'initialisation est correcte, faux sinon.
+ */
 bool test_new_game_hr() {
 	bool result = true;
 	set_up();
@@ -89,6 +103,10 @@ bool test_new_game_hr() {
 	return result;
 }
 
+/**
+ * @brief Teste de la copie du jeu.
+ * @return vrai si la copie est correcte, faux sinon.
+ */
 bool test_copy_game() {
 	bool result = true;
 	set_up();
@@ -109,6 +127,10 @@ bool test_copy_game() {
 	return result;
 }
 
+/**
+ * @brief Teste le nombre de pieces du jeu.
+ * @return vrai si le nombre de pieces est correct, faux sinon.
+ */
 bool test_game_nb_pieces() {   
 	bool result = true;
 	set_up();
@@ -119,6 +141,10 @@ bool test_game_nb_pieces() {
 	return result;
 }
 
+/**
+ * @brief Teste les toutes pieces du jeu.
+ * @return vrai si les pieces sont correctes, faux sinon.
+ */
 bool test_game_piece(cgame gtest) {
 	bool result = true;
 	for (int i = 0; i < NB_PIECES; i ++)
@@ -126,6 +152,9 @@ bool test_game_piece(cgame gtest) {
 	return result;
 }
 
+/**
+ * @brief Test la condition de victoire.
+ */
 bool test_game_over_hr() {  
 	bool result = true;
 	
@@ -145,6 +174,10 @@ bool test_game_over_hr() {
 	return result;
 }
 
+/**
+ * @brief Teste le nombre de mouvements.
+ * @return vrai si le nombre de mouvements est correct, faux sinon.
+ */
 bool test_game_nb_moves(){
 	bool result = true;
 
