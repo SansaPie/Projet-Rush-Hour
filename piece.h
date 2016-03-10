@@ -29,8 +29,10 @@
 typedef struct piece_s{
 	int x;
 	int y;
-	bool small;
-	bool horizontal;
+	bool move_x;
+	bool move_y;
+	int width;
+	int height;	
 } *piece;
 
 typedef const struct piece_s* cpiece;
@@ -39,6 +41,7 @@ typedef const struct piece_s* cpiece;
  * @enum dir_e
  * @brief The enumeration of possible directions of a move
  */
+
 typedef enum dir_e {UP, LEFT, DOWN, RIGHT} dir;
 
 /**
@@ -49,7 +52,7 @@ typedef enum dir_e {UP, LEFT, DOWN, RIGHT} dir;
  * @return a pointer toward the generated piece
  */
 
-// piece new_piece_rh (int x, int y, bool small, bool horizontal);
+piece new_piece_rh (int x, int y, bool small, bool horizontal);
 
 
 /**
@@ -118,7 +121,9 @@ bool is_in_board(cpiece p);
 /////////////////// VERSION 2 /////////////////////////////
 
 bool can_move_x(cpiece p);
+
 bool can_move_y(cpiece p);
+
 /**
  * @brief Initialized piece structure
  * @param x,y: coordinates of the bottom left corner of the piece
