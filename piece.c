@@ -29,13 +29,13 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 			p->width = 2;
 			p->height = 1;
 		}
-		if(!small)
+		else
 		{
 			p->width = 3;
 			p->height = 1;
 		}
 	}
-	if(!horizontal)
+	else
 	{
 		p->move_y = true;
 		p->move_x = false;
@@ -44,7 +44,7 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 			p->width = 1;
 			p->height = 2;
 		}
-		if(!small)
+		else
 		{
 			p->width = 1;
 			p->height = 3;
@@ -52,6 +52,7 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	} 
 	return p;
 }
+
 
 void delete_piece (piece p){
 	if(p!=NULL)
@@ -70,8 +71,10 @@ void copy_piece (cpiece src, piece dst){
 	}
 	dst->x = src->x;
 	dst->y = src->y;
-	dst->small = src->small;
-	dst->horizontal = src->horizontal;
+	dst->width = src->width;
+	dst->height = src->height;
+	dst->move_x = src->move_x;
+	dst->move_y = src->move_y;
 }
 
 void move_piece (piece p, dir d, int distance){
@@ -167,14 +170,7 @@ int get_height(cpiece p)
 		fprintf(stderr, "get_height : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if (is_horizontal(p))
-		return 1;
-	else 
-	{
-		if (is_small(p))
-			return 2;
-		return 3;
-	}
+	return p->height;
 }
 
 int get_width(cpiece p){
@@ -182,11 +178,7 @@ int get_width(cpiece p){
 		fprintf(stderr, "get_width : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if(!is_horizontal(p))
-		return 1;
-	if(is_small(p))
-		return 2;
-	return 3;
+	return p->width;
 }
 
 bool is_horizontal(cpiece p){
@@ -194,7 +186,7 @@ bool is_horizontal(cpiece p){
 		fprintf(stderr, "is_horizontal : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	return p->horizontal;
+	return p->move_x;
 }
 
 bool is_small(cpiece p) {
@@ -202,7 +194,9 @@ bool is_small(cpiece p) {
 		fprintf(stderr, "is_small : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	return p->small;
+	if (get_height(p)<=2 && get_width(p)<=2)
+		return true;
+	return false;
 }
 
 bool is_in_board(cpiece p){
