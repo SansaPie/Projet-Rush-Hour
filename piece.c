@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "piece.h"
 
-/* piece new_piece_rh (int x, int y, bool small, bool horizontal){
+piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || y>H || x>L){
 		fprintf(stderr, "new_piece_hr : hors tableau\n");
 		exit(EXIT_FAILURE);
@@ -20,10 +20,38 @@
 	}
 	p->x = x;
 	p->y = y;
-	p->small = small;
-	p->horizontal = horizontal; 
+	if(horizontal)
+	{
+		p->move_x = true;
+		p->move_y = false;
+		if(small)
+		{
+			p->width = 2;
+			p->height = 1;
+		}
+		if(!small)
+		{
+			p->width = 3;
+			p->height = 1;
+		}
+	}
+	if(!horizontal)
+	{
+		p->move_y = true;
+		p->move_x = false;
+		if(small)
+		{
+			p->width = 1;
+			p->height = 2;
+		}
+		if(!small)
+		{
+			p->width = 1;
+			p->height = 3;
+		}
+	} 
 	return p;
-} */
+}
 
 void delete_piece (piece p){
 	if(p!=NULL)
@@ -33,6 +61,7 @@ void delete_piece (piece p){
 		exit(EXIT_FAILURE);
 	}
 }
+
 
 void copy_piece (cpiece src, piece dst){
 	if(src==NULL || dst==NULL){
@@ -207,7 +236,7 @@ bool can_move_y(cpiece p)
 	return p->move_y;
 }
 
-piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
+ piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 {
 	if(x<0 || y<0 || y>H || x>L){
 		fprintf(stderr, "new_piece : hors tableau\n");
