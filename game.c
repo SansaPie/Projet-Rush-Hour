@@ -8,7 +8,7 @@
 void allocation_piece_tab(int nb_pieces, piece * pieces, char * msg){
 	pieces = malloc(sizeof(piece)*nb_pieces);
 	if(pieces == NULL){
-		fprintf(stderr, "%s : pieces non alloue\n");
+		fprintf(stderr, "%s : pieces non alloue\n", msg);
 		exit(EXIT_FAILURE);
 	}
 }

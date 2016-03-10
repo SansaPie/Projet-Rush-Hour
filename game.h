@@ -34,6 +34,13 @@ typedef struct game_s{
 
 typedef const struct game_s* cgame;
 
+/**
+ * @brief Allocates memory for an array of piece
+ * @param nb_pieces number of pieces to allocate
+ * @param pieces array to allocate
+ * @param msg function where the allocation takes place, put in error message
+ */
+void allocation_piece_tab(int nb_pieces, piece * pieces, char * msg);
 
 /**
  * @brief Creates a new game given a starting position defined by a set of pieces.
@@ -50,7 +57,6 @@ game new_game_hr (int nb_pieces, piece *pieces);
  * @param nb_pieces number of pieces to destroy.
  * @param pieces the pieces to destroy.
  */
-
 void delete_pieces(int nb_pieces, piece * pieces);
 
 /**
