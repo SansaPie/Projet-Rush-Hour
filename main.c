@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "game.h"
 #include "piece.h"
 #include "math.h"
@@ -126,6 +127,11 @@ int main(){
 	pieces_test[3] = new_piece_rh(3,3,false,false);
 	pieces_test[4] = new_piece_rh(4,4,true,false);
 	game g = new_game_hr(5, pieces_test); /* initialisation d'un premier jeu */
+
+	printf("Test\n");
+	assert(false);
+	printf("RATE!!\n");
+
 
 	/* teste si la position des pieces est conforme */
 	if(!game_valid(g)){

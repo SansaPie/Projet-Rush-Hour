@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "piece.h"
 
-/* piece new_piece_rh (int x, int y, bool small, bool horizontal){
+piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || y>H || x>L){
 		fprintf(stderr, "new_piece_hr : hors tableau\n");
 		exit(EXIT_FAILURE);
@@ -20,10 +20,15 @@
 	}
 	p->x = x;
 	p->y = y;
-	p->small = small;
-	p->horizontal = horizontal; 
+	p->height = horizontal;
+	p->width = small;
+	// c'est con de faire cela si on ne s'en sert pas pour le rush-hour!!!
+	// il vaut mieux faire un realloc meme si c'est casse couille que cela...
+	//idem pour new_game...
+	p->move_x = false;
+	p->move_y = false;
 	return p;
-} */
+}
 
 void delete_piece (piece p){
 	if(p!=NULL)
@@ -134,18 +139,11 @@ int get_y(cpiece p)
 
 int get_height(cpiece p)
 {
-	if(p==NULL){
+	if (p == NULL) {
 		fprintf(stderr, "get_height : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if (is_horizontal(p))
-		return 1;
-	else 
-	{
-		if (is_small(p))
-			return 2;
-		return 3;
-	}
+	return p->height;
 }
 
 int get_width(cpiece p){
@@ -153,11 +151,7 @@ int get_width(cpiece p){
 		fprintf(stderr, "get_width : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if(!is_horizontal(p))
-		return 1;
-	if(is_small(p))
-		return 2;
-	return 3;
+	return p->width;
 }
 
 bool is_horizontal(cpiece p){
@@ -165,7 +159,9 @@ bool is_horizontal(cpiece p){
 		fprintf(stderr, "is_horizontal : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	return p->horizontal;
+	if (get_height(p) == 1)
+		return true;
+	return false;
 }
 
 bool is_small(cpiece p) {
@@ -173,7 +169,9 @@ bool is_small(cpiece p) {
 		fprintf(stderr, "is_small : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	return p->small;
+	if (get_height(p) <= 2 && get_width(p) <= 2)
+		return true;
+	return false;
 }
 
 bool is_in_board(cpiece p){
@@ -206,7 +204,7 @@ bool can_move_y(cpiece p)
 {
 	return p->move_y;
 }
-
+/*
 piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 {
 	if(x<0 || y<0 || y>H || x>L){
@@ -230,7 +228,7 @@ piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 	p->move_x = move_x;
 	p->move_y = move_y;
 	return p;
-}
+}*/
 
 
 
