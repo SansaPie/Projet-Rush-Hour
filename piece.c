@@ -97,7 +97,9 @@ bool intersect(cpiece p1, cpiece p2){
 	}
 
 	bool tmp[L_RH][H_RH];
-	init_bool_grid(tmp,L_RH,H_RH);
+	for(int i=0 ; i<L_RH ; i++)
+		for(int j=0 ; j<H_RH ; j++)
+			tmp[i][j]=false;
 
 	int xCoor1 = get_x(p1);
 	int yCoor1 = get_y(p1);
@@ -239,10 +241,4 @@ piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 	p->move_x = move_x;
 	p->move_y = move_y;
 	return p;
-}
-
-void init_bool_grid(bool[][] grid, width, height) {
-	for (int i = 0; i < width; i++)
-		for (int j = 0; j < height; j++)
-			grid[i][j] = false;
 }

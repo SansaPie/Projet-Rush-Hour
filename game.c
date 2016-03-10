@@ -188,7 +188,7 @@ int game_width(cgame g) {
 int game_height(cgame g) {
 	return g->height;
 }
-
+/*
 int game_square_piece(game g, int x, int y) {
 
 	if (g == NULL ){// a remplir
@@ -204,13 +204,11 @@ int game_square_piece(game g, int x, int y) {
 		int xcoor = get_x(game_piece(g, i));
 		int ycoor = get_y(game_piece(g, i));
 		//tmp [j]
-	/*
 	....
 	....
 	.X..
-	*/
 
 	return -1;
-}
+}*/
 
 //faire une fonction qui cree un tableau ... (la grille du jeu en lui-meme)
