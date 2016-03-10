@@ -154,7 +154,7 @@ int get_y(cpiece p)
 
 int get_height(cpiece p)
 {
-	if(p==NULL){
+	if (p == NULL) {
 		fprintf(stderr, "get_height : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
@@ -220,7 +220,6 @@ bool can_move_y(cpiece p)
 	return p->move_y;
 }
 
-
 piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 {
 	if(x<0 || y<0 || y>H_RH || x>L_RH){
@@ -244,7 +243,7 @@ piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 	p->move_x = move_x;
 	p->move_y = move_y;
 	return p;
-}
+}*/
 
 
 

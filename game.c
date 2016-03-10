@@ -40,6 +40,14 @@ game new_game_hr (int nb_pieces, piece *pieces){
 	return g;
 }
 
+
+game new_game(int width, int height, int nb_pieces, piece *pieces) {
+	game g = new_game_hr(nb_pieces, pieces);
+	g->height = height;
+	g->width = width;
+	return g;
+}
+
 void delete_pieces(int nb_pieces, piece * pieces){
 	if(pieces!=NULL){
 		for(int i=0 ; i<nb_pieces ; i++){
@@ -172,4 +180,44 @@ bool game_valid(cgame g){
 		}
 	}
 	return true;
+}
+
+int game_width(cgame g) {
+	return g->width;
+}
+
+
+int game_height(cgame g) {
+	return g->height;
+}
+
+int game_square_piece(game g, int x, int y) {
+
+	if (g == NULL ){// a remplir
+		fprintf(stderr, "game_square_piece: coordonnee non valide\n");
+		exit(EXIT_FAILURE);
+	bool tmp[game_width(g)][game_height(g)] = create_empty_grid(game_width(g) , game_height(g));
+	
+	for (int i = 0; i < game_nb_pieces(g); i++){
+
+		int xcoor = get_x(game_piece(g, i));
+		int ycoor = get_y(game_piece(g, i));
+		tmp [j]
+	....
+	....
+	.X..
+
+
+	return -1;
+}
+
+//faire une fonction qui cree un tableau ... (la grille du jeu en lui meme)
+
+
+bool [][] create_empty_grid(int width, int height) {
+	bool tmp[width][height];
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+			tmp[i][j] = false;
+	return tmp;
 }
