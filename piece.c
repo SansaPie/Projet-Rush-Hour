@@ -20,15 +20,27 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	}
 	p->x = x;
 	p->y = y;
-	p->height = horizontal;
-	p->width = small;
-	// c'est con de faire cela si on ne s'en sert pas pour le rush-hour!!!
-	// il vaut mieux faire un realloc meme si c'est casse couille que cela...
-	//idem pour new_game...
-	p->move_x = false;
-	p->move_y = false;
+	if(horizontal)
+	{
+		p->move_x = true;
+		p->move_y = false;
+		p->height = 1;
+		p->width = 2;
+		if(!small)
+			p->width ++;
+	}
+	else
+	{
+		p->move_x = false;
+		p->move_y = true;
+		p->width = 1;
+		p->height = 2;
+		if(!small)
+			p->height ++;
+	}
 	return p;
 }
+
 
 void delete_piece (piece p){
 	if(p!=NULL)
@@ -39,6 +51,7 @@ void delete_piece (piece p){
 	}
 }
 
+
 void copy_piece (cpiece src, piece dst){
 	if(src==NULL || dst==NULL){
 		fprintf(stderr, "copy_piece : pieces invalides\n");
@@ -46,8 +59,10 @@ void copy_piece (cpiece src, piece dst){
 	}
 	dst->x = src->x;
 	dst->y = src->y;
-	dst->small = src->small;
-	dst->horizontal = src->horizontal;
+	dst->width = src->width;
+	dst->height = src->height;
+	dst->move_x = src->move_x;
+	dst->move_y = src->move_y;
 }
 
 void move_piece (piece p, dir d, int distance){
@@ -159,9 +174,11 @@ bool is_horizontal(cpiece p){
 		fprintf(stderr, "is_horizontal : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if (get_height(p) == 1)
-		return true;
-	return false;
+	if(can_move_x(p) && can_move_y(p)){
+		fprintf(stderr, "is_horizontal : p n'est pas une piece de rush hour\n");
+		exit(EXIT_FAILURE);
+	}
+	return can_move_x(p);
 }
 
 bool is_small(cpiece p) {
@@ -169,9 +186,10 @@ bool is_small(cpiece p) {
 		fprintf(stderr, "is_small : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if (get_height(p) <= 2 && get_width(p) <= 2)
-		return true;
-	return false;
+	if(get_width(p)>get_height(p))
+		return get_width(p)==2;
+	else
+		return get_height(p)==2;
 }
 
 bool is_in_board(cpiece p){
@@ -181,15 +199,12 @@ bool is_in_board(cpiece p){
 	}
 	if(get_y(p) < 0 || get_x(p) <0)
 		return false;
-	int size = 1;
-	if(!is_small(p))
-		size = 2;
 
 	if(is_horizontal(p)){
-		if(get_x(p) + size > 5)
+		if(get_x(p) + (get_width(p)-1) > 5)
 			return false;
 	}else{
-		if(get_y(p) + size > 5)
+		if(get_y(p) + (get_height(p)-1) > 5)
 			return false;
 	}
 	return true;
@@ -204,7 +219,7 @@ bool can_move_y(cpiece p)
 {
 	return p->move_y;
 }
-/*
+
 piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 {
 	if(x<0 || y<0 || y>H || x>L){

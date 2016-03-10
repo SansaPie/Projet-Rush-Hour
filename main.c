@@ -1,3 +1,5 @@
+//////////////////////////////////////////////////////////// Rajout de ASSERT a faire ////////////////////////////////////////////////////////////
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -115,11 +117,8 @@ char * scan(char * buffer , int size) {
 
 
 int main(){
-	piece *pieces_test = malloc(sizeof(struct piece_s)*5); /* on cree un tableau qui contient les pieces */
-	if(pieces_test==NULL){ /* on verifie que ce tableau a bien ete alloue */
-		fprintf(stderr,"main : pieces_test non alloue\n");
-		exit(EXIT_FAILURE);
-	}
+	piece * pieces_test = NULL;
+	pieces_test = allocation_piece_tab(5, "main"); /* on cree un tableau qui contient les pieces */
 	/* creation des pieces */
 	pieces_test[0] = new_piece_rh(0,3,true,true);
 	pieces_test[1] = new_piece_rh(0,0,true,true);
