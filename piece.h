@@ -134,5 +134,9 @@ bool can_move_y(cpiece p);
  */
 piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y);
 
+/**
+ * @brief Initializes boolean matrix
+ */
+void init_bool_grid(bool[][] grid, int width, int height);
 
 #endif

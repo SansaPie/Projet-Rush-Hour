@@ -135,7 +135,7 @@ int game_width(cgame g);
 int game_height(cgame g);
 
 /**
- * @brief return the number of then piece located on this square (-1 if no piece is present)
+ * @brief return the number of the piece located on this square (-1 if no piece is present)
  * @param game
  * @param x-coor of the square
  * @param y-coor of the square
@@ -143,4 +143,5 @@ int game_height(cgame g);
 int game_square_piece (game g, int x, int y);
 
 bool create_empty_grid(int width, int height);
+
 #endif

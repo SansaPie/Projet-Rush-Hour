@@ -40,7 +40,6 @@ game new_game_hr (int nb_pieces, piece *pieces){
 	return g;
 }
 
-
 game new_game(int width, int height, int nb_pieces, piece *pieces) {
 	game g = new_game_hr(nb_pieces, pieces);
 	g->height = height;
@@ -193,9 +192,12 @@ int game_height(cgame g) {
 int game_square_piece(game g, int x, int y) {
 
 	if (g == NULL ){// a remplir
-		fprintf(stderr, "game_square_piece: coordonnee non valide\n");
+		fprintf(stderr, "game_square_piece: g null\n");
 		exit(EXIT_FAILURE);
-	bool tmp[game_width(g)][game_height(g)] = create_empty_grid(game_width(g) , game_height(g));
+	}
+
+	bool tmp[game_width(g)][game_height(g)];
+	init_bool_grid(tmp, game_width(g) , game_height(g));
 	
 	for (int i = 0; i < game_nb_pieces(g); i++){
 
@@ -212,12 +214,3 @@ int game_square_piece(game g, int x, int y) {
 }
 
 //faire une fonction qui cree un tableau ... (la grille du jeu en lui-meme)
-
-
-bool [][] create_empty_grid(int width, int height) {
-	bool tmp[width][height];
-	for (int i = 0; i < width; i++)
-		for (int j = 0; j < height; j++)
-			tmp[i][j] = false;
-	return tmp;
-}
