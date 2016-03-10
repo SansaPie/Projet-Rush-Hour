@@ -1,8 +1,9 @@
 #ifndef _PIECE_H_
 #define _PIECE_H_
 #include <stdbool.h> //The type bool is defined in this file
-#define L 6 //Longueur de la grille
-#define H 6 //Hauteur de la grille
+
+#define L_RH 6;
+#define H_RH 6;
 
 
 /**
