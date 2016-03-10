@@ -41,6 +41,7 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	return p;
 }
 
+
 void delete_piece (piece p){
 	if(p!=NULL)
 		free(p);
@@ -58,8 +59,10 @@ void copy_piece (cpiece src, piece dst){
 	}
 	dst->x = src->x;
 	dst->y = src->y;
-	dst->small = src->small;
-	dst->horizontal = src->horizontal;
+	dst->width = src->width;
+	dst->height = src->height;
+	dst->move_x = src->move_x;
+	dst->move_y = src->move_y;
 }
 
 void move_piece (piece p, dir d, int distance){
@@ -155,14 +158,7 @@ int get_height(cpiece p)
 		fprintf(stderr, "get_height : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if (is_horizontal(p))
-		return 1;
-	else 
-	{
-		if (is_small(p))
-			return 2;
-		return 3;
-	}
+	return p->height;
 }
 
 int get_width(cpiece p){
@@ -170,11 +166,7 @@ int get_width(cpiece p){
 		fprintf(stderr, "get_width : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if(!is_horizontal(p))
-		return 1;
-	if(is_small(p))
-		return 2;
-	return 3;
+	return p->width;
 }
 
 bool is_horizontal(cpiece p){
@@ -228,7 +220,8 @@ bool can_move_y(cpiece p)
 	return p->move_y;
 }
 
- piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
+
+piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 {
 	if(x<0 || y<0 || y>H || x>L){
 		fprintf(stderr, "new_piece : hors tableau\n");
