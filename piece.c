@@ -24,47 +24,20 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	{
 		p->move_x = true;
 		p->move_y = false;
-<<<<<<< HEAD
-		if(small)
-		{
-			p->width = 2;
-			p->height = 1;
-		}
-		else
-		{
-			p->width = 3;
-			p->height = 1;
-		}
-=======
 		p->height = 1;
 		p->width = 2;
 		if(!small)
 			p->width ++;
->>>>>>> bcf14a87f59305e353fad02acae4f2e9a92194bf
 	}
 	else
 	{
 		p->move_x = false;
-<<<<<<< HEAD
-		if(small)
-		{
-			p->width = 1;
-			p->height = 2;
-		}
-		else
-		{
-			p->width = 1;
-			p->height = 3;
-		}
-	} 
-=======
 		p->move_y = true;
 		p->width = 1;
 		p->height = 2;
 		if(!small)
 			p->height ++;
 	}
->>>>>>> bcf14a87f59305e353fad02acae4f2e9a92194bf
 	return p;
 }
 
@@ -201,15 +174,11 @@ bool is_horizontal(cpiece p){
 		fprintf(stderr, "is_horizontal : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-<<<<<<< HEAD
-	return p->move_x;
-=======
 	if(can_move_x(p) && can_move_y(p)){
 		fprintf(stderr, "is_horizontal : p n'est pas une piece de rush hour\n");
 		exit(EXIT_FAILURE);
 	}
 	return can_move_x(p);
->>>>>>> bcf14a87f59305e353fad02acae4f2e9a92194bf
 }
 
 bool is_small(cpiece p) {
@@ -217,16 +186,10 @@ bool is_small(cpiece p) {
 		fprintf(stderr, "is_small : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-<<<<<<< HEAD
-	if (get_height(p)<=2 && get_width(p)<=2)
-		return true;
-	return false;
-=======
 	if(get_width(p)>get_height(p))
 		return get_width(p)==2;
 	else
 		return get_height(p)==2;
->>>>>>> bcf14a87f59305e353fad02acae4f2e9a92194bf
 }
 
 bool is_in_board(cpiece p){
@@ -257,7 +220,8 @@ bool can_move_y(cpiece p)
 	return p->move_y;
 }
 
- piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
+
+piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 {
 	if(x<0 || y<0 || y>H || x>L){
 		fprintf(stderr, "new_piece : hors tableau\n");
