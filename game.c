@@ -186,7 +186,6 @@ int game_width(cgame g) {
 	return g->width;
 }
 
-
 int game_height(cgame g) {
 	return g->height;
 }
@@ -202,16 +201,17 @@ int game_square_piece(game g, int x, int y) {
 
 		int xcoor = get_x(game_piece(g, i));
 		int ycoor = get_y(game_piece(g, i));
-		tmp [j]
+		//tmp [j]
+	/*
 	....
 	....
 	.X..
-
+	*/
 
 	return -1;
 }
 
-//faire une fonction qui cree un tableau ... (la grille du jeu en lui meme)
+//faire une fonction qui cree un tableau ... (la grille du jeu en lui-meme)
 
 
 bool [][] create_empty_grid(int width, int height) {
