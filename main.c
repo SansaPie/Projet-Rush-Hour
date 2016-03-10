@@ -114,7 +114,7 @@ char * scan(char * buffer , int size) {
 
 
 int main(){
-	piece *pieces_test = malloc(sizeof(struct piece_s)*5); /* on cree un tableau qui contient les pieces */
+	piece *pieces_test = malloc(sizeof(piece)*5); /* on cree un tableau qui contient les pieces */
 	if(pieces_test==NULL){ /* on verifie que ce tableau a bien ete alloue */
 		fprintf(stderr,"main : pieces_test non alloue\n");
 		exit(EXIT_FAILURE);

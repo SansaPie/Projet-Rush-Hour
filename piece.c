@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "piece.h"
 
-/* piece new_piece_rh (int x, int y, bool small, bool horizontal){
+piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || y>H || x>L){
 		fprintf(stderr, "new_piece_hr : hors tableau\n");
 		exit(EXIT_FAILURE);
@@ -20,10 +20,8 @@
 	}
 	p->x = x;
 	p->y = y;
-	p->small = small;
-	p->horizontal = horizontal; 
 	return p;
-} */
+}
 
 void delete_piece (piece p){
 	if(p!=NULL)
@@ -165,7 +163,11 @@ bool is_horizontal(cpiece p){
 		fprintf(stderr, "is_horizontal : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	return p->horizontal;
+	if(can_move_x(p) && can_move_y(p)){
+		fprintf(stderr, "is_horizontal : p n'est pas une piece de rush hour\n");
+		exit(EXIT_FAILURE);
+	}
+	return can_move_x(p);
 }
 
 bool is_small(cpiece p) {
@@ -173,7 +175,10 @@ bool is_small(cpiece p) {
 		fprintf(stderr, "is_small : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	return p->small;
+	if(get_width(p)>get_height(p))
+		return get_width(p)==2;
+	else
+		return get_height(p)==2;
 }
 
 bool is_in_board(cpiece p){
@@ -183,15 +188,12 @@ bool is_in_board(cpiece p){
 	}
 	if(get_y(p) < 0 || get_x(p) <0)
 		return false;
-	int size = 1;
-	if(!is_small(p))
-		size = 2;
 
 	if(is_horizontal(p)){
-		if(get_x(p) + size > 5)
+		if(get_x(p) + (get_width(p)-1) > 5)
 			return false;
 	}else{
-		if(get_y(p) + size > 5)
+		if(get_y(p) + (get_height(p)-1) > 5)
 			return false;
 	}
 	return true;
