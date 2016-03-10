@@ -5,12 +5,13 @@
 #include "piece.h"
 #include "game.h"
 
-void allocation_piece_tab(int nb_pieces, piece * pieces, char * msg){
-	pieces = malloc(sizeof(piece)*nb_pieces);
+piece * allocation_piece_tab(int nb_pieces, char * msg){
+	piece * pieces = malloc(sizeof(piece)*nb_pieces);
 	if(pieces == NULL){
 		fprintf(stderr, "%s : pieces non alloue\n", msg);
 		exit(EXIT_FAILURE);
 	}
+	return pieces;
 }
 
 game new_game_hr (int nb_pieces, piece *pieces){
@@ -25,7 +26,7 @@ game new_game_hr (int nb_pieces, piece *pieces){
 	}
 	g->nb_pieces = nb_pieces;
 
-	allocation_piece_tab(nb_pieces, g->pieces, "new_game_hr");
+	g->pieces = allocation_piece_tab(nb_pieces, "new_game_hr");
 
 	for(int i=0 ; i<nb_pieces ; i++){
 		g->pieces[i] = new_piece_rh(0,0,true,true);
@@ -70,7 +71,7 @@ void copy_game (cgame src, game dst){
 
 	delete_pieces(game_nb_pieces(dst), dst->pieces);
 	
-	allocation_piece_tab(game_nb_pieces(src), dst->pieces, "copy_game");
+	dst->pieces = allocation_piece_tab(game_nb_pieces(src), "copy_game");
 
 	dst->nb_pieces=game_nb_pieces(src);
 
@@ -116,7 +117,7 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	}
 
 	piece * t_pieces = NULL;
-	allocation_piece_tab(1, t_pieces, "play_move");
+	t_pieces = allocation_piece_tab(1, "play_move");
 	t_pieces[0] = new_piece_rh(0,0,true,true);
 	game gTmp = new_game_hr(1, t_pieces);
 	copy_game(g, gTmp);

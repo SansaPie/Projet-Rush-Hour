@@ -40,7 +40,7 @@ typedef const struct game_s* cgame;
  * @param pieces array to allocate
  * @param msg function where the allocation takes place, put in error message
  */
-void allocation_piece_tab(int nb_pieces, piece * pieces, char * msg);
+piece * allocation_piece_tab(int nb_pieces, char * msg);
 
 /**
  * @brief Creates a new game given a starting position defined by a set of pieces.
