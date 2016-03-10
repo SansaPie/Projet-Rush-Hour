@@ -1,7 +1,17 @@
+//////////////////////////////////////////////////////////// Rajout de ASSERT a faire ////////////////////////////////////////////////////////////
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "piece.h"
 #include "game.h"
+
+void allocation_piece_tab(int nb_pieces, piece * pieces, char * msg){
+	pieces = malloc(sizeof(piece)*nb_pieces);
+	if(pieces == NULL){
+		fprintf(stderr, "%s : pieces non alloue\n");
+		exit(EXIT_FAILURE);
+	}
+}
 
 game new_game_hr (int nb_pieces, piece *pieces){
 	if(nb_pieces<0 || pieces==NULL){
@@ -14,11 +24,9 @@ game new_game_hr (int nb_pieces, piece *pieces){
 		exit(EXIT_FAILURE);
 	}
 	g->nb_pieces = nb_pieces;
-	g->pieces = malloc(sizeof(piece)*nb_pieces);
-	if(g->pieces == NULL){
-		fprintf(stderr, "new_game_hr : g->pieces non alloue\n");
-		exit(EXIT_FAILURE);
-	}
+
+	allocation_piece_tab(nb_pieces, g->pieces, "new_game_hr");
+
 	for(int i=0 ; i<nb_pieces ; i++){
 		g->pieces[i] = new_piece_rh(0,0,true,true);
 		copy_piece(pieces[i],g->pieces[i]);
@@ -62,11 +70,7 @@ void copy_game (cgame src, game dst){
 
 	delete_pieces(game_nb_pieces(dst), dst->pieces);
 	
-	dst->pieces = malloc(sizeof(piece)*game_nb_pieces(src));
-	if(dst->pieces == NULL){
-		fprintf(stderr, "copy_game : erreur malloc dst->pieces\n");
-		exit(EXIT_FAILURE);
-	}
+	allocation_piece_tab(game_nb_pieces(src), dst->pieces, "copy_game");
 
 	dst->nb_pieces=game_nb_pieces(src);
 
@@ -111,7 +115,8 @@ bool play_move(game g, int piece_num, dir d, int distance){
 		exit(EXIT_FAILURE);
 	}
 
-	piece * t_pieces = malloc(sizeof(piece));
+	piece * t_pieces = NULL;
+	allocation_piece_tab(1, t_pieces, "play_move");
 	t_pieces[0] = new_piece_rh(0,0,true,true);
 	game gTmp = new_game_hr(1, t_pieces);
 	copy_game(g, gTmp);
