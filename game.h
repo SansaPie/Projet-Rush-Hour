@@ -37,14 +37,6 @@ typedef struct game_s{
 typedef const struct game_s* cgame;
 
 /**
- * @brief Allocates memory for an array of piece
- * @param nb_pieces number of pieces to allocate
- * @param pieces array to allocate
- * @param msg function where the allocation takes place, put in error message
- */
-piece * allocation_piece_tab(int nb_pieces, char * msg);
-
-/**
  * @brief Creates a new game given a starting position defined by a set of pieces.
  * The pieces of the created game are copies of the ones given as argument.
  * The number of moves of the game is set to 0.
@@ -53,13 +45,6 @@ piece * allocation_piece_tab(int nb_pieces, char * msg);
  * @return a pointer toward the generated game
  */
 game new_game_hr (int nb_pieces, piece *pieces);
-
-/**
- * @brief Destroys pieces and frees allocated memory.
- * @param nb_pieces number of pieces to destroy.
- * @param pieces the pieces to destroy.
- */
-void delete_pieces(int nb_pieces, piece * pieces);
 
 /**
  * @brief Destroys the game and free allocated memory
@@ -114,6 +99,23 @@ bool play_move(game g, int piece_num, dir d, int distance);
  */
 int game_nb_moves(cgame g);
 
+////////////// A déplacer dans un nouveau header
+
+/**
+ * @brief Allocates memory for an array of piece
+ * @param nb_pieces number of pieces to allocate
+ * @param pieces array to allocate
+ * @param msg function where the allocation takes place, put in error message
+ */
+piece * allocation_piece_tab(int nb_pieces, char * msg);
+
+/**
+ * @brief Destroys pieces and frees allocated memory.
+ * @param nb_pieces number of pieces to destroy.
+ * @param pieces the pieces to destroy.
+ */
+void delete_pieces(int nb_pieces, piece * pieces);
+
 /**
  * @brief Tests if the pieces of g are not in collision or out .
  * @return true if the game is valid.
@@ -125,17 +127,17 @@ game new_game (int width, int height, int nb_pieces, piece *pieces);
 
 
 /**
- *@brief return the width of the grid
+ *@brief returns the width of the grid
  */
 int game_width(cgame g);
 
 /**
- *@brief return the height of the grid
+ *@brief returns the height of the grid
  */
 int game_height(cgame g);
 
 /**
- * @brief return the number of the piece located on this square (-1 if no piece is present)
+ * @brief returns the number of the piece located on this square (-1 if no piece is present)
  * @param game
  * @param x-coor of the square
  * @param y-coor of the square

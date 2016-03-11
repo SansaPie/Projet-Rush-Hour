@@ -8,7 +8,7 @@
 #include "piece.h"
 #include "math.h"
 
-#define NB_PIECE_TEST_RH 5;
+#define NB_PIECE_TEST_RH 5
 
 /**
  * @brief fonction affichant le jeu dans le terminal
@@ -117,10 +117,10 @@ char * scan(char * buffer , int size) {
 	return result;
 }
 
-
-int main(){
+void rush_hour(char * answer){
 	piece * pieces_test = NULL;
-	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "main"); /* on cree un tableau qui contient les pieces */
+	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "rush_hour"); /* on cree un tableau qui contient les pieces */
+	
 	/* creation des pieces */
 	pieces_test[0] = new_piece_rh(0,3,true,true);
 	pieces_test[1] = new_piece_rh(0,0,true,true);
@@ -129,14 +129,9 @@ int main(){
 	pieces_test[4] = new_piece_rh(4,4,true,false);
 	game g = new_game_hr(NB_PIECE_TEST_RH, pieces_test); /* initialisation d'un premier jeu */
 
-	printf("Test\n");
-	assert(false);
-	printf("RATE!!\n");
-
-
 	/* teste si la position des pieces est conforme */
 	if(!game_valid(g)){
-		fprintf(stderr, "main : game invalid\n");
+		fprintf(stderr, "rush_hour : game invalid\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -154,8 +149,6 @@ int main(){
 
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
 		display_game(g);
-		int size = 6;
-		char * answer = malloc(sizeof(char)*size) ;
 
 		int number_piece = -1;
 		while(number_piece<0 || number_piece>game_nb_pieces(g)){
@@ -173,7 +166,6 @@ int main(){
 				printf("Veuillez rentrer une distance valide. (-4 a 4)\n");
 		}
 		move(g, number_piece, distance);
-		free(answer);
 	}
 
 	display_game(g);
@@ -181,6 +173,43 @@ int main(){
 	
 	delete_pieces(NB_PIECE_TEST_RH, pieces_test);
 	delete_game(g);
+}
 
+void ane_rouge(char * answer){
+	piece * pieces_test = NULL;
+	pieces_test = allocation_piece_tab(7, "ane_rouge");
+
+	/*creation des pieces
+	...
+	*/
+	game g = new_game(7, 7, 7, pieces_test);
+
+	if(!game_valid(g)){
+		fprintf(sterr, "ane_rouge : g non valide\n");
+		exit(EXIT_FAILURE);
+	}
+
+	delete_game(g);
+	delete_pieces(7, pieces_test);
+}
+
+// Chercher comment factoriser au mieux le main
+int main(){
+	int size = 6;
+	char * answer = malloc(sizeof(char)*size);
+	printf("A quel jeu souhaitez-vous jouer ?\n1. Rush-hour\n2. Ane rouge\n");
+
+	int choix = -1;
+	while(choix!=1 || choix!=2){
+		choix = atoi(scan(answer, size));
+		if(choix!=1||choix!=2)
+			printf("Veuillez selectionner un numero de jeu correct.\n");
+	}
+	if(choix == 1)
+		rush_hour(answer);
+	else
+		ane_rouge(answer);
+
+	free(answer);
 	return EXIT_SUCCESS;
 }

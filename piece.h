@@ -2,8 +2,8 @@
 #define _PIECE_H_
 #include <stdbool.h> //The type bool is defined in this file
 
-#define L_RH 6;
-#define H_RH 6;
+#define L_RH 6
+#define H_RH 6
 
 
 /**
@@ -108,6 +108,17 @@ int get_width(cpiece p);
  * @brief Returns true if the piece is horizontal
  */
 bool is_horizontal(cpiece p);
+
+/////////////////// A déplacer dans un nouveau header
+
+/**
+ * @brief Returns false if the piece is not put over an other in tmp
+ * @param p piece put in board
+ * @param tmp board as a boolean matrix
+ * @param x-coor of the piece
+ * @param y-coor of the piece
+ */
+bool put_piece_in_board(cpiece p, bool *** tmp, int x, int y);
 
 /**
  * @brief Returns true if the piece is small

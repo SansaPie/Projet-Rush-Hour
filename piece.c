@@ -72,22 +72,35 @@ void move_piece (piece p, dir d, int distance){
 	}
 	switch(d){
 		case RIGHT:
-			if(is_horizontal(p))
-				p->x+=distance;
+			p->x+=distance;
 			break;
 		case LEFT:
-			if(is_horizontal(p))
-				p->x-=distance;
+			p->x-=distance;
 			break;
 		case UP:
-			if(!is_horizontal(p))
-				p->y+=distance;
+			p->y+=distance;
 			break;
 		case DOWN:
-			if(!is_horizontal(p))
-				p->y-=distance;
+			p->y-=distance;
 			break;
 	}
+}
+
+//Fonction à tester, bool *** peut-être impossible, chercher un type qui se comportera correctement
+bool put_piece_in_board(cpiece p, bool *** ptr_tmp, int x, int y){ // Place pièce p dans le tableau en attribuant true aux cases où la pièce se trouve
+	for(int i=0 ; i<get_width(p) ; i++){
+		if(!(*ptr_tmp)[x+i][y])
+			(*ptr_tmp)[x+i][y] = true;
+		else
+			return true;
+	}
+	for(int i=0 ; i<get_height(p) ; i++){
+		if(!(*ptr_tmp)[x][y+i])
+			(*ptr_tmp)[x][y+i] = true;
+		else
+			return true;
+	}
+	return false;
 }
 
 bool intersect(cpiece p1, cpiece p2){
@@ -96,6 +109,7 @@ bool intersect(cpiece p1, cpiece p2){
 		exit(EXIT_FAILURE);
 	}
 
+	bool result = false;
 	bool tmp[L_RH][H_RH];
 	for(int i=0 ; i<L_RH ; i++)
 		for(int j=0 ; j<H_RH ; j++)
@@ -106,9 +120,10 @@ bool intersect(cpiece p1, cpiece p2){
 	int xCoor2 = get_x(p2);
 	int yCoor2 = get_y(p2);
 
-	tmp[xCoor1][yCoor1]=true;
+	result = result || put_piece_in_board(p1, &tmp, xCoor1, yCoor1);
+	result = result || put_piece_in_board(p2, &tmp, xCoor2, yCoor2);
 
-	if(is_horizontal(p1)){
+	/*if(is_horizontal(p1)){
 		tmp[(xCoor1)+1][yCoor1]=true;
 		if(!is_small(p1))
 			tmp[(xCoor1)+2][yCoor1]=true;
@@ -117,17 +132,17 @@ bool intersect(cpiece p1, cpiece p2){
 		if(!is_small(p1))
 			tmp[xCoor1][(yCoor1)+2]=true;
 	}
-	if (is_horizontal(p2)) {
+	if(is_horizontal(p2)){
 		if (tmp[xCoor2][yCoor2] || tmp[(xCoor2) + 1][yCoor2]) { return true; }
 		if (!is_small(p2))
 			if (tmp[(xCoor2) + 2][yCoor2]) { return true; }
-	}
-	else {
+	}else{
 		if (tmp[xCoor2][yCoor2] || tmp[xCoor2][(yCoor2)+1]) { return true; }
 		if (!is_small(p2))
 			if (tmp[xCoor2][(yCoor2)+2]) { return true; }
 	}
-	return false;
+	return false;*/
+	return result;
 }
 
 int get_x(cpiece p)
@@ -190,6 +205,8 @@ bool is_small(cpiece p) {
 		return get_height(p)==2;
 }
 
+// Cette fonction devrait sans doute se trouver dans game étant donné que le board auquel elle fait référence est le plateau du jeu, soit rush-hour, soit ane rouge
+// Ou alors il faut l'appeler is_in_board_rh ?
 bool is_in_board(cpiece p){
 	if(p==NULL){
 		fprintf(stderr, "is_in_board : p invalide\n");
@@ -218,6 +235,7 @@ bool can_move_y(cpiece p)
 	return p->move_y;
 }
 
+// new_piece_ar ?
 piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 {
 	if(x<0 || y<0 || y>H_RH || x>L_RH){
