@@ -8,14 +8,9 @@ add_library(game game.c piece.c)
 add_executable(rush-hour main.c)
 target_link_libraries(rush-hour game)
 
-add_executable(test_game test_game.c)
-target_link_libraries(test_game game)
-
 add_executable(test_game1 test_game1.c)
 target_link_libraries(test_game1 game)
 
-add_executable(test_piece test_piece.c)
-target_link_libraries(test_piece game)
 
 add_executable(test_piece1 test_piece1.c)
 target_link_libraries(test_piece1 game)

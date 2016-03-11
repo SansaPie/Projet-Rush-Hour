@@ -30,10 +30,19 @@ typedef struct game_s{
 	int nb_pieces;
 	piece * pieces;
 	int moves;
+	int width;
+	int height;
 } *game;
 
 typedef const struct game_s* cgame;
 
+/**
+ * @brief Allocates memory for an array of piece
+ * @param nb_pieces number of pieces to allocate
+ * @param pieces array to allocate
+ * @param msg function where the allocation takes place, put in error message
+ */
+piece * allocation_piece_tab(int nb_pieces, char * msg);
 
 /**
  * @brief Creates a new game given a starting position defined by a set of pieces.
@@ -50,7 +59,6 @@ game new_game_hr (int nb_pieces, piece *pieces);
  * @param nb_pieces number of pieces to destroy.
  * @param pieces the pieces to destroy.
  */
-
 void delete_pieces(int nb_pieces, piece * pieces);
 
 /**
@@ -127,11 +135,13 @@ int game_width(cgame g);
 int game_height(cgame g);
 
 /**
- * @brief return the number of then piece located on this square (-1 if no piece is present)
+ * @brief return the number of the piece located on this square (-1 if no piece is present)
  * @param game
  * @param x-coor of the square
  * @param y-coor of the square
  */
 int game_square_piece (game g, int x, int y);
+
+bool create_empty_grid(int width, int height);
 
 #endif

@@ -4,12 +4,12 @@
 #include "piece.h"
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
-	if(x<0 || y<0 || y>H || x>L){
+	if(x<0 || y<0 || y>H_RH || x>L_RH){
 		fprintf(stderr, "new_piece_hr : hors tableau\n");
 		exit(EXIT_FAILURE);
 	}
-	if((y==H-1 && !horizontal) || (x==L-1 && horizontal) || 
-		(y>=H-2 && !horizontal && !small) || (x>=L-2 && horizontal && !small)){
+	if((y==H_RH-1 && !horizontal) || (x==L_RH-1 && horizontal) || 
+		(y>=H_RH-2 && !horizontal && !small) || (x>=L_RH-2 && horizontal && !small)){
 		fprintf(stderr,"new_piece_hr : piece sortant en partie du tableau\n");
 		exit(EXIT_FAILURE);
 	}
@@ -96,12 +96,10 @@ bool intersect(cpiece p1, cpiece p2){
 		exit(EXIT_FAILURE);
 	}
 
-	bool tmp[H][L];
-	for(int i=0;i<L;i++){
-		for(int j=0;j<H;j++){
+	bool tmp[L_RH][H_RH];
+	for(int i=0 ; i<L_RH ; i++)
+		for(int j=0 ; j<H_RH ; j++)
 			tmp[i][j]=false;
-		}
-	}
 
 	int xCoor1 = get_x(p1);
 	int yCoor1 = get_y(p1);
@@ -154,7 +152,7 @@ int get_y(cpiece p)
 
 int get_height(cpiece p)
 {
-	if(p==NULL){
+	if (p == NULL) {
 		fprintf(stderr, "get_height : p invalide\n");
 		exit(EXIT_FAILURE);
 	}
@@ -201,10 +199,10 @@ bool is_in_board(cpiece p){
 		return false;
 
 	if(is_horizontal(p)){
-		if(get_x(p) + (get_width(p)-1) > 5)
+		if(get_x(p) + (get_width(p)-1) > (L_RH-1))
 			return false;
 	}else{
-		if(get_y(p) + (get_height(p)-1) > 5)
+		if(get_y(p) + (get_height(p)-1) > (H_RH-1))
 			return false;
 	}
 	return true;
@@ -220,14 +218,18 @@ bool can_move_y(cpiece p)
 	return p->move_y;
 }
 
+<<<<<<< HEAD
 
 piece new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
+=======
+piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
+>>>>>>> 172e9a5b5e02c03d9ccd736c48b76f810a8671d4
 {
-	if(x<0 || y<0 || y>H || x>L){
+	if(x<0 || y<0 || y>H_RH || x>L_RH){
 		fprintf(stderr, "new_piece : hors tableau\n");
 		exit(EXIT_FAILURE);
 	}
-	if(((height+y)>H) || ((width+x)>L))
+	if(((height+y)>H_RH) || ((width+x)>L_RH))
 	{
 		fprintf(stderr,"new_piece : piece sortant en partie du tableau\n");
 		exit(EXIT_FAILURE);
@@ -245,14 +247,3 @@ piece new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
 	p->move_y = move_y;
 	return p;
 }
-
-
-
-
-
-
-
-
-
-
-

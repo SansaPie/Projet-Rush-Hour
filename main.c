@@ -1,9 +1,14 @@
+//////////////////////////////////////////////////////////// Rajout de ASSERT a faire ////////////////////////////////////////////////////////////
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "game.h"
 #include "piece.h"
 #include "math.h"
+
+#define NB_PIECE_TEST_RH 5;
 
 /**
  * @brief fonction affichant le jeu dans le terminal
@@ -11,10 +16,10 @@
  */
 
 void display_game(cgame g) {
-	char grid[6][6]; /* on crée un tableau à deux dimensions qui représente notre plateau de jeu */
+	char grid[L_RH][H_RH]; /* on crée un tableau à deux dimensions qui représente notre plateau de jeu */
 	/* initialisation de toutes les cases du tableau precedement creer avec des '.' */
-	for (int i = 0; i < 6; i++) {
-		for (int j = 0; j < 6; j++) {
+	for (int i = 0; i < L_RH; i++) {
+		for (int j = 0; j < H_RH; j++) {
 			grid[i][j] ='.';
 		}
 	}
@@ -22,7 +27,7 @@ void display_game(cgame g) {
 	for (int i = 0; i < game_nb_pieces(g); i++){
 
 		int xCoordDisplay = get_x(game_piece(g,i));
-		int yCoordDisplay = 5-get_y(game_piece(g,i));
+		int yCoordDisplay = (H_RH-1)-get_y(game_piece(g,i));
 
 		grid[xCoordDisplay][yCoordDisplay] = i + '0';
 		if (!is_horizontal(game_piece(g,i))) {
@@ -38,8 +43,8 @@ void display_game(cgame g) {
 	}
 	
 	/* affichage du tableau rempli */
-	for (int x = 0; x<6; x++) {
-		for (int y = 0; y<6; y++) {
+	for (int x = 0; x<L_RH; x++) {
+		for (int y = 0; y<H_RH; y++) {
 			printf("%c ", grid[y][x]);
 		}
 		printf("\n");
@@ -114,18 +119,20 @@ char * scan(char * buffer , int size) {
 
 
 int main(){
-	piece *pieces_test = malloc(sizeof(piece)*5); /* on cree un tableau qui contient les pieces */
-	if(pieces_test==NULL){ /* on verifie que ce tableau a bien ete alloue */
-		fprintf(stderr,"main : pieces_test non alloue\n");
-		exit(EXIT_FAILURE);
-	}
+	piece * pieces_test = NULL;
+	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "main"); /* on cree un tableau qui contient les pieces */
 	/* creation des pieces */
 	pieces_test[0] = new_piece(0,3, 2, 1, true,false);
 	pieces_test[1] = new_piece_rh(0,0,true,true);
 	pieces_test[2] = new_piece_rh(1,1,false,true);
 	pieces_test[3] = new_piece_rh(3,3,false,false);
 	pieces_test[4] = new_piece_rh(4,4,true,false);
-	game g = new_game_hr(5, pieces_test); /* initialisation d'un premier jeu */
+	game g = new_game_hr(NB_PIECE_TEST_RH, pieces_test); /* initialisation d'un premier jeu */
+
+	printf("Test\n");
+	assert(false);
+	printf("RATE!!\n");
+
 
 	/* teste si la position des pieces est conforme */
 	if(!game_valid(g)){
@@ -158,7 +165,7 @@ int main(){
 		}
 		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?\n"
 			, number_piece);
-		int distance = 5;
+		int distance = H_RH;
 		while(distance<-4 || distance>4){
 			distance = atoi(scan(answer, size));
 			if(distance<-4 || distance>4)
@@ -171,7 +178,7 @@ int main(){
 	display_game(g);
 	printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
 	
-	delete_pieces(5, pieces_test);
+	delete_pieces(NB_PIECE_TEST_RH, pieces_test);
 	delete_game(g);
 
 	return EXIT_SUCCESS;
