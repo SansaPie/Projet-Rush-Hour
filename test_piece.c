@@ -34,8 +34,10 @@ void display_piece(piece p)
 {
 	printf("x : %d \n", p->x);
 	printf("y : %d \n", p->y);
-	printf("small : %d \n", p->small);
-	printf("horizontal : %d \n", p->horizontal);
+	printf("largeur : %d \n", p->width);
+	printf("hauteur : %d \n", p->height);
+	printf("move_x : %d \n", p->move_x);
+	printf("move_y : %d \n", p->move_y);
 	printf("\n");
 }
 

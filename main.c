@@ -120,7 +120,7 @@ int main(){
 		exit(EXIT_FAILURE);
 	}
 	/* creation des pieces */
-	pieces_test[0] = new_piece_rh(0,3,true,true);
+	pieces_test[0] = new_piece(0,3, 2, 1, true,false);
 	pieces_test[1] = new_piece_rh(0,0,true,true);
 	pieces_test[2] = new_piece_rh(1,1,false,true);
 	pieces_test[3] = new_piece_rh(3,3,false,false);
@@ -148,8 +148,7 @@ int main(){
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
 		display_game(g);
 		int size = 6;
-		char * answer = malloc(sizeof(char)*size) ;
-
+		char * answer = malloc(sizeof(char)*size);
 		int number_piece = -1;
 		while(number_piece<0 || number_piece>game_nb_pieces(g)){
 			printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
