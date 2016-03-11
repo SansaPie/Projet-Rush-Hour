@@ -243,7 +243,7 @@ piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 	p->move_x = move_x;
 	p->move_y = move_y;
 	return p;
-}*/
+}
 
 
 

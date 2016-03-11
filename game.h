@@ -30,6 +30,8 @@ typedef struct game_s{
 	int nb_pieces;
 	piece * pieces;
 	int moves;
+	int height;
+	int width;
 } *game;
 
 typedef const struct game_s* cgame;
