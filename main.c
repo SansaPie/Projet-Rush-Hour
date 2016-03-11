@@ -8,7 +8,7 @@
 #include "piece.h"
 #include "math.h"
 
-#define NB_PIECE_TEST_RH 5;
+#define NB_PIECE_TEST_RH 5
 
 /**
  * @brief fonction affichant le jeu dans le terminal
