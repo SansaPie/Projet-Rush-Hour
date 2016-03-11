@@ -5,6 +5,8 @@
 #include "piece.h" 
 
 #define NB_PIECES 4
+#define HEIGHT 6
+#define WIDTH 6
 
 bool test_game_piece(cgame gtest);
 
@@ -192,12 +194,25 @@ bool test_game_nb_moves(){
 	return result;
 }
 
+bool test_game_square_piece() {
+	bool result = true;
+	set_up();
+	game test = new_game(WIDTH, HEIGHT, NB_PIECES, pieces);
+	result = result && test_equality_int(2, game_square_piece(test, 4, 1) , "game_square_piece present");
+	result = result && test_equality_int(-1, game_square_piece(test, 0, 0), "game_square_piece not present");
+	delete_game(test);
+	tear_down();
+	return result;
+
+}
+
 int main(){
 	bool result = true;
 	result = result && test_equality_bool(true, test_new_game_hr(), "new_game");
 	result = result && test_equality_bool(true, test_copy_game(), "copy_game");
 	result = result && test_equality_bool(true, test_game_nb_pieces(), "game_nb_pieces");
 	result = result && test_equality_bool(true, test_game_over_hr(), "game_over");
+	result = result && test_equality_bool(true, test_game_square_piece(), "game_square_piece");
 	if (!result) {
 		printf("Test_game KO!\n");
 		return EXIT_FAILURE;

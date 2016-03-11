@@ -218,7 +218,7 @@ bool can_move_y(cpiece p)
 	return p->move_y;
 }
 
-piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
+piece new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
 {
 	if(x<0 || y<0 || y>H_RH || x>L_RH){
 		fprintf(stderr, "new_piece : hors tableau\n");
@@ -242,3 +242,16 @@ piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y)
 	p->move_y = move_y;
 	return p;
 }
+
+
+
+
+
+
+
+
+
+
+
+=======
+>>>>>>> dd1adde87adb7fd89aeb4c044c958b9fc767fee4
