@@ -42,7 +42,6 @@ game new_game_hr (int nb_pieces, piece *pieces){
 	return g;
 }
 
-
 game new_game(int width, int height, int nb_pieces, piece *pieces) {
 	game g = new_game_hr(nb_pieces, pieces);
 	g->height = height;
@@ -188,13 +187,11 @@ int game_width(cgame g) {
 	return g->width;
 }
 
-
 int game_height(cgame g) {
 	return g->height;
 }
 
 int game_square_piece(game g, int x, int y) {
-
 	if (g == NULL) {
 		fprintf(stderr, "game_square_piece: coordonnee non valide\n");
 		exit(EXIT_FAILURE);
@@ -207,12 +204,3 @@ int game_square_piece(game g, int x, int y) {
 	}
 	return ERR_PIECE;
 }
-
-/*
-bool [][] create_empty_grid(int width, int height) {
-	bool tmp[width][height];
-	for (int i = 0; i < width; i++)
-		for (int j = 0; j < height; j++)
-			tmp[i][j] = false;
-	return tmp;
-}*/
