@@ -245,14 +245,3 @@ piece new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
 }
 
 
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> dd1adde87adb7fd89aeb4c044c958b9fc767fee4

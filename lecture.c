@@ -10,7 +10,7 @@
 // coordonnée x / coordonnée y / bool move_x / bool move_y / largeur / hauteur
 
 void lecture(piece pieces_test[], int * n);
-void lecture_rh(piece pieces_test[], int * n);
+
 
 int number_pieces; // nombre de pièces
 int c_x;	   // coordonnée x
