@@ -170,6 +170,16 @@ void choix_config(piece pieces_test[], int * n,  char * answer)
 		FILE *entree = fopen("easy_rh_1.txt", "r+");
 		lecture(pieces_test, n, entree);
 	}
+	if (strcmp(answer, "normal_rh_1.txt") == 0)
+	{
+		FILE *entree = fopen("normal_rh_1.txt", "r+");
+		lecture(pieces_test, n, entree);
+	}
+	if (strcmp(answer, "normal_rh_2.txt") == 0)
+	{
+		FILE *entree = fopen("normal_rh_2.txt", "r+");
+		lecture(pieces_test, n, entree);
+	}
 }
 
 
@@ -181,7 +191,9 @@ int main(){
 	int n = 0;
 	char * config = malloc(sizeof(char)*size);
 	printf("La liste des configurations disponibles est : \n"
-		"	easy_rh_1.txt\n \nVeuillez recopier le nom du fichier que vous souhaitez utiliser. \n");
+		"	easy_rh_1.txt\n"
+		"	normal_rh_1.txt \n"
+		" 	normal_rh_2.txt \n \nVeuillez recopier le nom du fichier que vous souhaitez utiliser. \n");
 	scan(config, size);
 	choix_config(pieces_test, &n, config);
 	// lecture(pieces_test, &n);
