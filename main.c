@@ -117,7 +117,7 @@ char * scan(char * buffer , int size) {
 	return result;
 }
 
-void rush_hour(char * answer){
+void rush_hour(char * answer, int size){
 	piece * pieces_test = NULL;
 	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "rush_hour"); /* on cree un tableau qui contient les pieces */
 	
@@ -175,7 +175,7 @@ void rush_hour(char * answer){
 	delete_game(g);
 }
 
-void ane_rouge(char * answer){
+void ane_rouge(char * answer, int size){
 	piece * pieces_test = NULL;
 	pieces_test = allocation_piece_tab(7, "ane_rouge");
 
@@ -185,7 +185,7 @@ void ane_rouge(char * answer){
 	game g = new_game(7, 7, 7, pieces_test);
 
 	if(!game_valid(g)){
-		fprintf(sterr, "ane_rouge : g non valide\n");
+		fprintf(stderr, "ane_rouge : g non valide\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -200,15 +200,15 @@ int main(){
 	printf("A quel jeu souhaitez-vous jouer ?\n1. Rush-hour\n2. Ane rouge\n");
 
 	int choix = -1;
-	while(choix!=1 || choix!=2){
+	while(choix!=1 && choix!=2){
 		choix = atoi(scan(answer, size));
-		if(choix!=1||choix!=2)
+		if(choix!=1&&choix!=2)
 			printf("Veuillez selectionner un numero de jeu correct.\n");
 	}
 	if(choix == 1)
-		rush_hour(answer);
+		rush_hour(answer, size);
 	else
-		ane_rouge(answer);
+		ane_rouge(answer, size);
 
 	free(answer);
 	return EXIT_SUCCESS;

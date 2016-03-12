@@ -112,6 +112,11 @@ bool is_horizontal(cpiece p);
 /////////////////// A déplacer dans un nouveau header
 
 /**
+ * @brief Allocates a boolean matrix
+ */
+bool ** allocation_bool_matrix(int width, int height);
+
+/**
  * @brief Returns false if the piece is not put over an other in tmp
  * @param p piece put in board
  * @param tmp board as a boolean matrix

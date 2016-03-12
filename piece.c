@@ -86,6 +86,28 @@ void move_piece (piece p, dir d, int distance){
 	}
 }
 
+bool ** allocation_bool_matrix(int width, int height){
+	bool ** tmp = malloc(width*sizeof(bool*));
+	if(tmp==NULL){
+		fprintf(stderr, "intersect : allocation impossible\n");
+		exit(EXIT_FAILURE);
+	}
+	for(int i=0 ; i<width ; i++){
+		tmp[i] = malloc(height*sizeof(bool));
+		if(tmp[i]==NULL){
+			fprintf(stderr, "intersect : allocation impossible\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+	return tmp;
+}
+
+void delete_bool_matrix(bool ** tmp, int height){
+	for(int i=0 ; i<height ; i++)
+		free(tmp[i]);
+	free(tmp);
+}
+
 //Fonction à tester, bool *** peut-être impossible, chercher un type qui se comportera correctement
 bool put_piece_in_board(cpiece p, bool *** ptr_tmp, int x, int y){ // Place pièce p dans le tableau en attribuant true aux cases où la pièce se trouve
 	for(int i=0 ; i<get_width(p) ; i++){
@@ -94,7 +116,7 @@ bool put_piece_in_board(cpiece p, bool *** ptr_tmp, int x, int y){ // Place piè
 		else
 			return true;
 	}
-	for(int i=0 ; i<get_height(p) ; i++){
+	for(int i=1 ; i<get_height(p) ; i++){
 		if(!(*ptr_tmp)[x][y+i])
 			(*ptr_tmp)[x][y+i] = true;
 		else
@@ -110,7 +132,8 @@ bool intersect(cpiece p1, cpiece p2){
 	}
 
 	bool result = false;
-	bool tmp[L_RH][H_RH];
+	bool ** tmp = NULL;
+	tmp = allocation_bool_matrix(L_RH, H_RH);
 	for(int i=0 ; i<L_RH ; i++)
 		for(int j=0 ; j<H_RH ; j++)
 			tmp[i][j]=false;
@@ -142,6 +165,7 @@ bool intersect(cpiece p1, cpiece p2){
 			if (tmp[xCoor2][(yCoor2)+2]) { return true; }
 	}
 	return false;*/
+	delete_bool_matrix(tmp, H_RH);
 	return result;
 }
 
