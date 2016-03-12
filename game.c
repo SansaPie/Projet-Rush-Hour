@@ -5,6 +5,8 @@
 #include "piece.h"
 #include "game.h"
 
+#define ERR_PIECE -1 
+
 piece * allocation_piece_tab(int nb_pieces, char * msg){
 	piece * pieces = malloc(sizeof(piece)*nb_pieces);
 	if(pieces == NULL){
@@ -188,27 +190,17 @@ int game_width(cgame g) {
 int game_height(cgame g) {
 	return g->height;
 }
-/*
-int game_square_piece(game g, int x, int y) {
 
-	if (g == NULL ){// a remplir
-		fprintf(stderr, "game_square_piece: g null\n");
+int game_square_piece(game g, int x, int y) {
+	if (g == NULL) {
+		fprintf(stderr, "game_square_piece: coordonnee non valide\n");
 		exit(EXIT_FAILURE);
 	}
-
-	bool tmp[game_width(g)][game_height(g)];
-	init_bool_grid(tmp, game_width(g) , game_height(g));
-	
-	for (int i = 0; i < game_nb_pieces(g); i++){
-
+	for (int i = 0; i < game_nb_pieces(g); i++) {
 		int xcoor = get_x(game_piece(g, i));
 		int ycoor = get_y(game_piece(g, i));
-		//tmp [j]
-	....
-	....
-	.X..
-
-	return -1;
-}*/
-
-//faire une fonction qui cree un tableau ... (la grille du jeu en lui-meme)
+		if (x == xcoor && y == ycoor)
+			return i;
+	}
+	return ERR_PIECE;
+}
