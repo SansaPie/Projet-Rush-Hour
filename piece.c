@@ -3,7 +3,8 @@
 #include <stdbool.h>
 #include "piece.h"
 
-piece new_piece_rh (int x, int y, bool small, bool horizontal){
+piece new_piece_rh (int x, int y, bool small, bool horizontal){ 
+// Cette fonction est-elle vraiment nécessaire ? Lors de la lecture de fichier, on utilise la fonction "new_piece". New_piece_rh n'est pas utile, puisque le fait que ce soit un jeu âne rouge ou un jeu rush hour est défini dans le fichier qu'on lit. 
 	if(x<0 || y<0 || y>H_RH || x>L_RH){
 		fprintf(stderr, "new_piece_hr : hors tableau\n");
 		exit(EXIT_FAILURE);

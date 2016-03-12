@@ -121,17 +121,12 @@ char * scan(char * buffer , int size) {
 int main(){
 	piece * pieces_test = NULL;
 	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "main"); /* on cree un tableau qui contient les pieces */
-	/* creation des pieces */
-	pieces_test[0] = new_piece(0,3, 2, 1, true,false);
-	pieces_test[1] = new_piece_rh(0,0,true,true);
-	pieces_test[2] = new_piece_rh(1,1,false,true);
-	pieces_test[3] = new_piece_rh(3,3,false,false);
-	pieces_test[4] = new_piece_rh(4,4,true,false);
+	// Je vire la création de pièces : la fonction lecture fonctionne, à partir de là on n'a donc plus besoin de créer le jeu directement dans le main.
 	game g = new_game_hr(NB_PIECE_TEST_RH, pieces_test); /* initialisation d'un premier jeu */
 
 	printf("Test\n");
 	assert(false);
-	printf("RATE!!\n");
+	printf("RATE!!\n"); 
 
 
 	/* teste si la position des pieces est conforme */
