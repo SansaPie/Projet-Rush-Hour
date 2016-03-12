@@ -38,10 +38,19 @@ char * scan(char * buffer , int size) {
 
 void choix_config(piece pieces_test[], int * n, char * answer)
 {
-	if (strcmp(answer, "configurations.txt") == 0)
+	printf("La liste des configurations disponibles est : \n"
+		"	srgrgq.txt\n	sfnsdfi.txt\n	irnqgirgn.txt\n \nVeuillez recopier le nom du fichier que vous souhaitez utiliser. \n");
+	scan(answer, 30);
+	if (answer != NULL) 
+	{ 
+    		char * p = strchr(answer, '\n'); 
+  
+    		if (p != NULL) 
+        	*p = 0; 
+	}
+	if (strcmp(answer, "easy_rh_1.txt") == 0)
 	{
-		FILE *entree = fopen("configurations.txt", "r+");
-		entree = fopen("configurations.txt", "r+");
+		FILE *entree = fopen("easy_rh_1.txt", "r+");
 		lecture(pieces_test, n, entree);
 	}
 }

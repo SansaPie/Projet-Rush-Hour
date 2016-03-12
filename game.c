@@ -27,9 +27,7 @@ game new_game_hr (int nb_pieces, piece *pieces){
 		exit(EXIT_FAILURE);
 	}
 	g->nb_pieces = nb_pieces;
-
 	g->pieces = allocation_piece_tab(nb_pieces, "new_game_hr");
-
 	for(int i=0 ; i<nb_pieces ; i++){
 		g->pieces[i] = new_piece_rh(0,0,true,true);
 		copy_piece(pieces[i],g->pieces[i]);

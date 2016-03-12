@@ -20,17 +20,16 @@ int m_y;	   // bool move_y
 int w;		   // int largeur
 int h;		   // int hauteur
 
+
 /**
  * @brief fonction permettant la lecture des caractéristiques des pièces dans un fichier annexe
  *
  */
 
-void lecture(piece pieces_test[], int * n) {
-	FILE *entree;
-	entree = fopen("configurations.txt", "r+");
+void lecture(piece pieces_test[], int * n, FILE * entree) {
 	if( entree == NULL )
 	{
-		printf("error when opening configurations.txt\n");
+		printf("error when opening the file\n");
 		exit(EXIT_FAILURE);
 	}  
 	fscanf(entree, "%d", &number_pieces);
@@ -151,12 +150,41 @@ char * scan(char * buffer , int size) {
 }
 
 
+
+/**
+ * @brief Cette fonction permet le choix de la configuration de jeux parmi une liste donnée
+ *
+ */
+
+void choix_config(piece pieces_test[], int * n,  char * answer)
+{
+	if (answer != NULL) 
+	{ 
+    		char * p = strchr(answer, '\n'); 
+  
+    		if (p != NULL) 
+        	*p = 0; 
+	}
+	if (strcmp(answer, "easy_rh_1.txt") == 0)
+	{
+		FILE *entree = fopen("easy_rh_1.txt", "r+");
+		lecture(pieces_test, n, entree);
+	}
+}
+
+
 int main(){
 	/* creation des pieces */
+	int size = 30;
 	piece * pieces_test = NULL;
 	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "main"); /* on cree un tableau qui contient les pieces */
 	int n = 0;
-	lecture(pieces_test, &n);
+	char * config = malloc(sizeof(char)*size);
+	printf("La liste des configurations disponibles est : \n"
+		"	easy_rh_1.txt\n \nVeuillez recopier le nom du fichier que vous souhaitez utiliser. \n");
+	scan(config, size);
+	choix_config(pieces_test, &n, config);
+	// lecture(pieces_test, &n);
 	for (int x=0; x<n; x++)
 	{
 		printf("%d %d %d %d %d %d \n", pieces_test[x]->x,  pieces_test[x]->y,  pieces_test[x]->move_x,  pieces_test[x]->move_y,  pieces_test[x]->width,  pieces_test[x]-> height);
@@ -164,8 +192,8 @@ int main(){
 	game g = new_game_hr(NB_PIECE_TEST_RH, pieces_test); /* initialisation d'un premier jeu */
 
 	printf("Test\n");
-	assert(false);
-	printf("RATE!!\n");
+	// assert(false);
+	// printf("RATE!!\n");
 
 	/* teste si la position des pieces est conforme */
 	if(!game_valid(g)){
@@ -187,7 +215,6 @@ int main(){
 
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
 		display_game(g);
-		int size = 6;
 		char * answer = malloc(sizeof(char)*size);
 		int number_piece = -1;
 		while(number_piece<0 || number_piece>game_nb_pieces(g)){
