@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "piece.h"
+#include "piece1.h"
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){ 
 // Cette fonction est-elle vraiment nécessaire ? Lors de la lecture de fichier, on utilise la fonction "new_piece". New_piece_rh n'est pas utile, puisque le fait que ce soit un jeu âne rouge ou un jeu rush hour est défini dans le fichier qu'on lit. 
+// Fonction présente dans le header fourni, tout comme new_game_hr, il faudra demander si l'on doit les garder car elles sont toutes deux dispensables
 	if(x<0 || y<0 || y>H_RH || x>L_RH){
 		fprintf(stderr, "new_piece_hr : hors tableau\n");
 		exit(EXIT_FAILURE);
@@ -42,7 +44,6 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	return p;
 }
 
-
 void delete_piece (piece p){
 	if(p!=NULL)
 		free(p);
@@ -51,7 +52,6 @@ void delete_piece (piece p){
 		exit(EXIT_FAILURE);
 	}
 }
-
 
 void copy_piece (cpiece src, piece dst){
 	if(src==NULL || dst==NULL){
@@ -73,22 +73,56 @@ void move_piece (piece p, dir d, int distance){
 	}
 	switch(d){
 		case RIGHT:
-			if(is_horizontal(p))
-				p->x+=distance;
+			p->x+=distance;
 			break;
 		case LEFT:
-			if(is_horizontal(p))
-				p->x-=distance;
+			p->x-=distance;
 			break;
 		case UP:
-			if(!is_horizontal(p))
-				p->y+=distance;
+			p->y+=distance;
 			break;
 		case DOWN:
-			if(!is_horizontal(p))
-				p->y-=distance;
+			p->y-=distance;
 			break;
 	}
+}
+
+bool ** allocation_bool_matrix(int width, int height){
+	bool ** tmp = malloc(width*sizeof(bool*));
+	if(tmp==NULL){
+		fprintf(stderr, "intersect : allocation impossible\n");
+		exit(EXIT_FAILURE);
+	}
+	for(int i=0 ; i<width ; i++){
+		tmp[i] = malloc(height*sizeof(bool));
+		if(tmp[i]==NULL){
+			fprintf(stderr, "intersect : allocation impossible\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+	return tmp;
+}
+
+void delete_bool_matrix(bool ** tmp, int height){
+	for(int i=0 ; i<height ; i++)
+		free(tmp[i]);
+	free(tmp);
+}
+
+bool put_piece_in_board(cpiece p, bool *** ptr_tmp, int x, int y){ // Place pièce p dans le tableau en attribuant true aux cases où la pièce se trouve
+	for(int i=0 ; i<get_width(p) ; i++){
+		if(!(*ptr_tmp)[x+i][y])
+			(*ptr_tmp)[x+i][y] = true;
+		else
+			return true;
+	}
+	for(int i=1 ; i<get_height(p) ; i++){
+		if(!(*ptr_tmp)[x][y+i])
+			(*ptr_tmp)[x][y+i] = true;
+		else
+			return true;
+	}
+	return false;
 }
 
 bool intersect(cpiece p1, cpiece p2){
@@ -97,7 +131,9 @@ bool intersect(cpiece p1, cpiece p2){
 		exit(EXIT_FAILURE);
 	}
 
-	bool tmp[L_RH][H_RH];
+	bool result = false;
+	bool ** tmp = NULL;
+	tmp = allocation_bool_matrix(L_RH, H_RH);
 	for(int i=0 ; i<L_RH ; i++)
 		for(int j=0 ; j<H_RH ; j++)
 			tmp[i][j]=false;
@@ -107,9 +143,10 @@ bool intersect(cpiece p1, cpiece p2){
 	int xCoor2 = get_x(p2);
 	int yCoor2 = get_y(p2);
 
-	tmp[xCoor1][yCoor1]=true;
+	result = result || put_piece_in_board(p1, &tmp, xCoor1, yCoor1);
+	result = result || put_piece_in_board(p2, &tmp, xCoor2, yCoor2);
 
-	if(is_horizontal(p1)){
+	/*if(is_horizontal(p1)){
 		tmp[(xCoor1)+1][yCoor1]=true;
 		if(!is_small(p1))
 			tmp[(xCoor1)+2][yCoor1]=true;
@@ -118,17 +155,18 @@ bool intersect(cpiece p1, cpiece p2){
 		if(!is_small(p1))
 			tmp[xCoor1][(yCoor1)+2]=true;
 	}
-	if (is_horizontal(p2)) {
+	if(is_horizontal(p2)){
 		if (tmp[xCoor2][yCoor2] || tmp[(xCoor2) + 1][yCoor2]) { return true; }
 		if (!is_small(p2))
 			if (tmp[(xCoor2) + 2][yCoor2]) { return true; }
-	}
-	else {
+	}else{
 		if (tmp[xCoor2][yCoor2] || tmp[xCoor2][(yCoor2)+1]) { return true; }
 		if (!is_small(p2))
 			if (tmp[xCoor2][(yCoor2)+2]) { return true; }
 	}
-	return false;
+	return false;*/
+	delete_bool_matrix(tmp, H_RH);
+	return result;
 }
 
 int get_x(cpiece p)
@@ -149,7 +187,6 @@ int get_y(cpiece p)
 	}
 	return p->y;
 }
-
 
 int get_height(cpiece p)
 {
@@ -191,6 +228,8 @@ bool is_small(cpiece p) {
 		return get_height(p)==2;
 }
 
+// Cette fonction devrait sans doute se trouver dans game étant donné que le board auquel elle fait référence est le plateau du jeu, soit rush-hour, soit ane rouge
+// Ou alors il faut l'appeler is_in_board_rh ?
 bool is_in_board(cpiece p){
 	if(p==NULL){
 		fprintf(stderr, "is_in_board : p invalide\n");
@@ -219,8 +258,8 @@ bool can_move_y(cpiece p)
 	return p->move_y;
 }
 
-piece new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
-{
+// new_piece_ar ?
+piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y){
 	if(x<0 || y<0 || y>H_RH || x>L_RH){
 		fprintf(stderr, "new_piece : hors tableau\n");
 		exit(EXIT_FAILURE);
@@ -243,5 +282,3 @@ piece new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
 	p->move_y = move_y;
 	return p;
 }
-
-

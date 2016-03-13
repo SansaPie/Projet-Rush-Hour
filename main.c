@@ -5,8 +5,10 @@
 #include <string.h>
 #include <assert.h>
 #include "game.h"
+#include "game1.h"
 #include "piece.h"
-#include "math.h"
+#include "piece1.h"
+#include "math.h" // Vérifier si nécessaire
 
 #define NB_PIECE_TEST_RH 5
 
@@ -128,7 +130,6 @@ void move(game g, int number_piece, int distance)
 	}
 }
 
-
 /**
  * @brief demande a l'utilisateur de saisir une chaine de caractere.
  * @param buffer chaine de caractere dans laquelle on stocke la valeur saisie par l'utilisateur.
@@ -149,72 +150,39 @@ char * scan(char * buffer , int size) {
 	return result;
 }
 
-
-
 /**
- * @brief Cette fonction permet le choix de la configuration de jeux parmi une liste donnée
+ * @brief Cette fonction permet le choice de la configuration de jeux parmi une liste donnée
  *
  */
 
-void choix_config(piece pieces_test[], int * n,  char * answer)
+void choice_config(piece pieces_test[], int * n, int choice)
 {
-	if (answer != NULL) 
-	{ 
-    		char * p = strchr(answer, '\n'); 
-  
-    		if (p != NULL) 
-        	*p = 0; 
+	FILE *entree = NULL;
+	switch(choice){
+		case 1:
+			entree = fopen("../Projet-Rush-Hour/easy_rh_1.txt", "r+");
+			break;
+		case 2:
+			entree = fopen("../Projet-Rush-Hour/normal_rh_1.txt", "r+");
+			break;
+		case 3:
+			entree = fopen("../Projet-Rush-Hour/normal_rh_2.txt", "r+");
+			break;
+		default:
+			printf("choice_config : choice invalid\n");
+			break;
 	}
-	if (strcmp(answer, "easy_rh_1.txt") == 0)
-	{
-		FILE *entree = fopen("easy_rh_1.txt", "r+");
-		lecture(pieces_test, n, entree);
-	}
-	if (strcmp(answer, "normal_rh_1.txt") == 0)
-	{
-		FILE *entree = fopen("normal_rh_1.txt", "r+");
-		lecture(pieces_test, n, entree);
-	}
-	if (strcmp(answer, "normal_rh_2.txt") == 0)
-	{
-		FILE *entree = fopen("normal_rh_2.txt", "r+");
-		lecture(pieces_test, n, entree);
-	}
+	lecture(pieces_test, n, entree);
 }
 
-
-int main(){
-	/* creation des pieces */
-	int size = 30;
-	piece * pieces_test = NULL;
-	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "main"); /* on cree un tableau qui contient les pieces */
-	int n = 0;
-	char * config = malloc(sizeof(char)*size);
-	printf("La liste des configurations disponibles est : \n"
-		"	easy_rh_1.txt\n"
-		"	normal_rh_1.txt \n"
-		" 	normal_rh_2.txt \n \nVeuillez recopier le nom du fichier que vous souhaitez utiliser. \n");
-	scan(config, size);
-	choix_config(pieces_test, &n, config);
-	// lecture(pieces_test, &n);
-	for (int x=0; x<n; x++)
-	{
-		printf("%d %d %d %d %d %d \n", pieces_test[x]->x,  pieces_test[x]->y,  pieces_test[x]->move_x,  pieces_test[x]->move_y,  pieces_test[x]->width,  pieces_test[x]-> height);
-	}
-	game g = new_game_hr(NB_PIECE_TEST_RH, pieces_test); /* initialisation d'un premier jeu */
-
-	printf("Test\n");
-	// assert(false);
-	// printf("RATE!!\n");
-
+void rush_hour(char * answer, int size, game g){
 	/* teste si la position des pieces est conforme */
 	if(!game_valid(g)){
-		fprintf(stderr, "main : game invalid\n");
+		fprintf(stderr, "rush_hour : game invalid\n");
 		exit(EXIT_FAILURE);
 	}
 
 	/* affichage des regles du jeu */
-
 	printf("Ce jeu a ete code par Lucas, Lisa et Clement. \n"
 		"Le but de ce jeu est d'amener la voiture 0 toucher le cote droit du plateau.\n"
 		"Vous ne pouvez bouger les pieces horizontales que de gauche a droite, "
@@ -227,7 +195,6 @@ int main(){
 
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
 		display_game(g);
-		char * answer = malloc(sizeof(char)*size);
 		int number_piece = -1;
 		while(number_piece<0 || number_piece>game_nb_pieces(g)){
 			printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
@@ -244,14 +211,64 @@ int main(){
 				printf("Veuillez rentrer une distance valide. (-4 a 4)\n");
 		}
 		move(g, number_piece, distance);
-		free(answer);
 	}
 
 	display_game(g);
 	printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
 	
-	delete_pieces(NB_PIECE_TEST_RH, pieces_test);
 	delete_game(g);
+}
 
+void ane_rouge(char * answer, int size){/*
+	pieces_test = allocation_piece_tab(7, "ane_rouge");
+
+	game g = new_game(7, 7, 7, pieces_test);
+
+	if(!game_valid(g)){
+		fprintf(stderr, "ane_rouge : g non valide\n");
+		exit(EXIT_FAILURE);
+	}
+
+	delete_game(g);
+	delete_pieces(7, pieces_test);*/
+}
+
+// Chercher comment factoriser au mieux le main
+int main(){
+	/* creation des pieces */
+	int size = 30;
+	piece * pieces_test = NULL;
+	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "main"); /* on cree un tableau qui contient les pieces */
+	int n = 0;
+
+	char * answer = malloc(sizeof(char)*size);
+	printf("A quel jeu souhaitez-vous jouer ?\n1. Rush-hour\n2. Ane rouge\n");
+
+	int choice = -1;
+	while(choice!=1 && choice!=2){
+		choice = atoi(scan(answer, size));
+		if(choice!=1&&choice!=2)
+			printf("Veuillez selectionner un numero de jeu correct.\n");
+	}
+	if(choice == 1){
+		printf("La liste des configurations disponibles est : \n"
+			"	1. easy_rh_1.txt\n"
+			"	2. normal_rh_1.txt \n"
+			" 	3. normal_rh_2.txt \n \nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
+		choice = 0;
+		while(choice<1 || choice>3){
+			choice = atoi(scan(answer, size));
+			if(choice<1 || choice>3)
+				printf("Veuillez selectionner un numero de configuration correcte.\n");
+		}
+		choice_config(pieces_test, &n, choice);
+		game g = new_game_hr(NB_PIECE_TEST_RH, pieces_test); /* initialisation d'un premier jeu */
+		rush_hour(answer, size, g);
+	}
+	else
+		ane_rouge(answer, size);
+
+	delete_pieces(NB_PIECE_TEST_RH, pieces_test);
+	free(answer);
 	return EXIT_SUCCESS;
 }

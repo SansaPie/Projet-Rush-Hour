@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "piece.h"
+#include "piece1.h"
 #include "game.h"
+#include "game1.h"
 
 #define ERR_PIECE -1 
 
@@ -132,9 +134,9 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	piece piece_moved = gTmp->pieces[piece_num];
 	
 	for (int i = 0; i < distance; i++) {
-		if (((d == LEFT || d == RIGHT) && is_horizontal(piece_moved)) ||
-			((d == UP || d == DOWN) && !is_horizontal(piece_moved))) {
-			move_piece(piece_moved, d,1);
+		if (((d == LEFT || d == RIGHT) && can_move_x(piece_moved)) ||
+			((d == UP || d == DOWN) && can_move_y(piece_moved))) {
+			move_piece(piece_moved, d, 1);
 		}
 		if (!game_valid(gTmp)) {
 			delete_game(gTmp);
@@ -191,8 +193,12 @@ int game_height(cgame g) {
 
 int game_square_piece(game g, int x, int y) {
 	if (g == NULL) {
-		fprintf(stderr, "game_square_piece: coordonnee non valide\n");
+		fprintf(stderr, "game_square_piece: g null\n");
 		exit(EXIT_FAILURE);
+	}
+	if(x<0 || x>game_width(g) || y<0 || y>game_height(g)){
+		printf("game_square_piece : coordonnees non valides\n");
+		return ERR_PIECE;
 	}
 	for (int i = 0; i < game_nb_pieces(g); i++) {
 		int xcoor = get_x(game_piece(g, i));
