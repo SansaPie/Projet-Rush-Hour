@@ -7,7 +7,6 @@
 #include "game.c"
 #define NB_PIECE_TEST_RH 25  // nombre maximum de pièces dans le jeu
 
-
 void lecture(piece pieces_test[], int * n, FILE * entree);
 
 int number_pieces; // nombre de pièces
@@ -17,7 +16,6 @@ int m_x;	   // bool move_x
 int m_y;	   // bool move_y
 int w;		   // int largeur
 int h;		   // int hauteur
-
 
 // Fonction lecture de fichier pour une configuration de n'importe quel type 
 // coordonnée x / coordonnée y / bool move_x / bool move_y / largeur / hauteur
@@ -34,7 +32,6 @@ char * scan(char * buffer , int size) {
 	rewind(stdin); /* on se place au debut du flux d'entree */
 	return result;
 }
-
 
 void choix_config(piece pieces_test[], int * n, char * answer)
 {
@@ -54,7 +51,6 @@ void choix_config(piece pieces_test[], int * n, char * answer)
 		lecture(pieces_test, n, entree);
 	}
 }
-
 
 int main(void)
 {
@@ -82,8 +78,6 @@ int main(void)
 	return EXIT_SUCCESS;
 }
 
-
-
 void lecture(piece pieces_test[], int * n, FILE * entree) 
 {
 	if( entree == NULL )
@@ -100,10 +94,3 @@ void lecture(piece pieces_test[], int * n, FILE * entree)
 	*n = number_pieces;
 	fclose(entree);
 }
-
-
-
-
-
-
-
