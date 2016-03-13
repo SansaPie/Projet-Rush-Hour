@@ -99,32 +99,8 @@ bool play_move(game g, int piece_num, dir d, int distance);
  */
 int game_nb_moves(cgame g);
 
-////////////// A déplacer dans un nouveau header
-
-/**
- * @brief Allocates memory for an array of piece
- * @param nb_pieces number of pieces to allocate
- * @param pieces array to allocate
- * @param msg function where the allocation takes place, put in error message
- */
-piece * allocation_piece_tab(int nb_pieces, char * msg);
-
-/**
- * @brief Destroys pieces and frees allocated memory.
- * @param nb_pieces number of pieces to destroy.
- * @param pieces the pieces to destroy.
- */
-void delete_pieces(int nb_pieces, piece * pieces);
-
-/**
- * @brief Tests if the pieces of g are not in collision or out .
- * @return true if the game is valid.
- */
-bool game_valid(cgame g);
-
 ///////////// version 2 /////////////////
 game new_game (int width, int height, int nb_pieces, piece *pieces);
-
 
 /**
  *@brief returns the width of the grid
@@ -143,7 +119,5 @@ int game_height(cgame g);
  * @param y-coor of the square
  */
 int game_square_piece (game g, int x, int y);
-
-bool create_empty_grid(int width, int height);
 
 #endif

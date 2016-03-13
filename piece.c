@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "piece.h"
+#include "piece1.h"
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	if(x<0 || y<0 || y>H_RH || x>L_RH){

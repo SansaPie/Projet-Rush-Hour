@@ -118,15 +118,15 @@ char * scan(char * buffer , int size) {
 }
 
 void rush_hour(char * answer, int size){
-	piece * pieces_test = NULL;
-	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "rush_hour"); /* on cree un tableau qui contient les pieces */
-	
-	/* creation des pieces */
+	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "main"); /* on cree un tableau qui contient les pieces */
+	/* creation des pieces 
 	pieces_test[0] = new_piece_rh(0,3,true,true);
 	pieces_test[1] = new_piece_rh(0,0,true,true);
 	pieces_test[2] = new_piece_rh(1,1,false,true);
 	pieces_test[3] = new_piece_rh(3,3,false,false);
 	pieces_test[4] = new_piece_rh(4,4,true,false);
+	*/
+	//pieces chargées avec fonction lecture fichier
 	game g = new_game_hr(NB_PIECE_TEST_RH, pieces_test); /* initialisation d'un premier jeu */
 
 	/* teste si la position des pieces est conforme */
@@ -176,7 +176,6 @@ void rush_hour(char * answer, int size){
 }
 
 void ane_rouge(char * answer, int size){
-	piece * pieces_test = NULL;
 	pieces_test = allocation_piece_tab(7, "ane_rouge");
 
 	/*creation des pieces
@@ -195,6 +194,7 @@ void ane_rouge(char * answer, int size){
 
 // Chercher comment factoriser au mieux le main
 int main(){
+	piece * pieces_test = NULL;
 	int size = 6;
 	char * answer = malloc(sizeof(char)*size);
 	printf("A quel jeu souhaitez-vous jouer ?\n1. Rush-hour\n2. Ane rouge\n");

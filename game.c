@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "piece.h"
 #include "game.h"
+#include "game1.h"
 
 piece * allocation_piece_tab(int nb_pieces, char * msg){
 	piece * pieces = malloc(sizeof(piece)*nb_pieces);
