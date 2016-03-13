@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include "piece.c"
 #include "game.c"
-#define NB_PIECE_TEST_RH 5
+#define NB_PIECE_TEST_RH 25  // nombre maximum de pièces dans le jeu
 
 
 void lecture(piece pieces_test[], int * n, FILE * entree);
