@@ -24,6 +24,6 @@ bool is_small(cpiece p);
 /**
  * @brief Returns false if the piece isn't entirely in the board
  */
-bool is_in_board(cpiece p);
+bool is_in_board(cpiece p, int width, int height);
 
 #endif

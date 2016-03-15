@@ -173,7 +173,7 @@ game choice_config(piece * pieces_test, int * n, int choice)
 	pieces_test = lecture(pieces_test, n, entree);
 	game g = new_game_hr(*n, pieces_test);
 	fclose(entree);
-	delete_pieces(n, pieces_test);
+	delete_pieces(*n, pieces_test);
 	return g;
 }
 
