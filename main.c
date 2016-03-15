@@ -10,38 +10,36 @@
 #include "piece1.h"
 #include "math.h" // Vérifier si nécessaire
 
-#define NB_PIECE_TEST_RH 5
-
-/* variables utilisées pour la lecture du fichier */
-
-int number_pieces; // nombre de pièces
-int c_x;	   // coordonnée x
-int c_y;	   // coordonnée y
-int m_x;	   // bool move_x
-int m_y;	   // bool move_y
-int w;		   // int largeur
-int h;		   // int hauteur
-
-
 /**
  * @brief fonction permettant la lecture des caractéristiques des pièces dans un fichier annexe
  *
  */
 
-void lecture(piece pieces_test[], int * n, FILE * entree) {
+piece * lecture(piece * pieces_test, int * n, FILE * entree) {
+	/* variables utilisées pour la lecture du fichier */
+
+	int number_pieces; // nombre de pièces
+	int c_x;	   // coordonnée x
+	int c_y;	   // coordonnée y
+	int m_x;	   // bool move_x
+	int m_y;	   // bool move_y
+	int w;		   // int largeur
+	int h;		   // int hauteur
+
 	if( entree == NULL )
 	{
 		printf("error when opening the file\n");
 		exit(EXIT_FAILURE);
 	}  
 	fscanf(entree, "%d", &number_pieces);
+	pieces_test = allocation_piece_tab(number_pieces, "main"); /* on cree un tableau qui contient les pieces */
 	for(int i=0; i<number_pieces; i++)
 	{
 		fscanf(entree, "%d %d %d %d %d %d", &c_x, &c_y, &m_x, &m_y, &w, &h);
 		pieces_test[i] = new_piece(c_x, c_y, w, h, m_x, m_y);
 	}
 	*n = number_pieces;
-	fclose(entree);
+	return pieces_test;
 }
 
 /**
@@ -155,7 +153,7 @@ char * scan(char * buffer , int size) {
  *
  */
 
-void choice_config(piece pieces_test[], int * n, int choice)
+game choice_config(piece * pieces_test, int * n, int choice)
 {
 	FILE *entree = NULL;
 	switch(choice){
@@ -172,7 +170,11 @@ void choice_config(piece pieces_test[], int * n, int choice)
 			printf("choice_config : choice invalid\n");
 			break;
 	}
-	lecture(pieces_test, n, entree);
+	pieces_test = lecture(pieces_test, n, entree);
+	game g = new_game_hr(*n, pieces_test);
+	fclose(entree);
+	delete_pieces(n, pieces_test);
+	return g;
 }
 
 void rush_hour(char * answer, int size, game g){
@@ -235,11 +237,9 @@ void ane_rouge(char * answer, int size){/*
 
 // Chercher comment factoriser au mieux le main
 int main(){
-	/* creation des pieces */
 	int size = 30;
-	piece * pieces_test = NULL;
-	pieces_test = allocation_piece_tab(NB_PIECE_TEST_RH, "main"); /* on cree un tableau qui contient les pieces */
 	int n = 0;
+	piece * pieces_test = NULL;
 
 	char * answer = malloc(sizeof(char)*size);
 	printf("A quel jeu souhaitez-vous jouer ?\n1. Rush-hour\n2. Ane rouge\n");
@@ -261,14 +261,11 @@ int main(){
 			if(choice<1 || choice>3)
 				printf("Veuillez selectionner un numero de configuration correcte.\n");
 		}
-		choice_config(pieces_test, &n, choice);
-		game g = new_game_hr(NB_PIECE_TEST_RH, pieces_test); /* initialisation d'un premier jeu */
+		game g = choice_config(pieces_test, &n, choice); // initialisation d'un premier jeu
 		rush_hour(answer, size, g);
 	}
 	else
 		ane_rouge(answer, size);
-
-	delete_pieces(NB_PIECE_TEST_RH, pieces_test);
 	free(answer);
 	return EXIT_SUCCESS;
 }
