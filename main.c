@@ -172,9 +172,14 @@ game choice_config(piece * pieces_test, int * n, int choice)
 	}
 	pieces_test = lecture(pieces_test, n, entree);
 	game g = new_game_hr(*n, pieces_test);
+<<<<<<< HEAD
 	int nb = *n;
 	fclose(entree);
 	delete_pieces(nb, pieces_test);
+=======
+	fclose(entree);
+	delete_pieces(n, pieces_test);
+>>>>>>> c72c19311c3bd52314d36f246092a1b43f10dec9
 	return g;
 }
 
