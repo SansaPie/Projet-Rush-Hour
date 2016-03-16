@@ -158,13 +158,22 @@ game choice_config(piece * pieces_test, int * n, int choice)
 	FILE *entree = NULL;
 	switch(choice){
 		case 1:
-			entree = fopen("../easy_rh_1.txt", "r+");
+			entree = fopen("../Projet-Rush-Hour/easy_rh_1.txt", "r+");
 			break;
 		case 2:
-			entree = fopen("../normal_rh_1.txt", "r+");
+			entree = fopen("../Projet-Rush-Hour/easy_rh_2.txt", "r+");
 			break;
 		case 3:
-			entree = fopen("../normal_rh_2.txt", "r+");
+			entree = fopen("../Projet-Rush-Hour/normal_rh_1.txt", "r+");
+			break;
+		case 4:
+			entree = fopen("../Projet-Rush-Hour/normal_rh_2.txt", "r+");
+			break;
+		case 5:
+			entree = fopen("../Projet-Rush-Hour/difficult_rh_1.txt", "r+");
+			break;
+		case 6:
+			entree = fopen("../Projet-Rush-Hour/difficult_rh_2.txt", "r+");
 			break;
 		default:
 			printf("choice_config : choice invalid\n");
@@ -172,14 +181,9 @@ game choice_config(piece * pieces_test, int * n, int choice)
 	}
 	pieces_test = lecture(pieces_test, n, entree);
 	game g = new_game_hr(*n, pieces_test);
-<<<<<<< HEAD
 	int nb = *n;
 	fclose(entree);
 	delete_pieces(nb, pieces_test);
-=======
-	fclose(entree);
-	delete_pieces(n, pieces_test);
->>>>>>> c72c19311c3bd52314d36f246092a1b43f10dec9
 	return g;
 }
 
@@ -259,12 +263,16 @@ int main(){
 	if(choice == 1){
 		printf("La liste des configurations disponibles est : \n"
 			"	1. easy_rh_1.txt\n"
-			"	2. normal_rh_1.txt \n"
-			" 	3. normal_rh_2.txt \n \nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
+			"	2. easy_rh_2.txt\n"
+			"	3. normal_rh_1.txt \n"
+			" 	4. normal_rh_2.txt \n"
+			" 	5. difficult_rh_1.txt \n"
+			"	6. difficult_rh_2.txt \n"
+			"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
 		choice = 0;
-		while(choice<1 || choice>3){
+		while(choice<1 || choice>6){
 			choice = atoi(scan(answer, size));
-			if(choice<1 || choice>3)
+			if(choice<1 || choice>6)
 				printf("Veuillez selectionner un numero de configuration correcte.\n");
 		}
 		game g = choice_config(pieces_test, &n, choice); // initialisation d'un premier jeu
