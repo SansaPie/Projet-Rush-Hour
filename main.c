@@ -274,6 +274,19 @@ game choice_config_ar(piece * pieces_test, int * n, int choice){
 	return g;
 }
 
+dir input_direction(char * direction){
+	if(strcmp(direction, "RIGHT"))
+		return RIGHT;
+	else if(strcmp(direction, "LEFT"))
+		return LEFT;
+	else if(strcmp(direction, "UP"))
+		return UP;
+	else if(strcmp(direction, "DOWN"))
+		return DOWN;
+	else
+		// Pas fini
+}
+
 void ane_rouge(char * answer, int size){
 	/* teste si la position des pieces est conforme */
 	if(!game_valid(g)){
@@ -298,8 +311,12 @@ void ane_rouge(char * answer, int size){
 			if(condition)
 				printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g));
 		}
-		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?\n"
+		printf("Vous avez choisi la piece %d. Dans quelle direction voulez-vous la bouger ?\n"
 			, number_piece);
+
+		char * s_direction = scan(answer, size);
+
+		printf("Et enfin de combien de cases va-t-elle se mouvoir ?\n");
 		int distance = game_height(g);
 		condition = true;
 		while(condition){
