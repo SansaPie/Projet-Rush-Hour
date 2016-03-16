@@ -111,7 +111,10 @@ cpiece game_piece(cgame g, int piece_num){
 }
 
 bool game_over_hr(cgame g){
-	test_condition(true, "game_over_hr : g invalide\n");
+	if(g==NULL){
+		fprintf(stderr, "game_over_hr : g invalide\n");
+		exit(EXIT_FAILURE);
+	}
 	if(get_x(game_piece(g, 0)) == 4 && get_y(game_piece(g,0)) == 3)
 		return true;
 	return false;
