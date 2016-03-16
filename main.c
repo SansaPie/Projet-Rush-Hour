@@ -155,10 +155,6 @@ void move_rh(game g, int number_piece, int distance)
 	}
 }
 
-void move_ar(game g, int number_piece, int distance, dir direction){// A coder
-
-}
-
 /**
  * @brief demande a l'utilisateur de saisir une chaine de caractere.
  * @param buffer chaine de caractere dans laquelle on stocke la valeur saisie par l'utilisateur.
@@ -313,7 +309,7 @@ void ane_rouge(char * answer, int size){
 				printf("Veuillez rentrer une distance valide.\n");
 		}
 		//Coder pour prendre en compte la direction
-		move_ar(g, number_piece, distance, direction);
+		display_success_movement(g, number_piece, distance, direction);
 	}
 
 	display_game(g);
