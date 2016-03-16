@@ -35,6 +35,8 @@ game new_game_hr (int nb_pieces, piece *pieces){
 		copy_piece(pieces[i],g->pieces[i]);
 	}
 	g->moves = 0;
+	g->width = 6;
+	g->height = 6;
 	if(!game_valid(g)){
 		fprintf(stderr, "new_game_hr : jeu non valide\n");
 		exit(EXIT_FAILURE);

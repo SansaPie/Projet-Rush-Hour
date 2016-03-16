@@ -43,15 +43,43 @@ piece * lecture(piece * pieces_test, int * n, FILE * entree) {
 }
 
 /**
- * @brief fonction affichant le jeu dans le terminal
+ * @brief Allocates a char matrix
+ */
+char ** allocation_char_matrix(int width, int height){
+	char ** grid = malloc(sizeof(char*)*width);
+	if(grid==NULL){
+		fprintf(stderr, "allocation_char_matrix : grid null\n");
+		exit(EXIT_FAILURE);
+	}
+	for(int i=0 ; i<width ; i++){
+		grid[i] = malloc(sizeof(char)*height);
+		if(grid[i]==NULL){
+			fprintf(stderr, "allocation_char_matrix : grid[%d] null\n", i);
+			exit(EXIT_FAILURE);
+		}
+	}
+	return grid;
+}
+
+/**
+ * @brief Deletes a char matrix
+ */
+void delete_char_matrix(char ** grid, int height){
+	for(int i=0 ; i<height ; i++)
+		free(grid[i]);
+	free(grid);
+}
+
+/**
+ * @brief function displaying game in terminal
  * 
  */
-
 void display_game(cgame g) {
-	char grid[L_RH][H_RH]; /* on crée un tableau à deux dimensions qui représente notre plateau de jeu */
+	/* on crée un tableau à deux dimensions qui représente notre plateau de jeu */
+	char ** grid = allocation_char_matrix(game_width(g), game_height(g)); 
 	/* initialisation de toutes les cases du tableau precedement creer avec des '.' */
-	for (int i = 0; i < L_RH; i++) {
-		for (int j = 0; j < H_RH; j++) {
+	for (int i = 0; i < game_width(g); i++) {
+		for (int j = 0; j < game_height(g); j++) {
 			grid[i][j] ='.';
 		}
 	}
@@ -59,7 +87,7 @@ void display_game(cgame g) {
 	for (int i = 0; i < game_nb_pieces(g); i++){
 
 		int xCoordDisplay = get_x(game_piece(g,i));
-		int yCoordDisplay = (H_RH-1)-get_y(game_piece(g,i));
+		int yCoordDisplay = (game_height(g)-1)-get_y(game_piece(g,i));
 
 		grid[xCoordDisplay][yCoordDisplay] = i + '0';
 		if (!is_horizontal(game_piece(g,i))) {
@@ -75,13 +103,14 @@ void display_game(cgame g) {
 	}
 	
 	/* affichage du tableau rempli */
-	for (int x = 0; x<L_RH; x++) {
-		for (int y = 0; y<H_RH; y++) {
+	for (int x = 0; x<game_width(g); x++) {
+		for (int y = 0; y<game_height(g); y++) {
 			printf("%c ", grid[y][x]);
 		}
 		printf("\n");
 	}
 	printf("\n");
+	delete_char_matrix(grid, game_height(g));
 }
 
 /**
@@ -171,7 +200,7 @@ game choice_config(piece * pieces_test, int * n, int choice)
 			break;
 	}
 	pieces_test = lecture(pieces_test, n, entree);
-	game g = new_game_hr(*n, pieces_test);
+	game g = new_game(6,6,*n, pieces_test); // A modifier
 	fclose(entree);
 	delete_pieces(*n, pieces_test);
 	return g;
@@ -198,19 +227,23 @@ void rush_hour(char * answer, int size, game g){
 	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
 		display_game(g);
 		int number_piece = -1;
-		while(number_piece<0 || number_piece>game_nb_pieces(g)){
+		bool condition = true;
+		while(condition){
 			printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
 			number_piece = atoi(scan(answer, size));
-			if(number_piece<0 || number_piece>game_nb_pieces(g))
+			condition = (number_piece<0 || number_piece>game_nb_pieces(g));
+			if(condition)
 				printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g));
 		}
 		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?\n"
 			, number_piece);
-		int distance = H_RH;
-		while(distance<-4 || distance>4){
+		int distance = game_height(g);
+		condition = true;
+		while(condition){
 			distance = atoi(scan(answer, size));
-			if(distance<-4 || distance>4)
-				printf("Veuillez rentrer une distance valide. (-4 a 4)\n");
+			condition = (abs(distance)>=(game_height(g)-1) || abs(distance)>=(game_width(g)-1));
+			if(condition)
+				printf("Veuillez rentrer une distance valide.\n");
 		}
 		move(g, number_piece, distance);
 	}
@@ -245,9 +278,11 @@ int main(){
 	printf("A quel jeu souhaitez-vous jouer ?\n1. Rush-hour\n2. Ane rouge\n");
 
 	int choice = -1;
-	while(choice!=1 && choice!=2){
+	bool condition = true;
+	while(condition){
 		choice = atoi(scan(answer, size));
-		if(choice!=1&&choice!=2)
+		condition = (choice!=1 && choice!=2);
+		if(condition)
 			printf("Veuillez selectionner un numero de jeu correct.\n");
 	}
 	if(choice == 1){
@@ -256,9 +291,11 @@ int main(){
 			"	2. normal_rh_1.txt \n"
 			" 	3. normal_rh_2.txt \n \nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
 		choice = 0;
-		while(choice<1 || choice>3){
+		condition = true;
+		while(condition){
 			choice = atoi(scan(answer, size));
-			if(choice<1 || choice>3)
+			condition = (choice<1 || choice>3);
+			if(condition)
 				printf("Veuillez selectionner un numero de configuration correcte.\n");
 		}
 		game g = choice_config(pieces_test, &n, choice); // initialisation d'un premier jeu

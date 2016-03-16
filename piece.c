@@ -107,13 +107,13 @@ void move_piece (piece p, dir d, int distance){
 bool ** allocation_bool_matrix(int width, int height){
 	bool ** tmp = malloc(width*sizeof(bool*));
 	if(tmp==NULL){
-		fprintf(stderr, "intersect : allocation impossible\n");
+		fprintf(stderr, "intersect : tmp null\n");
 		exit(EXIT_FAILURE);
 	}
 	for(int i=0 ; i<width ; i++){
 		tmp[i] = malloc(height*sizeof(bool));
 		if(tmp[i]==NULL){
-			fprintf(stderr, "intersect : allocation impossible\n");
+			fprintf(stderr, "intersect : tmp[%d] null\n",i);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -148,28 +148,10 @@ bool intersect(cpiece p1, cpiece p2){
 		exit(EXIT_FAILURE);
 	}
 
-	/*bool result = false;
-	bool ** tmp = NULL;
-	tmp = allocation_bool_matrix(L_RH, H_RH);
-	for(int i=0 ; i<L_RH ; i++)
-		for(int j=0 ; j<H_RH ; j++)
-			tmp[i][j]=false;
-
-	int xCoor1 = get_x(p1);
-	int yCoor1 = get_y(p1);
-	int xCoor2 = get_x(p2);
-	int yCoor2 = get_y(p2);
-
-	result = result || put_piece_in_board(p1, &tmp, xCoor1, yCoor1);
-	result = result || put_piece_in_board(p2, &tmp, xCoor2, yCoor2);
-
-	delete_bool_matrix(tmp, H_RH);
-	return result;*/
-
-	for(int i=get_x(p1) ; i<get_width(p1) ; i++){
-		for(int j=get_y(p1) ; j<get_height(p1) ; j++){
-			for(int k=get_x(p2) ; k<get_width(p2) ; k++){
-				for(int l=get_y(p2) ; l<get_height(p2) ; l++){
+	for(int i=get_x(p1) ; i<get_x(p1)+get_width(p1) ; i++){
+		for(int j=get_y(p1) ; j<get_y(p1)+get_height(p1) ; j++){
+			for(int k=get_x(p2) ; k<get_x(p2)+get_width(p2) ; k++){
+				for(int l=get_y(p2) ; l<get_y(p2)+get_height(p2) ; l++){
 					if(i==k && j==l)
 						return true;
 				}

@@ -8,6 +8,11 @@
 bool ** allocation_bool_matrix(int width, int height);
 
 /**
+ * @brief Deletes a boolean matrix
+ */
+void delete_bool_matrix(bool ** tmp, int height);
+
+/**
  * @brief Returns false if the piece is not put over an other in tmp
  * @param p piece put in board
  * @param tmp board as a boolean matrix
