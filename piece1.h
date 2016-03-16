@@ -31,4 +31,10 @@ bool is_small(cpiece p);
  */
 bool is_in_board(cpiece p, int width, int height);
 
+/**
+ * @brief Test condition and display message if it's true.
+ */
+
+void test_condition(bool condition, char * msg);
+
 #endif

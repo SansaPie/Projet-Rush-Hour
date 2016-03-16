@@ -111,11 +111,18 @@ cpiece game_piece(cgame g, int piece_num){
 }
 
 bool game_over_hr(cgame g){
-	if(g==NULL){
-		fprintf(stderr, "game_over_hr : g invalide\n");
+	test_condition(true, "game_over_hr : g invalide\n");
+	if(get_x(game_piece(g, 0)) == 4 && get_y(game_piece(g,0)) == 3)
+		return true;
+	return false;
+}
+
+bool game_over_ar(cgame g) {
+	if (g == NULL) {
+		fprintf(stderr, "game_over_ar : g invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if(get_x(game_piece(g, 0)) == 4 && get_y(game_piece(g,0)) == 3)
+	if (get_x(game_piece(g, 0)) == 2 && get_y(game_piece(g, 0)) == 0)
 		return true;
 	return false;
 }
