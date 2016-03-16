@@ -3,7 +3,6 @@ Vous êtes actuellement en présence de la seconde version du code.
 
 La compilation se fait à l'aide d'un CMake. Les fichiers de configurations de jeu sont les suivants :
 	easy_rh_1.txt
-	easy_rh_2.txt
 	normal_rh_1.txt
 	normal_rh_2.txt
 
