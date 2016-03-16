@@ -11,6 +11,7 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 		fprintf(stderr, "new_piece_hr : hors tableau\n");
 		exit(EXIT_FAILURE);
 	}
+
 	if((y==H_RH-1 && !horizontal) || (x==L_RH-1 && horizontal) || 
 		(y>=H_RH-2 && !horizontal && !small) || (x>=L_RH-2 && horizontal && !small)){
 		fprintf(stderr,"new_piece_hr : piece sortant en partie du tableau\n");
