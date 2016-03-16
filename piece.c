@@ -37,6 +37,30 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	return p;
 }
 
+piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y){
+	if(x<0 || y<0){
+		fprintf(stderr, "new_piece : hors tableau\n");
+		exit(EXIT_FAILURE);
+	}
+	piece p = NULL;
+	if(!move_x || !move_y)
+		p = new_piece_rh(x, y, ((height==1&&width==2)||(height==2&&width==1)), (height==1));
+	else{
+		p = malloc(sizeof(struct piece_s));
+		if(p==NULL){
+			fprintf(stderr, "new_piece : p non alloue\n");
+			exit(EXIT_FAILURE);
+		}
+		p->x = x;
+		p->y = y;
+		p->width = width;
+		p->height = height;
+		p->move_x = move_x;
+		p->move_y = move_y;
+	}
+	return p;
+}
+
 void delete_piece (piece p){
 	if(p!=NULL)
 		free(p);
@@ -124,7 +148,7 @@ bool intersect(cpiece p1, cpiece p2){
 		exit(EXIT_FAILURE);
 	}
 
-	bool result = false;
+	/*bool result = false;
 	bool ** tmp = NULL;
 	tmp = allocation_bool_matrix(L_RH, H_RH);
 	for(int i=0 ; i<L_RH ; i++)
@@ -140,7 +164,19 @@ bool intersect(cpiece p1, cpiece p2){
 	result = result || put_piece_in_board(p2, &tmp, xCoor2, yCoor2);
 
 	delete_bool_matrix(tmp, H_RH);
-	return result;
+	return result;*/
+
+	for(int i=get_x(p1) ; i<get_width(p1) ; i++){
+		for(int j=get_y(p1) ; j<get_height(p1) ; j++){
+			for(int k=get_x(p2) ; k<get_width(p2) ; k++){
+				for(int l=get_y(p2) ; l<get_height(p2) ; l++){
+					if(i==k && j==l)
+						return true;
+				}
+			}
+		}
+	}
+	return false;
 }
 
 int get_x(cpiece p)
@@ -228,28 +264,4 @@ bool can_move_x(cpiece p)
 bool can_move_y(cpiece p)
 {
 	return p->move_y;
-}
-
-piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y){
-	if(x<0 || y<0){
-		fprintf(stderr, "new_piece : hors tableau\n");
-		exit(EXIT_FAILURE);
-	}
-	piece p = NULL;
-	if(!move_x || !move_y)
-		p = new_piece_rh(x, y, ((height==1&&width==2)||(height==2&&width==1)), (height==1));
-	else{
-		p = malloc(sizeof(struct piece_s));
-		if(p==NULL){
-			fprintf(stderr, "new_piece : p non alloue\n");
-			exit(EXIT_FAILURE);
-		}
-		p->x = x;
-		p->y = y;
-		p->width = width;
-		p->height = height;
-		p->move_x = move_x;
-		p->move_y = move_y;
-	}
-	return p;
 }
