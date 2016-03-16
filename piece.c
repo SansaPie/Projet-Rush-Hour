@@ -104,44 +104,6 @@ void move_piece (piece p, dir d, int distance){
 	}
 }
 
-bool ** allocation_bool_matrix(int width, int height){
-	bool ** tmp = malloc(width*sizeof(bool*));
-	if(tmp==NULL){
-		fprintf(stderr, "intersect : tmp null\n");
-		exit(EXIT_FAILURE);
-	}
-	for(int i=0 ; i<width ; i++){
-		tmp[i] = malloc(height*sizeof(bool));
-		if(tmp[i]==NULL){
-			fprintf(stderr, "intersect : tmp[%d] null\n",i);
-			exit(EXIT_FAILURE);
-		}
-	}
-	return tmp;
-}
-
-void delete_bool_matrix(bool ** tmp, int height){
-	for(int i=0 ; i<height ; i++)
-		free(tmp[i]);
-	free(tmp);
-}
-
-bool put_piece_in_board(cpiece p, bool *** ptr_tmp, int x, int y){ // Place pièce p dans le tableau en attribuant true aux cases où la pièce se trouve
-	for(int i=0 ; i<get_width(p) ; i++){
-		if(!(*ptr_tmp)[x+i][y])
-			(*ptr_tmp)[x+i][y] = true;
-		else
-			return true;
-	}
-	for(int i=1 ; i<get_height(p) ; i++){
-		if(!(*ptr_tmp)[x][y+i])
-			(*ptr_tmp)[x][y+i] = true;
-		else
-			return true;
-	}
-	return false;
-}
-
 bool intersect(cpiece p1, cpiece p2){
 	if (p1==NULL || p2==NULL){
 		fprintf(stderr, "intersect : pieces non valides\n");
@@ -228,10 +190,11 @@ bool is_in_board(cpiece p, int width, int height){
 	if(get_y(p) < 0 || get_x(p) <0)
 		return false;
 
-	if(is_horizontal(p)){
+	if(can_move_x(p)){
 		if(get_x(p) + (get_width(p)-1) > (width-1))
 			return false;
-	}else{
+	}
+	if(can_move_y(p)){
 		if(get_y(p) + (get_height(p)-1) > (height-1))
 			return false;
 	}

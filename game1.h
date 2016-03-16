@@ -24,4 +24,9 @@ void delete_pieces(int nb_pieces, piece * pieces);
  */
 bool game_valid(cgame g);
 
+/**
+ * @brief Tests if a game of ane_rouge is over
+ */
+bool game_over_ar(cgame g);
+
 #endif
