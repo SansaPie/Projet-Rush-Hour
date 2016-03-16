@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include "game.h"
-#include "piece.h" 
+#include "game1.h"
+#include "piece.h"
+#include "piece1.h" 
 
 #define NB_PIECES 4
 #define HEIGHT 6

@@ -2,15 +2,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "piece.h"
+#include "piece1.h"
 
-piece new_piece_rh (int x, int y, bool small, bool horizontal){
-	if(x<0 || y<0 || y>H_RH || x>L_RH){
+piece new_piece_rh (int x, int y, bool small, bool horizontal){ 
+	if(x<0 || y<0){
 		fprintf(stderr, "new_piece_hr : hors tableau\n");
-		exit(EXIT_FAILURE);
-	}
-	if((y==H_RH-1 && !horizontal) || (x==L_RH-1 && horizontal) || 
-		(y>=H_RH-2 && !horizontal && !small) || (x>=L_RH-2 && horizontal && !small)){
-		fprintf(stderr,"new_piece_hr : piece sortant en partie du tableau\n");
 		exit(EXIT_FAILURE);
 	}
 	piece p = malloc(sizeof(struct piece_s));
@@ -41,6 +37,29 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	return p;
 }
 
+piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y){
+	if(x<0 || y<0){
+		fprintf(stderr, "new_piece : hors tableau\n");
+		exit(EXIT_FAILURE);
+	}
+	piece p = NULL;
+	if(!move_x || !move_y)
+		p = new_piece_rh(x, y, ((height==1&&width==2)||(height==2&&width==1)), (height==1));
+	else{
+		p = malloc(sizeof(struct piece_s));
+		if(p==NULL){
+			fprintf(stderr, "new_piece : p non alloue\n");
+			exit(EXIT_FAILURE);
+		}
+		p->x = x;
+		p->y = y;
+		p->width = width;
+		p->height = height;
+		p->move_x = move_x;
+		p->move_y = move_y;
+	}
+	return p;
+}
 
 void delete_piece (piece p){
 	if(p!=NULL)
@@ -50,7 +69,6 @@ void delete_piece (piece p){
 		exit(EXIT_FAILURE);
 	}
 }
-
 
 void copy_piece (cpiece src, piece dst){
 	if(src==NULL || dst==NULL){
@@ -72,22 +90,56 @@ void move_piece (piece p, dir d, int distance){
 	}
 	switch(d){
 		case RIGHT:
-			if(is_horizontal(p))
-				p->x+=distance;
+			p->x+=distance;
 			break;
 		case LEFT:
-			if(is_horizontal(p))
-				p->x-=distance;
+			p->x-=distance;
 			break;
 		case UP:
-			if(!is_horizontal(p))
-				p->y+=distance;
+			p->y+=distance;
 			break;
 		case DOWN:
-			if(!is_horizontal(p))
-				p->y-=distance;
+			p->y-=distance;
 			break;
 	}
+}
+
+bool ** allocation_bool_matrix(int width, int height){
+	bool ** tmp = malloc(width*sizeof(bool*));
+	if(tmp==NULL){
+		fprintf(stderr, "intersect : tmp null\n");
+		exit(EXIT_FAILURE);
+	}
+	for(int i=0 ; i<width ; i++){
+		tmp[i] = malloc(height*sizeof(bool));
+		if(tmp[i]==NULL){
+			fprintf(stderr, "intersect : tmp[%d] null\n",i);
+			exit(EXIT_FAILURE);
+		}
+	}
+	return tmp;
+}
+
+void delete_bool_matrix(bool ** tmp, int height){
+	for(int i=0 ; i<height ; i++)
+		free(tmp[i]);
+	free(tmp);
+}
+
+bool put_piece_in_board(cpiece p, bool *** ptr_tmp, int x, int y){ // Place pièce p dans le tableau en attribuant true aux cases où la pièce se trouve
+	for(int i=0 ; i<get_width(p) ; i++){
+		if(!(*ptr_tmp)[x+i][y])
+			(*ptr_tmp)[x+i][y] = true;
+		else
+			return true;
+	}
+	for(int i=1 ; i<get_height(p) ; i++){
+		if(!(*ptr_tmp)[x][y+i])
+			(*ptr_tmp)[x][y+i] = true;
+		else
+			return true;
+	}
+	return false;
 }
 
 bool intersect(cpiece p1, cpiece p2){
@@ -96,36 +148,15 @@ bool intersect(cpiece p1, cpiece p2){
 		exit(EXIT_FAILURE);
 	}
 
-	bool tmp[L_RH][H_RH];
-	for(int i=0 ; i<L_RH ; i++)
-		for(int j=0 ; j<H_RH ; j++)
-			tmp[i][j]=false;
-
-	int xCoor1 = get_x(p1);
-	int yCoor1 = get_y(p1);
-	int xCoor2 = get_x(p2);
-	int yCoor2 = get_y(p2);
-
-	tmp[xCoor1][yCoor1]=true;
-
-	if(is_horizontal(p1)){
-		tmp[(xCoor1)+1][yCoor1]=true;
-		if(!is_small(p1))
-			tmp[(xCoor1)+2][yCoor1]=true;
-	}else{
-		tmp[xCoor1][(yCoor1)+1]=true;
-		if(!is_small(p1))
-			tmp[xCoor1][(yCoor1)+2]=true;
-	}
-	if (is_horizontal(p2)) {
-		if (tmp[xCoor2][yCoor2] || tmp[(xCoor2) + 1][yCoor2]) { return true; }
-		if (!is_small(p2))
-			if (tmp[(xCoor2) + 2][yCoor2]) { return true; }
-	}
-	else {
-		if (tmp[xCoor2][yCoor2] || tmp[xCoor2][(yCoor2)+1]) { return true; }
-		if (!is_small(p2))
-			if (tmp[xCoor2][(yCoor2)+2]) { return true; }
+	for(int i=get_x(p1) ; i<get_x(p1)+get_width(p1) ; i++){
+		for(int j=get_y(p1) ; j<get_y(p1)+get_height(p1) ; j++){
+			for(int k=get_x(p2) ; k<get_x(p2)+get_width(p2) ; k++){
+				for(int l=get_y(p2) ; l<get_y(p2)+get_height(p2) ; l++){
+					if(i==k && j==l)
+						return true;
+				}
+			}
+		}
 	}
 	return false;
 }
@@ -148,7 +179,6 @@ int get_y(cpiece p)
 	}
 	return p->y;
 }
-
 
 int get_height(cpiece p)
 {
@@ -190,7 +220,7 @@ bool is_small(cpiece p) {
 		return get_height(p)==2;
 }
 
-bool is_in_board(cpiece p){
+bool is_in_board(cpiece p, int width, int height){
 	if(p==NULL){
 		fprintf(stderr, "is_in_board : p invalide\n");
 		exit(EXIT_FAILURE);
@@ -199,10 +229,10 @@ bool is_in_board(cpiece p){
 		return false;
 
 	if(is_horizontal(p)){
-		if(get_x(p) + (get_width(p)-1) > (L_RH-1))
+		if(get_x(p) + (get_width(p)-1) > (width-1))
 			return false;
 	}else{
-		if(get_y(p) + (get_height(p)-1) > (H_RH-1))
+		if(get_y(p) + (get_height(p)-1) > (height-1))
 			return false;
 	}
 	return true;
@@ -217,41 +247,3 @@ bool can_move_y(cpiece p)
 {
 	return p->move_y;
 }
-
-piece new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
-{
-	if(x<0 || y<0 || y>H_RH || x>L_RH){
-		fprintf(stderr, "new_piece : hors tableau\n");
-		exit(EXIT_FAILURE);
-	}
-	if(((height+y)>H_RH) || ((width+x)>L_RH))
-	{
-		fprintf(stderr,"new_piece : piece sortant en partie du tableau\n");
-		exit(EXIT_FAILURE);
-	}
-	piece p = malloc(sizeof(struct piece_s));
-	if(p==NULL){
-		fprintf(stderr, "new_piece : p non alloue\n");
-		exit(EXIT_FAILURE);
-	}
-	p->x = x;
-	p->y = y;
-	p->width = width;
-	p->height = height;
-	p->move_x = move_x;
-	p->move_y = move_y;
-	return p;
-}
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> dd1adde87adb7fd89aeb4c044c958b9fc767fee4

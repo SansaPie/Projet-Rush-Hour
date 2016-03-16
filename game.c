@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "piece.h"
+#include "piece1.h"
 #include "game.h"
+#include "game1.h"
 
 #define ERR_PIECE -1 
 
@@ -27,14 +29,14 @@ game new_game_hr (int nb_pieces, piece *pieces){
 		exit(EXIT_FAILURE);
 	}
 	g->nb_pieces = nb_pieces;
-
 	g->pieces = allocation_piece_tab(nb_pieces, "new_game_hr");
-
 	for(int i=0 ; i<nb_pieces ; i++){
-		g->pieces[i] = new_piece_rh(0,0,true,true);
+		g->pieces[i] = new_piece(0,0,1,1,true,true);
 		copy_piece(pieces[i],g->pieces[i]);
 	}
 	g->moves = 0;
+	g->width = 6;
+	g->height = 6;
 	if(!game_valid(g)){
 		fprintf(stderr, "new_game_hr : jeu non valide\n");
 		exit(EXIT_FAILURE);
@@ -109,11 +111,18 @@ cpiece game_piece(cgame g, int piece_num){
 }
 
 bool game_over_hr(cgame g){
-	if(g==NULL){
-		fprintf(stderr, "game_over_hr : g invalide\n");
+	test_condition(true, "game_over_hr : g invalide\n");
+	if(get_x(game_piece(g, 0)) == 4 && get_y(game_piece(g,0)) == 3)
+		return true;
+	return false;
+}
+
+bool game_over_ar(cgame g) {
+	if (g == NULL) {
+		fprintf(stderr, "game_over_ar : g invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if(get_x(game_piece(g, 0)) == 4 && get_y(game_piece(g,0)) == 3)
+	if (get_x(game_piece(g, 0)) == 2 && get_y(game_piece(g, 0)) == 0)
 		return true;
 	return false;
 }
@@ -134,9 +143,9 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	piece piece_moved = gTmp->pieces[piece_num];
 	
 	for (int i = 0; i < distance; i++) {
-		if (((d == LEFT || d == RIGHT) && is_horizontal(piece_moved)) ||
-			((d == UP || d == DOWN) && !is_horizontal(piece_moved))) {
-			move_piece(piece_moved, d,1);
+		if (((d == LEFT || d == RIGHT) && can_move_x(piece_moved)) ||
+			((d == UP || d == DOWN) && can_move_y(piece_moved))) {
+			move_piece(piece_moved, d, 1);
 		}
 		if (!game_valid(gTmp)) {
 			delete_game(gTmp);
@@ -167,7 +176,7 @@ bool game_valid(cgame g){
 		exit(EXIT_FAILURE);
 	}
 	for(int i=0 ; i<game_nb_pieces(g) ; i++){
-		if(!is_in_board(game_piece(g,i))){
+		if(!is_in_board(game_piece(g,i), game_width(g), game_height(g))){
 			printf("La piece %d se trouverait hors du tableau.\n", i);
 			return false;
 		}
@@ -193,8 +202,12 @@ int game_height(cgame g) {
 
 int game_square_piece(game g, int x, int y) {
 	if (g == NULL) {
-		fprintf(stderr, "game_square_piece: coordonnee non valide\n");
+		fprintf(stderr, "game_square_piece: g null\n");
 		exit(EXIT_FAILURE);
+	}
+	if(x<0 || x>game_width(g) || y<0 || y>game_height(g)){
+		printf("game_square_piece : coordonnees non valides\n");
+		return ERR_PIECE;
 	}
 	for (int i = 0; i < game_nb_pieces(g); i++) {
 		int xcoor = get_x(game_piece(g, i));
