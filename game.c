@@ -125,7 +125,7 @@ bool game_over_ar(cgame g) {
 		fprintf(stderr, "game_over_ar : g invalide\n");
 		exit(EXIT_FAILURE);
 	}
-	if (get_x(game_piece(g, 0)) == 2 && get_y(game_piece(g, 0)) == 0)
+	if (get_x(game_piece(g, 0)) == 1 && get_y(game_piece(g, 0)) == 0)
 		return true;
 	return false;
 }
@@ -140,7 +140,7 @@ bool play_move(game g, int piece_num, dir d, int distance){
 	piece * t_pieces = NULL;
 	t_pieces = allocation_piece_tab(1, "play_move");
 	t_pieces[0] = new_piece_rh(0,0,true,true);
-	game gTmp = new_game_hr(1, t_pieces);
+	game gTmp = new_game(game_width(g), game_height(g), 1, t_pieces);
 	copy_game(g, gTmp);
 
 	piece piece_moved = gTmp->pieces[piece_num];

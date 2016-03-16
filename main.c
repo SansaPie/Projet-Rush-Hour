@@ -62,8 +62,8 @@ char ** allocation_char_matrix(int width, int height){
 /**
  * @brief Deletes a char matrix
  */
-void delete_char_matrix(char ** grid, int height){
-	for(int i=0 ; i<height ; i++)
+void delete_char_matrix(char ** grid, int width){
+	for(int i=0 ; i<width ; i++)
 		free(grid[i]);
 	free(grid);
 }
@@ -84,31 +84,25 @@ void display_game(cgame g) {
 	/* Remplissage du tableau avec les pieces de g */
 	for (int i = 0; i < game_nb_pieces(g); i++){
 
-		int xCoordDisplay = get_x(game_piece(g,i));
-		int yCoordDisplay = (game_height(g)-1)-get_y(game_piece(g,i));
+		int xCoor = get_x(game_piece(g,i));
+		int yCoor = get_y(game_piece(g,i));
 
-		grid[xCoordDisplay][yCoordDisplay] = i + '0';
-		if (!is_horizontal(game_piece(g,i))) {
-			grid[xCoordDisplay][yCoordDisplay -1] = i + '0';
-			if (!is_small(game_piece(g, i)))
-				grid[xCoordDisplay][yCoordDisplay - 2] = i + '0';
-		}
-		else {
-			grid[xCoordDisplay + 1][yCoordDisplay] = i + '0';
-			if (!is_small(game_piece(g, i)))
-				grid[xCoordDisplay + 2][yCoordDisplay] = i + '0';	
+		for(int x=xCoor ; x<xCoor+get_width(game_piece(g, i)) ; x++){
+			for(int y=yCoor ; y<yCoor+get_height(game_piece(g, i)) ; y++){
+				grid[x][y]=i+'0';
+			}
 		}
 	}
 	
 	/* affichage du tableau rempli */
-	for (int x = 0; x<game_width(g); x++) {
-		for (int y = 0; y<game_height(g); y++) {
-			printf("%c ", grid[y][x]);
+	for (int y = game_height(g)-1; y>=0; y--) {
+		for (int x = 0; x<game_width(g); x++) {
+			printf("%c ", grid[x][y]);
 		}
 		printf("\n");
 	}
 	printf("\n");
-	delete_char_matrix(grid, game_height(g));
+	delete_char_matrix(grid, game_width(g));
 }
 
 /**
@@ -276,13 +270,13 @@ game choice_config_ar(piece * pieces_test, int * n, int choice){
 
 dir input_direction(char * direction, int size){
 	while(1){
-		if(strcmp(direction, "RIGHT"))
+		if(!strcmp(direction, "RIGHT"))
 			return RIGHT;
-		else if(strcmp(direction, "LEFT"))
+		else if(!strcmp(direction, "LEFT"))
 			return LEFT;
-		else if(strcmp(direction, "UP"))
+		else if(!strcmp(direction, "UP"))
 			return UP;
-		else if(strcmp(direction, "DOWN"))
+		else if(!strcmp(direction, "DOWN"))
 			return DOWN;
 		else{
 			printf("Direction invalide. Veuillez entrer UP, DOWN, RIGHT ou LEFT.\n");
@@ -304,7 +298,7 @@ void ane_rouge(char * answer, int size, game g){
 		"Vous pouvez bouger les pieces horizontalement et verticalement.\n"
 		"Essayez de resoudre ce puzzle en un minimum de coups possible !\n\n");
 
-	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
+	while(!game_over_ar(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
 		display_game(g);
 		int number_piece = -1;
 		bool condition = true;
@@ -313,7 +307,7 @@ void ane_rouge(char * answer, int size, game g){
 			number_piece = atoi(scan(answer, size));
 			condition = (number_piece<0 || number_piece>game_nb_pieces(g));
 			if(condition)
-				printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g));
+				printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g)-1);
 		}
 
 		printf("Vous avez choisi la piece %d. Dans quelle direction voulez-vous la bouger ?\n(UP, DOWN, RIGHT, LEFT)\n"
@@ -326,7 +320,7 @@ void ane_rouge(char * answer, int size, game g){
 		condition = true;
 		while(condition){
 			distance = atoi(scan(answer, size));
-			condition = (abs(distance)>=(game_height(g)-1) || abs(distance)>=(game_width(g)-1));
+			condition = (abs(distance)>=game_height(g) || abs(distance)>=game_width(g));
 			if(condition)
 				printf("Veuillez rentrer une distance valide.\n");
 		}
@@ -373,7 +367,7 @@ int main(){
 			if(condition)
 				printf("Veuillez selectionner un numero de configuration correcte.\n");
 		}
-		game g = choice_config_hr(pieces_test, &n, choice); // initialisation du jeu
+		game g = choice_config_rh(pieces_test, &n, choice); // initialisation du jeu
 		rush_hour(answer, size, g);
 	}
 	else{
