@@ -31,10 +31,12 @@ game new_game_hr (int nb_pieces, piece *pieces){
 	g->nb_pieces = nb_pieces;
 	g->pieces = allocation_piece_tab(nb_pieces, "new_game_hr");
 	for(int i=0 ; i<nb_pieces ; i++){
-		g->pieces[i] = new_piece_rh(0,0,true,true);
+		g->pieces[i] = new_piece(0,0,1,1,true,true);
 		copy_piece(pieces[i],g->pieces[i]);
 	}
 	g->moves = 0;
+	g->width = 6;
+	g->height = 6;
 	if(!game_valid(g)){
 		fprintf(stderr, "new_game_hr : jeu non valide\n");
 		exit(EXIT_FAILURE);
@@ -167,7 +169,7 @@ bool game_valid(cgame g){
 		exit(EXIT_FAILURE);
 	}
 	for(int i=0 ; i<game_nb_pieces(g) ; i++){
-		if(!is_in_board(game_piece(g,i))){
+		if(!is_in_board(game_piece(g,i), game_width(g), game_height(g))){
 			printf("La piece %d se trouverait hors du tableau.\n", i);
 			return false;
 		}
