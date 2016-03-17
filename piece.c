@@ -16,17 +16,14 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 	}
 	p->x = x;
 	p->y = y;
-	if(horizontal)
-	{
+	if(horizontal){
 		p->move_x = true;
 		p->move_y = false;
 		p->height = 1;
 		p->width = 2;
 		if(!small)
 			p->width ++;
-	}
-	else
-	{
+	}else{
 		p->move_x = false;
 		p->move_y = true;
 		p->width = 1;
