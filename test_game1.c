@@ -43,7 +43,7 @@ bool test_equality_game(cgame expected, cgame value, char * msg) {
 piece pieces[NB_PIECES];
 
 /**
- * @brief Initialisation de 4 pieces.
+ * @brief Initialisation of 4 pieces.
  */
 void set_up() {
 	pieces[0] = new_piece_rh(3, 3, true, true);
@@ -65,7 +65,7 @@ void set_up() {
 */
 
 /**
- * @brief Suppression des pieces.
+ * @brief delete the pieces.
  */
 void tear_down() {   
 	for (int i = 0; i < NB_PIECES; i++)
@@ -73,14 +73,14 @@ void tear_down() {
 }
 
 /**
- * @brief Creation de la piece zero dans la position de victoire.
+ * @brief Creation of piece 0 in victory position
  */
 void set_up_win() {  
 	pieces[0] = new_piece_rh(4, 3, true, true);
 }
 
 /**
- * @brief Suppression de la piece.
+ * @brief delete the victory piece
  */
 
 void tear_down_win() {  
@@ -88,8 +88,8 @@ void tear_down_win() {
 }
 
 /**
- * @brief Teste de l'initialisation du jeu.
- * @return vrai si l'initialisation est correcte, faux sinon.
+ * @brief Test initialisation of the game
+ * @return true if initialisation is OK, false otherwise
  */
 bool test_new_game_hr() { 
 	bool result = true;
@@ -106,8 +106,8 @@ bool test_new_game_hr() {
 }
 
 /**
- * @brief Teste de la copie du jeu.
- * @return vrai si la copie est correcte, faux sinon.
+ * @brief test the copy of the game
+ * @return true if the copy is correct, false otherwise
  */
 bool test_copy_game() { 
 	bool result = true;
@@ -130,8 +130,8 @@ bool test_copy_game() {
 }
 
 /**
- * @brief Teste le nombre de pieces du jeu.
- * @return vrai si le nombre de pieces est correct, faux sinon.
+ * @brief Test the number of pieces in the game
+ * @return true if the number of pieces is ok, false otherwise
  */
 bool test_game_nb_pieces() {   
 	bool result = true;
@@ -144,8 +144,8 @@ bool test_game_nb_pieces() {
 }
 
 /**
- * @brief Teste les toutes pieces du jeu.
- * @return vrai si les pieces sont correctes, faux sinon.
+ * @brief test all the pieces in the game
+ * @return true if all the pieces are OK, false otherwise
  */
 bool test_game_piece(cgame gtest) {
 	bool result = true;
@@ -155,7 +155,8 @@ bool test_game_piece(cgame gtest) {
 }
 
 /**
- * @brief Test la condition de victoire.
+ * @brief test if the game is over
+ * @return true if the game is over, false otherwise
  */
 bool test_game_over_hr() {  
 	bool result = true;
@@ -177,8 +178,8 @@ bool test_game_over_hr() {
 }
 
 /**
- * @brief Teste le nombre de mouvements.
- * @return vrai si le nombre de mouvements est correct, faux sinon.
+ * @brief test the number of movements
+ * @return true if the number is OK, false otherwise
  */
 bool test_game_nb_moves(){ 
 	bool result = true;
@@ -193,6 +194,11 @@ bool test_game_nb_moves(){
 
 	return result;
 }
+
+/**
+ * @brief test if there is a piece present
+ * @return true if there is one, false otherwise
+ */
 
 bool test_game_square_piece_hr() { 
 	bool result = true;
@@ -235,7 +241,10 @@ bool test_play_move_hr() {
 	return result;
 }
 
-
+/**
+ * @brief main test
+ * @return exit_success
+ */
 int main(){
 	bool result = true;
 	result = result && test_equality_bool(true, test_new_game_hr(), "new_game_hr");
