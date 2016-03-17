@@ -3,7 +3,7 @@ To do list :
 Obligatoire :
 - Autres configs ane_rouge (J'm'occupe de ça - Lisa) (Ajout de trois autres configurations âne rouge : FAIT - à vérifier)
 - Tests unitaires (Clément)
-- Commentaires + s'imposer une norme pour la mise en page (comment sont notés les commentaires, où mettre un espace, en anglais ou en français, etc ...)
+- Commentaires + s'imposer une norme pour la mise en page (comment sont notés les commentaires, où mettre un espace, en anglais ou en français, etc ...) (Je gère aussi - Lisa \o/) (FAIT - à vérifier)
 - Factorisation du main ?
 - Gérer l'emplacement de fonctions globales dans de nouveaux .c (A demander en détails à la prof, ex:game_over_hr / game_over_ar, cf mail)
 - Asserts, une fois le code terminé et débuggé
