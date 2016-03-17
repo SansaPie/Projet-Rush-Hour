@@ -327,64 +327,76 @@ void ane_rouge(char * answer, int size, game g){
 	display_game(g);
 }
 
-// Chercher comment factoriser au mieux le main
 int main(){
 	int size = 30;
 	int n = 0;
 	piece * pieces_test = NULL;
-
 	char * answer = malloc(sizeof(char)*size);
-	printf("A quel jeu souhaitez-vous jouer ?\n1. Rush-hour\n2. Ane rouge\n");
+	char playing_game = 'O';
 
-	int choice = -1;
-	bool condition = true;
-	game g = NULL;
-	while(condition){
-		choice = atoi(scan(answer, size));
-		condition = (choice!=1 && choice!=2);
-		if(condition)
-			printf("Veuillez selectionner un numero de jeu correct.\n");
-	}
-	if(choice == 1){
-		printf("La liste des configurations disponibles est : \n"
-			"	1. easy_rh_1.txt\n"
-			"	2. easy_rh_2.txt\n"
-			"	3. normal_rh_1.txt \n"
-			" 	4. normal_rh_2.txt \n"
-			" 	5. difficult_rh_1.txt \n"
-			"	6. difficult_rh_2.txt \n"
-			"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
-		choice = 0;
-		condition = true;
+	while(playing_game=='O' || playing_game=='o'){
+		int choice = -1;
+		bool condition = true;
+		game g = NULL;
+
+		printf("\nA quel jeu souhaitez-vous jouer ?\n1. Rush-hour\n2. Ane rouge\n");
 		while(condition){
 			choice = atoi(scan(answer, size));
-			condition = (choice<1 || choice>6);
+			condition = (choice!=1 && choice!=2);
 			if(condition)
-				printf("Veuillez selectionner un numero de configuration correcte.\n");
+				printf("Veuillez selectionner un numero de jeu correct.\n");
 		}
-		g = choice_config_rh(pieces_test, &n, choice); // initialisation du jeu
-		rush_hour(answer, size, g);
-	}
-	else{
-		printf("La liste des configurations disponibles est : \n"
-			"	1. easy_ar_1.txt\n"
-			"	2. normal_ar_1.txt\n"
-			"	3. difficult_ar_1.txt\n"
-			"	4. difficult_ar_2.txt\n"
-			"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
-		choice = 0;
+		if(choice == 1){
+			printf("La liste des configurations disponibles est : \n"
+				"	1. easy_rh_1.txt\n"
+				"	2. easy_rh_2.txt\n"
+				"	3. normal_rh_1.txt \n"
+				" 	4. normal_rh_2.txt \n"
+				" 	5. difficult_rh_1.txt \n"
+				"	6. difficult_rh_2.txt \n"
+				"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
+			choice = 0;
+			condition = true;
+			while(condition){
+				choice = atoi(scan(answer, size));
+				condition = (choice<1 || choice>6);
+				if(condition)
+					printf("Veuillez selectionner un numero de configuration correcte.\n");
+			}
+			g = choice_config_rh(pieces_test, &n, choice); // initialisation du jeu
+			rush_hour(answer, size, g);
+		}
+		else{
+			printf("La liste des configurations disponibles est : \n"
+				"	1. easy_ar_1.txt\n"
+				"	2. normal_ar_1.txt\n"
+				"	3. difficult_ar_1.txt\n"
+				"	4. difficult_ar_2.txt\n"
+				"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
+			choice = 0;
+			condition = true;
+			while(condition){
+				choice = atoi(scan(answer, size));
+				condition = (choice<1 || choice>4);
+				if(condition)
+					printf("Veuillez selectionner un numero de configuration correcte.\n");
+			}
+			g = choice_config_ar(pieces_test, &n, choice); // initialisation du jeu
+			ane_rouge(answer, size, g);
+		}
+		printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
+		delete_game(g);
+
+		printf("\nSouhaitez-vous rejouer ? (O/N)\n");
 		condition = true;
 		while(condition){
-			choice = atoi(scan(answer, size));
-			condition = (choice<1 || choice>4);
+			answer = scan(answer, size);
+			playing_game = answer[0];
+			condition = (playing_game!='O' && playing_game!='N' && playing_game!='o' && playing_game!='n');
 			if(condition)
-				printf("Veuillez selectionner un numero de configuration correcte.\n");
+				printf("Veuillez entrer la lettre O ou N.\n");
 		}
-		g = choice_config_ar(pieces_test, &n, choice); // initialisation du jeu
-		ane_rouge(answer, size, g);
 	}
-	printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
-	delete_game(g);
 	free(answer);
 	return EXIT_SUCCESS;
 }
