@@ -2,27 +2,9 @@
 #include <time.h>
 #include <stdio.h>
 #include "piece.h"
+#include "test_general.h"
 
 #define NB_PIECES 4
-
-/**
- * @brief test if value is equal to expected; if not, displays an error message containing msg to standard error output 
- * @return true if expected==value
- */
-bool test_equality_int(int expected, int value, char * msg) {
-  if (expected != value)
-    fprintf(stderr, "ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
-  return expected == value;
-}
-
-/**
- * @brief test if value is equal to expected; if not, displays an error message containing msg to standard error output 
- */
-bool test_equality_bool(bool expected, bool value, char * msg) {
-  if (expected != value)
-    fprintf(stderr, "ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
-  return expected == value;
-}
 
 piece pieces[NB_PIECES];
 /* configue de test
@@ -39,12 +21,13 @@ void set_up() {
   pieces[2] = new_piece_rh(4, 1, true, true);
   pieces[3] = new_piece_rh(5, 3, false, false);
 }
+
 void tear_down() {
-  for (int i = 0 ; i < NB_PIECES; i++)
-    delete_piece(pieces[i]);
+	for (int i = 0; i < NB_PIECES; i++)
+		delete_piece(pieces[i]);
 }
 
-bool test_new_piece() {
+bool test_new_piece_rh() {
   bool result = true;
   for (int x= 0 ; x < 5; x++)
     for (int y= 0 ; y < 5; y++)
@@ -62,6 +45,7 @@ bool test_new_piece() {
           piece p = new_piece_rh(x, y, small, horizontal);
           result = result && test_equality_int(x, get_x(p),"get_x");
           result = result && test_equality_int(y, get_y(p),"get_y");
+
           if (horizontal) {
             result = result && test_equality_int(1, get_height(p), "get_height");
             result = result && test_equality_int(size, get_width(p), "get_width");
@@ -151,7 +135,7 @@ int main (int argc, char *argv[])
 {
   bool result= true;
 
-  result = result && test_equality_bool(true, test_new_piece(), "new_piece");
+  result = result && test_equality_bool(true, test_new_piece_rh(), "new_piece_hr");
   result = result && test_equality_bool(true, test_intersect(), "intersect");
   result = result && test_equality_bool(true, test_move(), "move");
   result = result && test_equality_bool(true, test_copy(), "copy");
