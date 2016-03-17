@@ -373,7 +373,7 @@ int main(){
 			if(condition)
 				printf("Veuillez selectionner un numero de configuration correcte.\n");
 		}
-		game g = choice_config_hr(pieces_test, &n, choice); // initialisation du jeu
+		game g = choice_config_rh(pieces_test, &n, choice); // initialisation du jeu
 		rush_hour(answer, size, g);
 	}
 	else{
