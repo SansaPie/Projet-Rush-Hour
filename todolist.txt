@@ -3,11 +3,10 @@
 A vérifier :
 - Fonction pour refaire une partie (FAIT par Lucas - à vérifier)
 - Factorisation du main (FAIT par Lucas - à vérifier)
+- Commentaires + s'imposer une norme pour la mise en page (comment sont notés les commentaires, où mettre un espace, en anglais ou en français, etc ...) (Je gère aussi - Lisa \o/) (FAIT - à vérifier)
 
 Fini :
 [- Autres configs ane_rouge (J'm'occupe de ça - Lisa - 2016) (Ajout de trois autres configurations âne rouge : FAIT - vérifié par Lucas)]
-
-- Commentaires + s'imposer une norme pour la mise en page (comment sont notés les commentaires, où mettre un espace, en anglais ou en français, etc ...) (Je gère aussi - Lisa \o/) (FAIT - à vérifier)
 
 Obligatoire :
 - Tests unitaires (Clément)
