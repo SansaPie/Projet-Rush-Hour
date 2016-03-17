@@ -210,6 +210,15 @@ game choice_config_ar(piece * pieces_test, int * n, int choice){
 		case 1:
 			entree = fopen("config/easy_ar_1.txt", "r+");
 			break;
+		case 2:
+			entree = fopen("config/normal_ar_1.txt", "r+");
+			break;
+		case 3:
+			entree = fopen("config/difficult_ar_1.txt", "r+");
+			break;
+		case 4:
+			entree = fopen("config/difficult_ar_2.txt", "r+");
+			break;
 	}
 	pieces_test = lecture(pieces_test, n, entree);
 	game g = new_game(4,5,*n, pieces_test); // La taille du tableau est unique à l'Âne Rouge
@@ -361,12 +370,15 @@ int main(){
 	else{
 		printf("La liste des configurations disponibles est : \n"
 			"	1. easy_ar_1.txt\n"
+			"	2. normal_ar_1.txt\n"
+			"	3. difficult_ar_1.txt\n"
+			"	4. difficult_ar_2.txt\n"
 			"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
 		choice = 0;
 		condition = true;
 		while(condition){
 			choice = atoi(scan(answer, size));
-			condition = (choice<1 || choice>1);
+			condition = (choice<1 || choice>4);
 			if(condition)
 				printf("Veuillez selectionner un numero de configuration correcte.\n");
 		}
