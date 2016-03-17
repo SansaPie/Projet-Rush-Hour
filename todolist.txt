@@ -8,6 +8,7 @@ Obligatoire :
 - Gérer l'emplacement de fonctions globales dans de nouveaux .c (A demander en détails à la prof, ex:game_over_hr / game_over_ar, cf mail)
 - Rajouter enable_testing sur le Cmake
 - Asserts, une fois le code terminé et débuggé
+- Documentation avec le site de Clément ?
 
 Optionnel :
 - Fonction permettant de revenir en arrière d'un coup
