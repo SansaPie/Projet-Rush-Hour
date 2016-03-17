@@ -9,6 +9,9 @@ La compilation se fait à l'aide d'un CMake. Les fichiers de configurations de j
 	difficult_rh_1.txt
 	difficult_rh_2.txt
 	easy_ar_1.txt
+	normal_ar_1.txt
+	difficult_ar_1.txt
+	difficult_ar_2.txt
 
 Placez-vous dans le fichier build, puis lancez la commande make dans votre terminal. Ensuite, lancez l'exécutable en tapant ./main
 Le jeu va s'afficher dans le terminal avec les règles du jeu. 
