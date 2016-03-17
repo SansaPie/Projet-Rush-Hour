@@ -1,7 +1,7 @@
 ﻿To do list :
 
 Obligatoire :
-- Autres configs ane_rouge (J'm'occupe de ça - Lisa - 2016) (Ajout de trois autres configurations âne rouge : FAIT - à vérifier)
+- Autres configs ane_rouge (J'm'occupe de ça - Lisa) (Ajout de trois autres configurations âne rouge : FAIT - à vérifier)
 - Tests unitaires (Clément)
 - Commentaires + s'imposer une norme pour la mise en page (comment sont notés les commentaires, où mettre un espace, en anglais ou en français, etc ...) (Je gère aussi - Lisa \o/) (FAIT - à vérifier)
 - Factorisation du main ? (FAIT par Lucas - à vérifier)
