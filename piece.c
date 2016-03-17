@@ -90,16 +90,20 @@ void move_piece (piece p, dir d, int distance){
 	}
 	switch(d){
 		case RIGHT:
-			p->x+=distance;
+			if(can_move_x(p))
+				p->x+=distance;
 			break;
 		case LEFT:
-			p->x-=distance;
+			if(can_move_x(p))
+				p->x-=distance;
 			break;
 		case UP:
-			p->y+=distance;
+			if(can_move_y(p))
+				p->y+=distance;
 			break;
 		case DOWN:
-			p->y-=distance;
+			if(can_move_y(p))
+				p->y-=distance;
 			break;
 	}
 }
