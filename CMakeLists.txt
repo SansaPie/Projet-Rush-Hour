@@ -8,7 +8,7 @@ add_library(game game.c piece.c)
 add_executable(main main.c)
 target_link_libraries(main game)
 
-add_executable(test_game1 test_game1.c)
+add_executable(test_game1 test_game1.c test_general.c)
 target_link_libraries(test_game1 game)
 
 
