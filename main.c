@@ -1,5 +1,3 @@
-//////////////////////////////////////////////////////////// Rajout de ASSERT a faire ////////////////////////////////////////////////////////////
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -122,9 +120,9 @@ void display_game(cgame g) {
  * @param d direction of the move
  */
 
-void display_success_movement(game g, int number_piece, int distance, dir d){
-	if(play_move(g, number_piece, d, abs(distance))){
-		printf("Vous avez bouge la piece %d de %d cases vers ", number_piece, abs(distance));
+void display_success_movement(game g, int piece_played, int distance, dir d){
+	if(play_move(g, piece_played, d, abs(distance))){
+		printf("Vous avez bouge la piece %d de %d cases vers ", piece_played, abs(distance));
 		if(d==RIGHT)
 			printf("la droite.\n\n");
 		else if(d==LEFT)
@@ -143,18 +141,17 @@ void display_success_movement(game g, int number_piece, int distance, dir d){
  * @param distance direction in which we want to move the piece
  */
 
-void move_rh(game g, int number_piece, int distance)
-{
+void move_rh(game g, int piece_played, int distance){
 	if(distance>0){
-		if(is_horizontal(game_piece(g, number_piece)))
-			display_success_movement(g, number_piece, distance, RIGHT);
+		if(is_horizontal(game_piece(g, piece_played)))
+			display_success_movement(g, piece_played, distance, RIGHT);
 		else
-			display_success_movement(g, number_piece, distance, UP);
+			display_success_movement(g, piece_played, distance, UP);
 	}else{
-		if(is_horizontal(game_piece(g, number_piece)))
-			display_success_movement(g, number_piece, distance, LEFT);
+		if(is_horizontal(game_piece(g, piece_played)))
+			display_success_movement(g, piece_played, distance, LEFT);
 		else
-			display_success_movement(g, number_piece, distance, DOWN);
+			display_success_movement(g, piece_played, distance, DOWN);
 	}
 }
 
@@ -183,8 +180,7 @@ char * scan(char * buffer , int size) {
  * @brief choice of the rush hour config
  *
  */
-game choice_config_rh(piece * pieces_test, int * n, int choice)
-{
+game choice_config_rh(piece * pieces_test, int * n, int choice){
 	FILE *entree = NULL;
 	switch(choice){
 		case 1:
@@ -219,60 +215,6 @@ game choice_config_rh(piece * pieces_test, int * n, int choice)
 	return g;
 }
 
-void rush_hour(char * answer, int size, game g){
-	/* 
-	 * test if the position is OK
-	 */
-	if(!game_valid(g)){
-		fprintf(stderr, "rush_hour : game invalid\n");
-		exit(EXIT_FAILURE);
-	}
-
-	/* 
-	 * display the rules
-	 */
-	printf("Ce jeu a ete code par Lucas, Lisa et Clement. \n"
-		"Le but de ce jeu est d'amener la voiture 0 toucher le cote droit du plateau.\n"
-		"Vous ne pouvez bouger les pieces horizontales que de gauche a droite, "
-		"et les verticales que de haut en bas. \n"
-		"Un nombre negatif fera bouger une voiture horizontale a gauche, "
-		"un nombre positif la fera bouger a droite.\n"
-		"Un nombre negatif fera bouger une voiture verticale vers le bas, "
-		"et un nombre positif la fera bouger vers le haut.\n"
-		"Essayez de resoudre ce puzzle en un minimum de coups possible !\n\n");
-
-	while(!game_over_hr(g)){ 
-	/* 
-	 * while the game is not over, we're asking the player what he wants to play
-	 */
-		display_game(g);
-		int number_piece = -1;
-		bool condition = true;
-		while(condition){
-			printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
-			number_piece = atoi(scan(answer, size));
-			condition = (number_piece<0 || number_piece>game_nb_pieces(g));
-			if(condition)
-				printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g));
-		}
-		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?\n"
-			, number_piece);
-		int distance = game_height(g);
-		condition = true;
-		while(condition){
-			distance = atoi(scan(answer, size));
-			condition = (abs(distance)>=(game_height(g)-1) || abs(distance)>=(game_width(g)-1));
-			if(condition)
-				printf("Veuillez rentrer une distance valide.\n");
-		}
-		move_rh(g, number_piece, distance);
-	}
-
-	display_game(g);
-	printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
-	
-	delete_game(g);
-}
 
 game choice_config_ar(piece * pieces_test, int * n, int choice){
 	FILE *entree = NULL;
@@ -300,6 +242,31 @@ game choice_config_ar(piece * pieces_test, int * n, int choice){
 	return g;
 }
 
+int input_piece_played(char * answer, int size, cgame g){
+	int piece_played = -1;
+	bool condition = true;
+	while(condition){
+		printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
+		piece_played = atoi(scan(answer, size));
+		condition = (piece_played<0 || piece_played>=game_nb_pieces(g));
+		if(condition)
+			printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g)-1);
+	}
+	return piece_played;
+}
+
+int input_distance(char * answer, int size, cgame g){
+	int distance = game_height(g);
+	bool condition = true;
+	while(condition){
+		distance = atoi(scan(answer, size));
+		condition = (abs(distance)>=(game_height(g)-1) || abs(distance)>=(game_width(g)-1));
+		if(condition)
+			printf("Veuillez rentrer une distance valide.\n");
+	}
+	return distance;
+}
+
 dir input_direction(char * direction, int size){
 	while(1){
 		if(!strcmp(direction, "RIGHT"))
@@ -315,6 +282,36 @@ dir input_direction(char * direction, int size){
 			direction = scan(direction, size);
 		}
 	}
+}
+
+void rush_hour(char * answer, int size, game g){
+	/* teste si la position des pieces est conforme */
+	if(!game_valid(g)){
+		fprintf(stderr, "rush_hour : game invalid\n");
+		exit(EXIT_FAILURE);
+	}
+
+	/* affichage des regles du jeu */
+	printf("Ce jeu a ete code par Lucas, Lisa et Clement. \n"
+		"Le but de ce jeu est d'amener la voiture 0 toucher le cote droit du plateau.\n"
+		"Vous ne pouvez bouger les pieces horizontales que de gauche a droite, "
+		"et les verticales que de haut en bas. \n"
+		"Un nombre negatif fera bouger une voiture horizontale a gauche, "
+		"un nombre positif la fera bouger a droite.\n"
+		"Un nombre negatif fera bouger une voiture verticale vers le bas, "
+		"et un nombre positif la fera bouger vers le haut.\n"
+		"Essayez de resoudre ce puzzle en un minimum de coups possible !\n\n");
+
+	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
+		display_game(g);
+		int piece_played = input_piece_played(answer, size, g);
+		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?\n"
+			, piece_played);
+		int distance = input_distance(answer, size, g);
+		move_rh(g, piece_played, distance);
+	}
+
+	display_game(g);
 }
 
 void ane_rouge(char * answer, int size, game g){
@@ -339,37 +336,19 @@ void ane_rouge(char * answer, int size, game g){
 	 * while the game isn't over, we ask the player what he wants to play
 	 */
 		display_game(g);
-		int number_piece = -1;
-		bool condition = true;
-		while(condition){
-			printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
-			number_piece = atoi(scan(answer, size));
-			condition = (number_piece<0 || number_piece>game_nb_pieces(g));
-			if(condition)
-				printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g)-1);
-		}
+		int piece_played = input_piece_played(answer, size, g);
 
 		printf("Vous avez choisi la piece %d. Dans quelle direction voulez-vous la bouger ?\n(UP, DOWN, RIGHT, LEFT)\n"
-			, number_piece);
+			, piece_played);
 		char * s_direction = scan(answer, size);
 		dir direction = input_direction(s_direction, size);
 
 		printf("Et enfin de combien de cases va-t-elle se mouvoir ?\n");
-		int distance = game_height(g);
-		condition = true;
-		while(condition){
-			distance = atoi(scan(answer, size));
-			condition = (abs(distance)>=game_height(g) || abs(distance)>=game_width(g));
-			if(condition)
-				printf("Veuillez rentrer une distance valide.\n");
-		}
-		display_success_movement(g, number_piece, distance, direction);
+		int distance = input_distance(answer, size, g);
+		display_success_movement(g, piece_played, distance, direction);
 	}
 
 	display_game(g);
-	printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
-	
-	delete_game(g);
 }
 
 
@@ -383,6 +362,7 @@ int main(){
 
 	int choice = -1;
 	bool condition = true;
+	game g = NULL;
 	while(condition){
 		choice = atoi(scan(answer, size));
 		condition = (choice!=1 && choice!=2);
@@ -406,7 +386,7 @@ int main(){
 			if(condition)
 				printf("Veuillez selectionner un numero de configuration correcte.\n");
 		}
-		game g = choice_config_rh(pieces_test, &n, choice);
+		g = choice_config_rh(pieces_test, &n, choice);
 		rush_hour(answer, size, g);
 	}
 	else{
@@ -424,9 +404,11 @@ int main(){
 			if(condition)
 				printf("Veuillez selectionner un numero de configuration correcte.\n");
 		}
-		game g = choice_config_ar(pieces_test, &n, choice);
+		g = choice_config_ar(pieces_test, &n, choice);
 		ane_rouge(answer, size, g);
 	}
+	printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
+	delete_game(g);
 	free(answer);
 	return EXIT_SUCCESS;
 }
