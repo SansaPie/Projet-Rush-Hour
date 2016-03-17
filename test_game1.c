@@ -7,70 +7,8 @@
 #include "piece1.h"
 #include "test_general.h"
 
-#define NB_PIECES 7
-#define HEIGHT_HR 6
-#define WIDTH_HR 6
-
-bool test_game_piece(cgame gtest);
-
-/**
- * @brief test if value is equal to expected ; if not program abort
- * @return true if expected == value
- */
-
-bool test_equality_piece(cpiece expected, cpiece value, char *msg) {   
-	if ((get_x(expected) != get_x(value)) || (get_y(expected) != get_y(value)) || (is_horizontal(expected) != is_horizontal(value)) || (is_small(expected) != is_small(value))) {
-		fprintf(stderr, "%s expected piece is not equal to value piece\n", msg);
-		return false;
-	}
-	return true;
-}
-
-/**
- * @brief same test as test_equality_piece
- */
-
-bool test_equality_game(cgame expected, cgame value, char * msg) {   
-	bool result = true;
-	for (int i = 0; i < NB_PIECES; i++) {
-		result = result && test_equality_piece(game_piece(expected, i), game_piece(value, i) , msg);
-	}
-	if ( !result )
-		fprintf(stderr, "%s expected game is not equal to value game\n", msg);
-	return result;
-}
-
-piece pieces[NB_PIECES];
-
-/**
- * @brief Initialisation de 4 pieces.
- */
-void set_up() {
-	pieces[0] = new_piece_rh(3, 3, true, true);
-	pieces[1] = new_piece_rh(3, 0, true, false);
-	pieces[2] = new_piece_rh(4, 1, true, true);
-	pieces[3] = new_piece_rh(5, 3, false, false);
-	pieces[4] = new_piece_rh(0, 4, true, true);
-	pieces[5] = new_piece_rh(1, 2, true, false);
-	pieces[6] = new_piece_rh(3, 4, true, false);
-}
-
-/* configue de test
-...6.3
-44.6.3
-.5.003
-.5....
-...122
-...1..
-*/
-
-/**
- * @brief Suppression des pieces.
- */
-void tear_down() {   
-	for (int i = 0; i < NB_PIECES; i++)
-		delete_piece(pieces[i]);
-}
+#define HEIGHT_RH 6
+#define WIDTH_RH 6
 
 /**
  * @brief Creation de la piece zero dans la position de victoire.
@@ -91,15 +29,15 @@ void tear_down_win() {
  * @brief Teste de l'initialisation du jeu.
  * @return vrai si l'initialisation est correcte, faux sinon.
  */
-bool test_new_game_hr() { 
+bool test_new_game_rh() { 
 	bool result = true;
 	set_up();
 	game test = new_game_hr(NB_PIECES , pieces);
 	result = result && test_game_piece(test);
 	result = result && test_equality_int(NB_PIECES, game_nb_pieces(test), "game_nb_pieces");
 	result = result && test_equality_int(0, game_nb_moves(test) , "game_nb_moves");
-	result = result && test_equality_int(WIDTH_HR, game_width(test), "game_width");
-	result = result && test_equality_int(HEIGHT_HR, game_height(test), "game_height");
+	result = result && test_equality_int(WIDTH_RH, game_width(test), "game_width");
+	result = result && test_equality_int(HEIGHT_RH, game_height(test), "game_height");
 	tear_down();
 	delete_game(test);
 	return result;
@@ -144,20 +82,9 @@ bool test_game_nb_pieces() {
 }
 
 /**
- * @brief Teste les toutes pieces du jeu.
- * @return vrai si les pieces sont correctes, faux sinon.
- */
-bool test_game_piece(cgame gtest) {
-	bool result = true;
-	for (int i = 0; i < NB_PIECES; i ++)
-		result = result && test_equality_piece(pieces[i], game_piece(gtest, i), "game_piece");
-	return result;
-}
-
-/**
  * @brief Test la condition de victoire.
  */
-bool test_game_over_hr() {  
+bool test_game_over_rh() {  
 	bool result = true;
 	
 	set_up();
@@ -194,7 +121,7 @@ bool test_game_nb_moves(){
 	return result;
 }
 
-bool test_game_square_piece_hr() { 
+bool test_game_square_piece_rh() { 
 	bool result = true;
 	set_up();
 	game test = new_game_hr(NB_PIECES, pieces);
@@ -205,14 +132,14 @@ bool test_game_square_piece_hr() {
 	return result; 
 } 
 
-bool test_play_move_hr() {
+bool test_play_move_rh() {
 	bool result = true;
 
 	set_up();
 	game test = new_game_hr(NB_PIECES, pieces);
 
 	// test de mouvements qui ne sont pas possible
-	for (int i = 1; i < HEIGHT_HR; i++) {
+	for (int i = 1; i < HEIGHT_RH; i++) {
 		result = result && test_equality_bool(false, play_move(test, 3, UP, i), "play_move UP non autorise");
 		result = result && test_equality_bool(false, play_move(test, 1, DOWN, i), "play_move DOWN non autorise");
 		result = result && test_equality_bool(false, play_move(test, 2, RIGHT, i), "play_move RIGHT non autorise");
@@ -238,15 +165,13 @@ bool test_play_move_hr() {
 
 int main(){
 	bool result = true;
-	result = result && test_equality_bool(true, test_new_game_hr(), "new_game_hr");
+	result = result && test_equality_bool(true, test_new_game_rh(), "new_game_rh");
 	result = result && test_equality_bool(true, test_copy_game(), "copy_game");
 	result = result && test_equality_bool(true, test_game_nb_pieces(), "game_nb_pieces");
-	result = result && test_equality_bool(true, test_game_over_hr(), "game_over_hr");
+	result = result && test_equality_bool(true, test_game_over_rh(), "game_over_rh");
 	result = result && test_equality_bool(true, test_game_nb_moves(), "game_nb_moves");
-	result = result && test_equality_bool(true, test_game_square_piece_hr(), "game_square_piece_hr");
-	//result = result && test_equality_bool(true, test_game_over_ar(), "game_over_ar");
-	//result = result && test_equality_bool(true, test_new_game(), "new_game_ar");
-	result = result && test_equality_bool(true, test_play_move_hr(), "play_move_hr");
+	result = result && test_equality_bool(true, test_game_square_piece_rh(), "game_square_piece_rh");
+	result = result && test_equality_bool(true, test_play_move_rh(), "play_move_rh");
 	if (!result) {
 		printf("Test_game KO!\n");
 		return EXIT_FAILURE;

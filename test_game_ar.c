@@ -1,30 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "game.h"
-#include "game1.h"
 #include "piece.h"
 #include "piece1.h"
+#include "game.h"
+#include "game1.h"
 #include "test_general.h"
 
-#define NB_PIECES 7
+
 #define HEIGHT_AR 5
 #define WIDTH_AR 4
-
-void set_up() {
-	pieces[0] = new_piece_rh(3, 3, true, true);
-	pieces[1] = new_piece_rh(3, 0, true, false);
-	pieces[2] = new_piece_rh(4, 1, true, true);
-	pieces[3] = new_piece_rh(5, 3, false, false);
-	pieces[4] = new_piece_rh(0, 4, true, true);
-	pieces[5] = new_piece_rh(1, 2, true, false);
-	pieces[6] = new_piece_rh(3, 4, true, false);
-}
-
-void tear_down() {
-	for (int i = 0; i < NB_PIECES; i++)
-		delete_piece(pieces[i]);
-}
 
 void set_up_win_ar() {
 	pieces[0] = new_piece_rh(1, 0, true, true);
@@ -34,14 +19,34 @@ void tear_down_win_ar() {
 	delete_piece(pieces[0]);
 }
 
-bool test_game_square_piece() {
+bool test_game_square_piece_ar() {
 	bool result = true;
 	set_up();
-	game test = new_game(WIDTH_HR, HEIGHT_HR, NB_PIECES, pieces);
+	game test = new_game(WIDTH_AR, HEIGHT_AR, NB_PIECES, pieces);
 	result = result && test_equality_int(2, game_square_piece(test, 4, 1), "game_square_piece present");
 	result = result && test_equality_int(-1, game_square_piece(test, 0, 0), "game_square_piece not present");
 	delete_game(test);
 	tear_down();
+	return result;
+}
+
+bool test_copy_game_ar() {
+	bool result = true;
+	set_up();
+	game test = new_game(WIDTH_AR, HEIGHT_AR, NB_PIECES, pieces);
+
+	piece * t_pieces = malloc(sizeof(struct piece_s)*game_nb_pieces(test));
+	for (int i = 0; i < game_nb_pieces(test); i++) {
+		t_pieces[i] = new_piece(0, 0, 1, 1, true, true);
+	}
+
+	game copy_test = new_game(1, 1, NB_PIECES, pieces);
+	copy_game(test, copy_test);
+	result = result && test_equality_game(test, copy_test, "copy_game");
+	delete_pieces(game_nb_pieces(test), t_pieces);
+	tear_down();
+	delete_game(test);
+	delete_game(copy_test);
 	return result;
 }
 
@@ -76,4 +81,29 @@ bool test_new_game() {
 	delete_game(test);
 	tear_down();
 	return result;
+}
+
+bool test_game_nb_pieces_ar() {
+	bool result = true;
+	set_up();
+	game test = new_game(WIDTH_AR, HEIGHT_AR, NB_PIECES, pieces);
+	result = result && test_equality_int(NB_PIECES, game_nb_pieces(test), "game_nb_piece");
+	tear_down();
+	delete_game(test);
+	return result;
+}
+
+int main() {
+	bool result = true;
+	result = result && test_equality_bool(true, test_new_game(), "new_game");
+	result = result && test_equality_bool(true, test_game_over_ar(), "game_over_ar");
+	result = result && test_equality_bool(true, test_game_square_piece_ar(), "game_square_piece_ar");
+	result = result && test_equality_bool(true, test_copy_game_ar(), "copy_game_ar");
+	result = result && test_equality_bool(true, test_game_nb_pieces_ar(), "game_nb_pieces_ar");
+	if (!result) {
+		printf("Test_game_ar failed!\n");
+		return EXIT_FAILURE;
+	}
+	printf("Test_game_ar passed!\n");
+	return EXIT_SUCCESS;
 }

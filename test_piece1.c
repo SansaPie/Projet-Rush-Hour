@@ -1,31 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-#include "piece.h"
 #include "test_general.h"
-
-#define NB_PIECES 4
-
-piece pieces[NB_PIECES];
-/* configue de test
-.....3
-.....3
-...003
-......
-...122
-...1..
- */
-void set_up() {
-  pieces[0] = new_piece_rh(3, 3, true, true);
-  pieces[1] = new_piece_rh(3, 0, true, false);
-  pieces[2] = new_piece_rh(4, 1, true, true);
-  pieces[3] = new_piece_rh(5, 3, false, false);
-}
-
-void tear_down() {
-	for (int i = 0; i < NB_PIECES; i++)
-		delete_piece(pieces[i]);
-}
 
 bool test_new_piece_rh() {
   bool result = true;
