@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "test_general.h"
 
+
 bool test_new_piece_rh() {
   bool result = true;
   for (int x= 0 ; x < 5; x++)
@@ -10,8 +11,10 @@ bool test_new_piece_rh() {
       for (bool small=false; !small ; small= !small)
         for (bool horizontal=false; !horizontal ; horizontal= !horizontal) {
           if((y>=4 && !horizontal && !small) || (x>=4 && horizontal && !small)){
-            break; // Si l'on ne met pas cette condition et ce break, le programme va créer des pièces en 
-                  // dehors du tableau, ce qui va déclencher une sécurité dans la fonction new_piece_rh
+            break; 
+/*
+ * without this condition and the break, the program is going to create pieces outside of the board. It will enclenche a security in the function new_piece_rh
+ */
           }
           int size;
           if (small)
@@ -35,6 +38,7 @@ bool test_new_piece_rh() {
   return result;
 }
 
+
 bool test_intersect() {
   bool result = true;
   set_up();
@@ -52,6 +56,7 @@ bool test_intersect() {
   delete_piece(pb_piece2);
   return result;
 }
+
 
 bool test_move() {
   bool result = true;
@@ -90,6 +95,7 @@ bool test_move() {
 }
 
 
+
 bool test_copy() {
   piece p = new_piece_rh(0, 0, true, true);
   bool result = true;
@@ -106,6 +112,7 @@ bool test_copy() {
   delete_piece(p);
   return result;
 }
+
 
 int main (int argc, char *argv[])
 {

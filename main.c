@@ -12,7 +12,9 @@
  * @brief function allowing the reading of pieces features from an annexed file
  */
 piece * lecture(piece * pieces_test, int * n, FILE * entree) {
-	/* variables utilisées pour la lecture du fichier */
+	/* 
+	 * var use for the lecture of the file
+	 */
 
 	int number_pieces;
 	int c_x;	   // x-coor
@@ -28,7 +30,10 @@ piece * lecture(piece * pieces_test, int * n, FILE * entree) {
 		exit(EXIT_FAILURE);
 	}  
 	fscanf(entree, "%d", &number_pieces);
-	pieces_test = allocation_piece_tab(number_pieces, "main"); /* on cree un tableau qui contient les pieces */
+	pieces_test = allocation_piece_tab(number_pieces, "main"); 
+	/* 
+	 * creation of the tab
+	 */
 	for(int i=0; i<number_pieces; i++)
 	{
 		fscanf(entree, "%d %d %d %d %d %d", &c_x, &c_y, &m_x, &m_y, &w, &h);
@@ -71,15 +76,18 @@ void delete_char_matrix(char ** grid, int width){
  * 
  */
 void display_game(cgame g) {
-	/* on crée un tableau à deux dimensions qui représente notre plateau de jeu */
+	/* 
+	 * creation of a 2D tab, representing our game's board
+	 */
 	char ** grid = allocation_char_matrix(game_width(g), game_height(g)); 
-	/* initialisation de toutes les cases du tableau precedement creer avec des '.' */
+	/* 
+	 * initialisation of the tab with '.' 
+	 */
 	for (int i = 0; i < game_width(g); i++) {
 		for (int j = 0; j < game_height(g); j++) {
 			grid[i][j] ='.';
 		}
 	}
-	/* Remplissage du tableau avec les pieces de g */
 	for (int i = 0; i < game_nb_pieces(g); i++){
 
 		int xCoor = get_x(game_piece(g,i));
@@ -92,7 +100,9 @@ void display_game(cgame g) {
 		}
 	}
 	
-	/* affichage du tableau rempli */
+	/* 
+	 * display the game's board
+	 */
 	for (int y = game_height(g)-1; y>=0; y--) {
 		for (int x = 0; x<game_width(g); x++) {
 			printf("%c ", grid[x][y]);
@@ -104,11 +114,10 @@ void display_game(cgame g) {
 }
 
 /**
- * @brief fonction testant si le mouvement choisi par l'utilisateur est possible ou non et 
- * l'executant dans le cas s'il est valide.
- * @param piece_played index dans le jeu de la piece que l'on souhaite bouger.
- * @param distance nombre de case dont on souhaite se deplacer.
- * @param d direction dans laquelle on souhaite se deplacer.
+ * @brief test if the movement is possible, and if so, execute it
+ * @param number_piece index in the game of the piece we want to move
+ * @param distance : number of cases we want to move the piece
+ * @param d direction of the move
  */
 
 void display_success_movement(game g, int piece_played, int distance, dir d){
@@ -127,9 +136,9 @@ void display_success_movement(game g, int piece_played, int distance, dir d){
 }
 
 /**
- * @brief fonction permettant de bouger la piece dans la direction et la distance choisies.
- * @param piece_played index dans le jeu de la piece que l'on va bouger.
- * @param distance direction dans laquelle on va bouger la piece.
+ * @brief move the piece in the direction and the distance chosen
+ * @param number_piece index in the game of the piece we want to move
+ * @param distance direction in which we want to move the piece
  */
 
 void move_rh(game g, int piece_played, int distance){
@@ -147,27 +156,28 @@ void move_rh(game g, int piece_played, int distance){
 }
 
 /**
- * @brief demande a l'utilisateur de saisir une chaine de caractere.
- * @param buffer chaine de caractere dans laquelle on stocke la valeur saisie par l'utilisateur.
- * @param size taille de la chaine de caractere buffer.
- * @return chaine de caractere saisie
+ * @brief ask the player to write a string
+ * @param buffer tab of char in which we're going to stock the string written by the player
+ * @param size width of the buffer
+ * @return string written
  */
 
 char * scan(char * buffer , int size) {
 	char * result = fgets(buffer, size, stdin);
-	/* on cherche dans la chaine de caractere saisie le caractere d'echappement pour le remplacer par un 
-	 caractere de fin de fichier. */
 	if ( result != NULL) {
 		char * lresult = strchr(buffer, '\n');
 		if (lresult != NULL)
 			*lresult = '\0';
 	}
-	rewind(stdin); /* on se place au debut du flux d'entree */
+	rewind(stdin); 
+	/*
+	 * going back to the entrance flux
+	 */
 	return result;
 }
 
 /**
- * @brief Cette fonction permet le choice de la configuration de jeux rush-hour parmi une liste donnée
+ * @brief choice of the rush hour config
  *
  */
 game choice_config_rh(piece * pieces_test, int * n, int choice){
@@ -196,11 +206,15 @@ game choice_config_rh(piece * pieces_test, int * n, int choice){
 			break;
 	}
 	pieces_test = lecture(pieces_test, n, entree);
-	game g = new_game(6,6,*n, pieces_test); // La taille du tableau est unique au Rush-Hour
+	game g = new_game(6,6,*n, pieces_test); 
+	/*
+	 * the height and width are always the same for the rush hour game
+	 */
 	fclose(entree);
 	delete_pieces(*n, pieces_test);
 	return g;
 }
+
 
 game choice_config_ar(piece * pieces_test, int * n, int choice){
 	FILE *entree = NULL;
@@ -219,7 +233,10 @@ game choice_config_ar(piece * pieces_test, int * n, int choice){
 			break;
 	}
 	pieces_test = lecture(pieces_test, n, entree);
-	game g = new_game(4,5,*n, pieces_test); // La taille du tableau est unique à l'Âne Rouge
+	game g = new_game(4,5,*n, pieces_test); 
+	/*
+	 * the height and the width are always the same for this game
+	 */
 	fclose(entree);
 	delete_pieces(*n, pieces_test);
 	return g;
@@ -298,19 +315,26 @@ void rush_hour(char * answer, int size, game g){
 }
 
 void ane_rouge(char * answer, int size, game g){
-	/* teste si la position des pieces est conforme */
+	/* 
+	 * test if the position of the pieces are OK
+	 */
 	if(!game_valid(g)){
 		fprintf(stderr, "ane_rouge : game invalid\n");
 		exit(EXIT_FAILURE);
 	}
 
-	/* affichage des regles du jeu */
+	/* 
+	 * display the rules
+	 */
 	printf("Ce jeu a ete code par Lucas, Lisa et Clement. \n"
 		"Le but de ce jeu est d'amener la piece 0 en bas du plateau.\n"
 		"Vous pouvez bouger les pieces horizontalement et verticalement.\n"
 		"Essayez de resoudre ce puzzle en un minimum de coups possible !\n\n");
 
-	while(!game_over_ar(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
+	while(!game_over_ar(g)){ 
+	/* 
+	 * while the game isn't over, we ask the player what he wants to play
+	 */
 		display_game(g);
 		int piece_played = input_piece_played(answer, size, g);
 
@@ -327,64 +351,76 @@ void ane_rouge(char * answer, int size, game g){
 	display_game(g);
 }
 
-// Chercher comment factoriser au mieux le main
 int main(){
 	int size = 30;
 	int n = 0;
 	piece * pieces_test = NULL;
-
 	char * answer = malloc(sizeof(char)*size);
-	printf("A quel jeu souhaitez-vous jouer ?\n1. Rush-hour\n2. Ane rouge\n");
+	char playing_game = 'O';
 
-	int choice = -1;
-	bool condition = true;
-	game g = NULL;
-	while(condition){
-		choice = atoi(scan(answer, size));
-		condition = (choice!=1 && choice!=2);
-		if(condition)
-			printf("Veuillez selectionner un numero de jeu correct.\n");
-	}
-	if(choice == 1){
-		printf("La liste des configurations disponibles est : \n"
-			"	1. easy_rh_1.txt\n"
-			"	2. easy_rh_2.txt\n"
-			"	3. normal_rh_1.txt \n"
-			" 	4. normal_rh_2.txt \n"
-			" 	5. difficult_rh_1.txt \n"
-			"	6. difficult_rh_2.txt \n"
-			"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
-		choice = 0;
-		condition = true;
+	while(playing_game=='O' || playing_game=='o'){
+		int choice = -1;
+		bool condition = true;
+		game g = NULL;
+
+		printf("\nA quel jeu souhaitez-vous jouer ?\n1. Rush-hour\n2. Ane rouge\n");
 		while(condition){
 			choice = atoi(scan(answer, size));
-			condition = (choice<1 || choice>6);
+			condition = (choice!=1 && choice!=2);
 			if(condition)
-				printf("Veuillez selectionner un numero de configuration correcte.\n");
+				printf("Veuillez selectionner un numero de jeu correct.\n");
 		}
-		g = choice_config_rh(pieces_test, &n, choice); // initialisation du jeu
-		rush_hour(answer, size, g);
-	}
-	else{
-		printf("La liste des configurations disponibles est : \n"
-			"	1. easy_ar_1.txt\n"
-			"	2. normal_ar_1.txt\n"
-			"	3. difficult_ar_1.txt\n"
-			"	4. difficult_ar_2.txt\n"
-			"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
-		choice = 0;
+		if(choice == 1){
+			printf("La liste des configurations disponibles est : \n"
+				"	1. easy_rh_1.txt\n"
+				"	2. easy_rh_2.txt\n"
+				"	3. normal_rh_1.txt \n"
+				" 	4. normal_rh_2.txt \n"
+				" 	5. difficult_rh_1.txt \n"
+				"	6. difficult_rh_2.txt \n"
+				"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
+			choice = 0;
+			condition = true;
+			while(condition){
+				choice = atoi(scan(answer, size));
+				condition = (choice<1 || choice>6);
+				if(condition)
+					printf("Veuillez selectionner un numero de configuration correcte.\n");
+			}
+			g = choice_config_rh(pieces_test, &n, choice); // initialisation du jeu
+			rush_hour(answer, size, g);
+		}
+		else{
+			printf("La liste des configurations disponibles est : \n"
+				"	1. easy_ar_1.txt\n"
+				"	2. normal_ar_1.txt\n"
+				"	3. difficult_ar_1.txt\n"
+				"	4. difficult_ar_2.txt\n"
+				"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
+			choice = 0;
+			condition = true;
+			while(condition){
+				choice = atoi(scan(answer, size));
+				condition = (choice<1 || choice>4);
+				if(condition)
+					printf("Veuillez selectionner un numero de configuration correcte.\n");
+			}
+			g = choice_config_ar(pieces_test, &n, choice); // initialisation du jeu
+			ane_rouge(answer, size, g);
+		}
+		printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
+		delete_game(g);
+
+		printf("\nSouhaitez-vous rejouer ? (O/N)\n");
 		condition = true;
 		while(condition){
-			choice = atoi(scan(answer, size));
-			condition = (choice<1 || choice>4);
+			answer = scan(answer, size);
+			playing_game = answer[0];
+			condition = (playing_game!='O' && playing_game!='N' && playing_game!='o' && playing_game!='n');
 			if(condition)
-				printf("Veuillez selectionner un numero de configuration correcte.\n");
+				printf("Veuillez entrer la lettre O ou N.\n");
 		}
-		g = choice_config_ar(pieces_test, &n, choice); // initialisation du jeu
-		ane_rouge(answer, size, g);
 	}
-	printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
-	delete_game(g);
 	free(answer);
 	return EXIT_SUCCESS;
 }
