@@ -82,17 +82,6 @@ bool test_game_nb_pieces() {
 }
 
 /**
- * @brief test all the pieces in the game
- * @return true if all the pieces are OK, false otherwise
- */
-bool test_game_piece(cgame gtest) {
-	bool result = true;
-	for (int i = 0; i < NB_PIECES; i ++)
-		result = result && test_equality_piece(pieces[i], game_piece(gtest, i), "game_piece");
-	return result;
-}
-
-/**
  * @brief test if the game is over
  * @return true if the game is over, false otherwise
  */
