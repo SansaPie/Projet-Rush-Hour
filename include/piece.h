@@ -35,32 +35,30 @@ typedef struct piece_s{
 typedef const struct piece_s* cpiece;
 
 /**
- * @enum dir_e
- * @brief The enumeration of possible directions of a move
+ * @enum dir_e.
+ * @brief The enumeration of possible directions of a move.
  */
-
 typedef enum dir_e {UP, LEFT, DOWN, RIGHT} dir;
 
 /**
  * @brief Creates a new piece.
  * @param x,y coordinates of the lower-left corner (Remark: x-axe is oriented from left to right and y-axe is oriented from bottom to top).
- * @param small indicates if the vehicle is of size 2 (small=true) or 3 (small=false)
- * @param horizontal indicates whether the vehicle can move horizontally or vertically
- * @return a pointer toward the generated piece
+ * @param small indicates if the vehicle is of size 2 (small=true) or 3 (small=false).
+ * @param horizontal indicates whether the vehicle can move horizontally or vertically.
+ * @return a pointer toward the generated piece.
  */
-
 piece new_piece_rh (int x, int y, bool small, bool horizontal);
 
 /**
- * @brief Destroys the piece and frees allocated memory
- * @param p the piece to destroy
+ * @brief Destroys the piece and frees allocated memory.
+ * @param p the piece to destroy.
  */
 void delete_piece (piece p);
 
 /**
  * @brief Clones the piece src into the piece dst.
- * @param[out] src the piece to copy
- * @param[in]  dst the copied piece
+ * @param[out] src the piece to copy.
+ * @param[in]  dst the copied piece.
  */
 void copy_piece (cpiece src, piece dst);
 
@@ -100,22 +98,28 @@ int get_height(cpiece p);
 int get_width(cpiece p);
 
 /**
- * @brief Returns true if the piece is horizontal
+ * @brief Returns true if the piece is horizontal.
  */
 bool is_horizontal(cpiece p);
 
 /////////////////// VERSION 2 /////////////////////////////
 
+/**
+ * @brief Returns true if the piece can move on the x axe.
+ */
 bool can_move_x(cpiece p);
 
+/**
+ * @brief Returns true if the piece can move on the y axe.
+ */
 bool can_move_y(cpiece p);
 
 /**
- * @brief Initialized piece structure
- * @param x,y: coordinates of the bottom left corner of the piece
- * @param move_x: indicates if the piece is allowed to move horizontally
- * @param move_y: indicates if the piece is allowed to move vertically
- * @return created piece at a given position
+ * @brief Initialized piece structure.
+ * @param x,y: coordinates of the bottom left corner of the piece.
+ * @param move_x: indicates if the piece is allowed to move horizontally.
+ * @param move_y: indicates if the piece is allowed to move vertically.
+ * @return created piece at a given position.
  */
 piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y);
 

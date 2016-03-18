@@ -7,18 +7,27 @@
 #include "game1.h"
 #include "test_general.h"
 
-
 #define HEIGHT_AR 5
 #define WIDTH_AR 4
 
+/**
+ * @brief Sets up a game in a winning state.
+ */
 void set_up_win_ar() {
 	pieces[0] = new_piece_rh(1, 0, true, true);
 }
 
+/**
+ * @brief Deletes the game previously set up.
+ */
 void tear_down_win_ar() {
 	delete_piece(pieces[0]);
 }
 
+/**
+ * @brief Tests the function game_square_piece.
+ * @returns true if it works ; false otherwise.
+ */
 bool test_game_square_piece_ar() {
 	bool result = true;
 	set_up();
@@ -30,6 +39,10 @@ bool test_game_square_piece_ar() {
 	return result;
 }
 
+/**
+ * @brief Tests the function copy_game.
+ * @returns true if it works ; false otherwise.
+ */
 bool test_copy_game_ar() {
 	bool result = true;
 	set_up();
@@ -50,6 +63,10 @@ bool test_copy_game_ar() {
 	return result;
 }
 
+/**
+ * @brief Tests the function game_over_ar.
+ * @returns true if it works ; false otherwise.
+ */
 bool test_game_over_ar() {
 	bool result = true;
 
@@ -69,6 +86,10 @@ bool test_game_over_ar() {
 	return result;
 }
 
+/**
+ * @brief Tests the function new_game.
+ * @returns true if it works ; false otherwise.
+ */
 bool test_new_game() {
 	bool result = true;
 	set_up();
@@ -83,6 +104,10 @@ bool test_new_game() {
 	return result;
 }
 
+/**
+ * @brief Tests the function game_nb_pieces.
+ * @returns true if it works ; false otherwise.
+ */
 bool test_game_nb_pieces_ar() {
 	bool result = true;
 	set_up();
@@ -93,6 +118,10 @@ bool test_game_nb_pieces_ar() {
 	return result;
 }
 
+/**
+ * @brief main test.
+ * @return exit_success.
+ */
 int main() {
 	bool result = true;
 	result = result && test_equality_bool(true, test_new_game(), "new_game");
