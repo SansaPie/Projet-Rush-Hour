@@ -7,11 +7,11 @@ A vérifier :
 Fini :
 
 Obligatoire :
-- Tests unitaires (Clément)
+- Tests unitaires (FAIT_Clément - a verifier)
 
 - Gérer l'emplacement de fonctions globales dans de nouveaux .c (A demander en détails à la prof, ex:game_over_hr / game_over_ar, cf mail)
 
-- Rajouter enable_testing sur le Cmake (Clément)
+- Rajouter enable_testing sur le Cmake (FAIT_Clément - a verifier)
 
 - Asserts, une fois le code terminé et débuggé
 
