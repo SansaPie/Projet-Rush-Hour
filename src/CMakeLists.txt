@@ -1,4 +1,5 @@
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
+
 add_library(game STATIC game.c piece.c)
 
 add_executable(main main.c) 

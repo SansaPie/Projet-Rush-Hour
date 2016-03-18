@@ -1,4 +1,5 @@
 include_directories(src)
+
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin/test)
 
 add_executable(test_game1 test_game1.c test_general.c)
