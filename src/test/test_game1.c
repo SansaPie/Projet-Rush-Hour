@@ -11,14 +11,14 @@
 #define WIDTH_RH 6
 
 /**
- * @brief Creation of piece 0 in victory position
+ * @brief Creates of piece 0 in victory position.
  */
 void set_up_win() {  
 	pieces[0] = new_piece_rh(4, 3, true, true);
 }
 
 /**
- * @brief delete the victory piece
+ * @brief Deletes the victory piece.
  */
 
 void tear_down_win() {  
@@ -26,8 +26,8 @@ void tear_down_win() {
 }
 
 /**
- * @brief Test initialisation of the game
- * @return true if initialisation is OK, false otherwise
+ * @brief Tests the initialization of the game.
+ * @return true if the initialization is correct ; false otherwise.
  */
 bool test_new_game_rh() { 
 	bool result = true;
@@ -44,8 +44,8 @@ bool test_new_game_rh() {
 }
 
 /**
- * @brief test the copy of the game
- * @return true if the copy is correct, false otherwise
+ * @brief tests the copy of the game.
+ * @return true if the copy is correct ; false otherwise.
  */
 bool test_copy_game() { 
 	bool result = true;
@@ -68,8 +68,8 @@ bool test_copy_game() {
 }
 
 /**
- * @brief Test the number of pieces in the game
- * @return true if the number of pieces is ok, false otherwise
+ * @brief Tests the number of pieces in the game.
+ * @return true if the number of pieces is correct ; false otherwise.
  */
 bool test_game_nb_pieces() {   
 	bool result = true;
@@ -82,8 +82,8 @@ bool test_game_nb_pieces() {
 }
 
 /**
- * @brief test if the game is over
- * @return true if the game is over, false otherwise
+ * @brief Tests if the game is over.
+ * @return true if the game is over ; false otherwise.
  */
 bool test_game_over_rh() {  
 	bool result = true;
@@ -105,8 +105,8 @@ bool test_game_over_rh() {
 }
 
 /**
- * @brief test the number of movements
- * @return true if the number is OK, false otherwise
+ * @brief Tests the number of movements.
+ * @return true if the number is correct ; false otherwise.
  */
 bool test_game_nb_moves(){ 
 	bool result = true;
@@ -123,8 +123,8 @@ bool test_game_nb_moves(){
 }
 
 /**
- * @brief test if there is a piece present
- * @return true if there is one, false otherwise
+ * @brief Tests if there is a piece at the given position.
+ * @return true if there is one ; false otherwise.
  */
 
 bool test_game_square_piece_rh() { 
@@ -138,13 +138,17 @@ bool test_game_square_piece_rh() {
 	return result; 
 } 
 
+/**
+ * @brief Tests the function play_move.
+ * @return true if it works ; false otherwise.
+ */
 bool test_play_move_rh() {
 	bool result = true;
 
 	set_up();
 	game test = new_game_hr(NB_PIECES, pieces);
 
-	// test de mouvements qui ne sont pas possible
+	// tests of impossible movements.
 	for (int i = 1; i < HEIGHT_RH; i++) {
 		result = result && test_equality_bool(false, play_move(test, 3, UP, i), "play_move UP non autorise");
 		result = result && test_equality_bool(false, play_move(test, 1, DOWN, i), "play_move DOWN non autorise");
@@ -156,7 +160,7 @@ bool test_play_move_rh() {
 		result = result && test_equality_bool(false, play_move(test, 2, LEFT, i), "play_move LEFT collision non autorise");
 		
 	}
-	// test de mouvement qui sont possibles d'une seule case
+	// tests of possible movements on one case of distance.
 	result = result && test_equality_bool(true, play_move(test, 1, UP, 1), "play_move UP");
 	result = result && test_equality_bool(true, play_move(test, 5, DOWN, 1), "play_move DOWN");
 	result = result && test_equality_bool(true, play_move(test, 4, RIGHT, 1), "play_move RIGHT");
@@ -169,8 +173,8 @@ bool test_play_move_rh() {
 }
 
 /**
- * @brief main test
- * @return exit_success
+ * @brief main test.
+ * @return exit_success.
  */
 int main(){
 	bool result = true;

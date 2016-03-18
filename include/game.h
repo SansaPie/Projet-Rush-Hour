@@ -46,26 +46,26 @@ typedef const struct game_s* cgame;
 game new_game_hr (int nb_pieces, piece *pieces);
 
 /**
- * @brief Destroys the game and free allocated memory
- * @param g the game to destroy
+ * @brief Destroys the game and free allocated memory.
+ * @param g the game to destroy.
  */
 void delete_game (game g);
 
 /**
  * @brief Clone the game dst into the game dst.
- * @param src the game to copy
+ * @param src the game to copy.
  * @param dst the copied game.
  */
 void copy_game (cgame src, game dst);
 
 /**
- * @brief Return the number of pieces on the game board g
+ * @brief Return the number of pieces on the game board g.
  */
 int game_nb_pieces(cgame g);
 
 
 /**
- * @brief Return the piece of g with number bum
+ * @brief Return the piece of g with number bum.
  * @param piece_num the num of the piece. This value must be between 0 and game_nb_pieces(g)-1.
  */
 cpiece game_piece(cgame g, int piece_num);
@@ -98,23 +98,32 @@ bool play_move(game g, int piece_num, dir d, int distance);
 int game_nb_moves(cgame g);
 
 ///////////// version 2 /////////////////
+
+/**
+ * @brief Creates a new game the same way that new_game_hr but with a changeable size of board.
+ * @param width width of the board.
+ * @param height height of the board.
+ * @param nb_pieces number of pieces g.
+ * @param pieces array of pieces. The pieces given here are not modified by this function.
+ * @return a pointer toward the generated game.
+ */
 game new_game (int width, int height, int nb_pieces, piece *pieces);
 
 /**
- *@brief returns the width of the grid
+ *@brief returns the width of the grid.
  */
 int game_width(cgame g);
 
 /**
- *@brief returns the height of the grid
+ *@brief returns the height of the grid.
  */
 int game_height(cgame g);
 
 /**
- * @brief returns the number of the piece located on this square (-1 if no piece is present)
- * @param game
- * @param x-coor of the square
- * @param y-coor of the square
+ * @brief returns the number of the piece located on this square (-1 if no piece is present).
+ * @param game.
+ * @param x-coor of the square.
+ * @param y-coor of the square.
  */
 int game_square_piece (game g, int x, int y);
 
