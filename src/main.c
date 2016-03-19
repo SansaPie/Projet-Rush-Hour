@@ -6,33 +6,32 @@
 #include "game1.h"
 #include "piece.h"
 #include "piece1.h"
-#include "math.h" // Vérifier si nécessaire
+#include <string.h>
 
 /**
- * @brief function allowing the reading of pieces features from an annexed file
+ * @brief function allowing the reading of pieces features from an annexed file.
  */
 piece * lecture(piece * pieces_test, int * n, FILE * entree) {
+	
 	/* 
-	 * var use for the lecture of the file
+	 * var used for the lecture of the file.
 	 */
-
 	int number_pieces;
-	int c_x;	   // x-coor
-	int c_y;	   // y-coor
-	int m_x;	   // move_x
-	int m_y;	   // move_y
-	int w;		   // width
-	int h;		   // height
+	int c_x;	   // x-coor.
+	int c_y;	   // y-coor.
+	int m_x;	   // move_x.
+	int m_y;	   // move_y.
+	int w;		   // width.
+	int h;		   // height.
 
-	if( entree == NULL )
-	{
+	if(entree == NULL){
 		printf("error when opening the file\n");
 		exit(EXIT_FAILURE);
 	}  
 	fscanf(entree, "%d", &number_pieces);
 	pieces_test = allocation_piece_tab(number_pieces, "main"); 
 	/* 
-	 * creation of the tab
+	 * creation of the tab.
 	 */
 	for(int i=0; i<number_pieces; i++)
 	{
@@ -44,7 +43,7 @@ piece * lecture(piece * pieces_test, int * n, FILE * entree) {
 }
 
 /**
- * @brief Allocates a char matrix
+ * @brief Allocates a char matrix.
  */
 char ** allocation_char_matrix(int width, int height){
 	char ** grid = malloc(sizeof(char*)*width);
@@ -63,7 +62,7 @@ char ** allocation_char_matrix(int width, int height){
 }
 
 /**
- * @brief Deletes a char matrix
+ * @brief Deletes a char matrix.
  */
 void delete_char_matrix(char ** grid, int width){
 	for(int i=0 ; i<width ; i++)
@@ -72,16 +71,16 @@ void delete_char_matrix(char ** grid, int width){
 }
 
 /**
- * @brief function displaying game in terminal
+ * @brief function displaying game in terminal.
  * 
  */
 void display_game(cgame g) {
 	/* 
-	 * creation of a 2D tab, representing our game's board
+	 * creation of a char matrix representing our game's board.
 	 */
 	char ** grid = allocation_char_matrix(game_width(g), game_height(g)); 
 	/* 
-	 * initialisation of the tab with '.' 
+	 * initialisation of the tab with '.'.
 	 */
 	for (int i = 0; i < game_width(g); i++) {
 		for (int j = 0; j < game_height(g); j++) {
@@ -101,7 +100,7 @@ void display_game(cgame g) {
 	}
 	
 	/* 
-	 * display the game's board
+	 * display the game's board.
 	 */
 	for (int y = game_height(g)-1; y>=0; y--) {
 		for (int x = 0; x<game_width(g); x++) {
@@ -114,12 +113,11 @@ void display_game(cgame g) {
 }
 
 /**
- * @brief test if the movement is possible, and if so, execute it
- * @param number_piece index in the game of the piece we want to move
- * @param distance : number of cases we want to move the piece
- * @param d direction of the move
+ * @brief tests if the movement is possible, and if so, execute it.
+ * @param piece_played index in the game of the piece we want to move.
+ * @param distance : number of cases we want to move the piece.
+ * @param d direction of the move.
  */
-
 void display_success_movement(game g, int piece_played, int distance, dir d){
 	if(play_move(g, piece_played, d, abs(distance))){
 		printf("Vous avez bouge la piece %d de %d cases vers ", piece_played, abs(distance));
@@ -136,11 +134,10 @@ void display_success_movement(game g, int piece_played, int distance, dir d){
 }
 
 /**
- * @brief move the piece in the direction and the distance chosen
- * @param number_piece index in the game of the piece we want to move
- * @param distance direction in which we want to move the piece
+ * @brief moves the piece in the direction and the distance chosen.
+ * @param piece_played index in the game of the piece we want to move.
+ * @param distance number of cases we want to move the piece.
  */
-
 void move_rh(game g, int piece_played, int distance){
 	if(distance>0){
 		if(is_horizontal(game_piece(g, piece_played)))
@@ -156,12 +153,11 @@ void move_rh(game g, int piece_played, int distance){
 }
 
 /**
- * @brief ask the player to write a string
- * @param buffer tab of char in which we're going to stock the string written by the player
- * @param size width of the buffer
- * @return string written
+ * @brief asks the player to write a string.
+ * @param buffer tab of char in which the string written by the player is stocked.
+ * @param size width of the buffer.
+ * @return string written.
  */
-
 char * scan(char * buffer , int size) {
 	char * result = fgets(buffer, size, stdin);
 	if ( result != NULL) {
@@ -171,35 +167,37 @@ char * scan(char * buffer , int size) {
 	}
 	rewind(stdin); 
 	/*
-	 * going back to the entrance flux
+	 * going back to the entrance flux.
 	 */
 	return result;
 }
 
 /**
- * @brief choice of the rush hour config
- *
+ * @brief choice of the rush hour config.
+ * @param pieces_test array of pieces which will be in the game.
+ * @param n number of pieces in the game.
+ * @param choice choice of the configuration by the user earlier in the program.
  */
 game choice_config_rh(piece * pieces_test, int * n, int choice){
 	FILE *entree = NULL;
 	switch(choice){
 		case 1:
-			entree = fopen("config/easy_rh_1.txt", "r+");
+			entree = fopen("../config/easy_rh_1.txt", "r+");
 			break;
 		case 2:
-			entree = fopen("config/easy_rh_2.txt", "r+");
+			entree = fopen("../config/easy_rh_2.txt", "r+");
 			break;
 		case 3:
-			entree = fopen("config/normal_rh_1.txt", "r+");
+			entree = fopen("../config/normal_rh_1.txt", "r+");
 			break;
 		case 4:
-			entree = fopen("config/normal_rh_2.txt", "r+");
+			entree = fopen("../config/normal_rh_2.txt", "r+");
 			break;
 		case 5:
-			entree = fopen("config/difficult_rh_1.txt", "r+");
+			entree = fopen("../config/difficult_rh_1.txt", "r+");
 			break;
 		case 6:
-			entree = fopen("config/difficult_rh_2.txt", "r+");
+			entree = fopen("../config/difficult_rh_2.txt", "r+");
 			break;
 		default:
 			printf("choice_config : choice invalid\n");
@@ -208,40 +206,45 @@ game choice_config_rh(piece * pieces_test, int * n, int choice){
 	pieces_test = lecture(pieces_test, n, entree);
 	game g = new_game(6,6,*n, pieces_test); 
 	/*
-	 * the height and width are always the same for the rush hour game
+	 * the height and width are always the same for the rush hour game.
 	 */
 	fclose(entree);
 	delete_pieces(*n, pieces_test);
 	return g;
 }
 
-
+/**
+ * @brief same as choice_config_rh but with a game of ane_rouge.
+ */
 game choice_config_ar(piece * pieces_test, int * n, int choice){
 	FILE *entree = NULL;
 	switch(choice){
 		case 1:
-			entree = fopen("config/easy_ar_1.txt", "r+");
+			entree = fopen("../config/easy_ar_1.txt", "r+");
 			break;
 		case 2:
-			entree = fopen("config/normal_ar_1.txt", "r+");
+			entree = fopen("../config/normal_ar_1.txt", "r+");
 			break;
 		case 3:
-			entree = fopen("config/difficult_ar_1.txt", "r+");
+			entree = fopen("../config/difficult_ar_1.txt", "r+");
 			break;
 		case 4:
-			entree = fopen("config/difficult_ar_2.txt", "r+");
+			entree = fopen("../config/difficult_ar_2.txt", "r+");
 			break;
 	}
 	pieces_test = lecture(pieces_test, n, entree);
 	game g = new_game(4,5,*n, pieces_test); 
 	/*
-	 * the height and the width are always the same for this game
+	 * the height and the width are always the same for this game.
 	 */
 	fclose(entree);
 	delete_pieces(*n, pieces_test);
 	return g;
 }
 
+/**
+ * @brief asks the user for which piece he wants to play.
+ */
 int input_piece_played(char * answer, int size, cgame g){
 	int piece_played = -1;
 	bool condition = true;
@@ -255,6 +258,9 @@ int input_piece_played(char * answer, int size, cgame g){
 	return piece_played;
 }
 
+/**
+ * @brief asks the user the distance he wants to move the piece chosen.
+ */
 int input_distance(char * answer, int size, cgame g){
 	int distance = game_height(g);
 	bool condition = true;
@@ -267,6 +273,9 @@ int input_distance(char * answer, int size, cgame g){
 	return distance;
 }
 
+/**
+ * @brief asks the user in which direction the piece is to be moved.
+ */
 dir input_direction(char * direction, int size){
 	while(1){
 		if(!strcmp(direction, "RIGHT"))
@@ -284,14 +293,21 @@ dir input_direction(char * direction, int size){
 	}
 }
 
+/**
+ * @brief proceeding of a rush-hour game.
+ */
 void rush_hour(char * answer, int size, game g){
-	/* teste si la position des pieces est conforme */
+	/**
+	 * tests if the game is valid.
+	 */
 	if(!game_valid(g)){
 		fprintf(stderr, "rush_hour : game invalid\n");
 		exit(EXIT_FAILURE);
 	}
 
-	/* affichage des regles du jeu */
+	/**
+	 *display the rules of the game.
+	 */
 	printf("Ce jeu a ete code par Lucas, Lisa et Clement. \n"
 		"Le but de ce jeu est d'amener la voiture 0 toucher le cote droit du plateau.\n"
 		"Vous ne pouvez bouger les pieces horizontales que de gauche a droite, "
@@ -302,7 +318,10 @@ void rush_hour(char * answer, int size, game g){
 		"et un nombre positif la fera bouger vers le haut.\n"
 		"Essayez de resoudre ce puzzle en un minimum de coups possible !\n\n");
 
-	while(!game_over_hr(g)){ /* tant que le jeu n'est pas fini, on demande a l'utilisateur ce qu'il veut jouer */
+	/** 
+	 * while the game isn't over, asks the user what he wants to play.
+	 */
+	while(!game_over_hr(g)){
 		display_game(g);
 		int piece_played = input_piece_played(answer, size, g);
 		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?\n"
@@ -314,27 +333,30 @@ void rush_hour(char * answer, int size, game g){
 	display_game(g);
 }
 
+/**
+ * @brief same as rush_hour but for an ane_rouge game.
+ */
 void ane_rouge(char * answer, int size, game g){
-	/* 
-	 * test if the position of the pieces are OK
+	/**
+	 * tests if the game is valid.
 	 */
 	if(!game_valid(g)){
 		fprintf(stderr, "ane_rouge : game invalid\n");
 		exit(EXIT_FAILURE);
 	}
 
-	/* 
-	 * display the rules
+	/**
+	 * display the rules of the game.
 	 */
 	printf("Ce jeu a ete code par Lucas, Lisa et Clement. \n"
 		"Le but de ce jeu est d'amener la piece 0 en bas du plateau.\n"
 		"Vous pouvez bouger les pieces horizontalement et verticalement.\n"
 		"Essayez de resoudre ce puzzle en un minimum de coups possible !\n\n");
 
-	while(!game_over_ar(g)){ 
-	/* 
-	 * while the game isn't over, we ask the player what he wants to play
+	/**
+	 * while the game isn't over, asks the user what he wants to play.
 	 */
+	while(!game_over_ar(g)){
 		display_game(g);
 		int piece_played = input_piece_played(answer, size, g);
 
@@ -358,6 +380,9 @@ int main(){
 	char * answer = malloc(sizeof(char)*size);
 	char playing_game = 'O';
 
+	/**
+	 * loop allowing the user to play as many game as he wants.
+	 */
 	while(playing_game=='O' || playing_game=='o'){
 		int choice = -1;
 		bool condition = true;
@@ -387,7 +412,7 @@ int main(){
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
-			g = choice_config_rh(pieces_test, &n, choice); // initialisation du jeu
+			g = choice_config_rh(pieces_test, &n, choice); // initialization of the game.
 			rush_hour(answer, size, g);
 		}
 		else{
@@ -405,7 +430,7 @@ int main(){
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
-			g = choice_config_ar(pieces_test, &n, choice); // initialisation du jeu
+			g = choice_config_ar(pieces_test, &n, choice); // initialization of the game.
 			ane_rouge(answer, size, g);
 		}
 		printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);

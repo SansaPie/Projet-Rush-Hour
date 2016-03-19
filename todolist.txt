@@ -1,20 +1,18 @@
 ﻿To do list :
 
 A vérifier :
-- Fonction pour refaire une partie (FAIT par Lucas - à vérifier)
 - Factorisation du main (FAIT par Lucas - à vérifier)
-- Commentaires + s'imposer une norme pour la mise en page (comment sont notés les commentaires, où mettre un espace, en anglais ou en français, etc ...) (Je gère aussi - Lisa \o/) (FAIT - à vérifier)
 
 Fini :
 - Autres configs ane_rouge (J'm'occupe de ça - Lisa - 2016) (Ajout de trois autres configurations âne rouge : FAIT - vérifié par Lucas)]
-
+- Fonction pour refaire une partie (FAIT par Lucas - à vérifier) (vérifié par Lisa)
 - Tests unitaires (Clément)
+
+Obligatoire :
 
 - Gérer l'emplacement de fonctions globales dans de nouveaux .c (A demander en détails à la prof, ex:game_over_hr / game_over_ar, cf mail)
 
-- Rangement arborescence (src, bin, include, attention à bien répercuter les changements sur Makefile)
-
-- Rajouter enable_testing sur le Cmake
+- Rajouter enable_testing sur le Cmake (FAIT_Clément - a verifier)
 
 - Asserts, une fois le code terminé et débuggé
 

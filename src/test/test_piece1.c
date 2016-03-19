@@ -1,33 +1,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-#include "piece.h"
 #include "test_general.h"
 
-#define NB_PIECES 4
-
-piece pieces[NB_PIECES];
-
-/* configuration test
-.....3
-.....3
-...003
-......
-...122
-...1..
- */
-
-void set_up() {
-  pieces[0] = new_piece_rh(3, 3, true, true);
-  pieces[1] = new_piece_rh(3, 0, true, false);
-  pieces[2] = new_piece_rh(4, 1, true, true);
-  pieces[3] = new_piece_rh(5, 3, false, false);
-}
-
-void tear_down() {
-	for (int i = 0; i < NB_PIECES; i++)
-		delete_piece(pieces[i]);
-}
 
 bool test_new_piece_rh() {
   bool result = true;
@@ -37,9 +12,11 @@ bool test_new_piece_rh() {
         for (bool horizontal=false; !horizontal ; horizontal= !horizontal) {
           if((y>=4 && !horizontal && !small) || (x>=4 && horizontal && !small)){
             break; 
-/*
- * without this condition and the break, the program is going to create pieces outside of the board. It will enclenche a security in the function new_piece_rh
- */
+            /**
+             * without this condition and the break, 
+             * the program is going to create pieces outside of the board. 
+             * It would activate a security in the function new_piece_rh
+             */
           }
           int size;
           if (small)
@@ -63,7 +40,6 @@ bool test_new_piece_rh() {
   return result;
 }
 
-
 bool test_intersect() {
   bool result = true;
   set_up();
@@ -81,7 +57,6 @@ bool test_intersect() {
   delete_piece(pb_piece2);
   return result;
 }
-
 
 bool test_move() {
   bool result = true;
@@ -119,8 +94,6 @@ bool test_move() {
   return result;
 }
 
-
-
 bool test_copy() {
   piece p = new_piece_rh(0, 0, true, true);
   bool result = true;
@@ -137,7 +110,6 @@ bool test_copy() {
   delete_piece(p);
   return result;
 }
-
 
 int main (int argc, char *argv[])
 {
