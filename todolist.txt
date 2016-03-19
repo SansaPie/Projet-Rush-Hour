@@ -2,17 +2,15 @@
 
 A vérifier :
 - Factorisation du main (FAIT par Lucas - à vérifier)
+- Rajouter enable_testing sur le Cmake (FAIT_Clément - a verifier)
+- Fonction permettant à l'utilisateur de rentrer sa propre configuration via un fichier test importé (préciser dans quel dossier il doit mettre son .txt) (FAIT Lucas - a vérifier)
 
 Fini :
-- Autres configs ane_rouge (J'm'occupe de ça - Lisa - 2016) (Ajout de trois autres configurations âne rouge : FAIT - vérifié par Lucas)]
-- Fonction pour refaire une partie (FAIT par Lucas - à vérifier) (vérifié par Lisa)
 - Tests unitaires (Clément)
 
 Obligatoire :
 
 - Gérer l'emplacement de fonctions globales dans de nouveaux .c (A demander en détails à la prof, ex:game_over_hr / game_over_ar, cf mail)
-
-- Rajouter enable_testing sur le Cmake (FAIT_Clément - a verifier)
 
 - Asserts, une fois le code terminé et débuggé
 
@@ -20,8 +18,6 @@ Obligatoire :
 
 Optionnel :
 - Fonction permettant de revenir en arrière d'un coup
-
-- Fonction permettant à l'utilisateur de rentrer sa propre configuration via un fichier test importé (préciser dans quel dossier il doit mettre son .txt)
 
 - Highest score sur les configs pré-existantes. (Peut_être possible sur les importées aussi.) A écrire dans un fichier high_score.txt ?
 

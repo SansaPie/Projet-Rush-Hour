@@ -172,15 +172,30 @@ char * scan(char * buffer , int size) {
 	return result;
 }
 
+char * input_config_user(char * answer, int size){
+	char * config_user = malloc(strlen("../config/"));
+	strcat(config_user, "../config/");	
+	printf("Entrez le nom complet de votre fichier y compris son extension.\n");
+	answer = scan(answer, size);
+	config_user = realloc(config_user, strlen(config_user)+strlen(answer));
+	strcat(config_user, answer);
+	return config_user;
+}
+
 /**
  * @brief choice of the rush hour config.
  * @param pieces_test array of pieces which will be in the game.
  * @param n number of pieces in the game.
  * @param choice choice of the configuration by the user earlier in the program.
  */
-game choice_config_rh(piece * pieces_test, int * n, int choice){
+game choice_config_rh(piece * pieces_test, int * n, int choice, char * answer, int size){
 	FILE *entree = NULL;
 	switch(choice){
+		case 0:;
+			char * config_user = input_config_user(answer, size);
+			entree = fopen(config_user, "r+");
+			free(config_user);
+			break;
 		case 1:
 			entree = fopen("../config/easy_rh_1.txt", "r+");
 			break;
@@ -216,9 +231,13 @@ game choice_config_rh(piece * pieces_test, int * n, int choice){
 /**
  * @brief same as choice_config_rh but with a game of ane_rouge.
  */
-game choice_config_ar(piece * pieces_test, int * n, int choice){
+game choice_config_ar(piece * pieces_test, int * n, int choice, char * answer, int size){
 	FILE *entree = NULL;
 	switch(choice){
+		case 0:;
+			char * config_user = input_config_user(answer, size);
+			entree = fopen(config_user, "r+");
+			free(config_user);
 		case 1:
 			entree = fopen("../config/easy_ar_1.txt", "r+");
 			break;
@@ -403,16 +422,18 @@ int main(){
 				" 	4. normal_rh_2.txt \n"
 				" 	5. difficult_rh_1.txt \n"
 				"	6. difficult_rh_2.txt \n"
-				"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
-			choice = 0;
+				"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n"
+				"Si vous souhaitez utiliser votre propre configuration, tapez 0.\n"
+				"Veillez avant cela a bien avoir placer votre .txt dans le dossier config du jeu.\n");
+			choice = -1;
 			condition = true;
 			while(condition){
 				choice = atoi(scan(answer, size));
-				condition = (choice<1 || choice>6);
+				condition = (choice<0 || choice>6);
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
-			g = choice_config_rh(pieces_test, &n, choice); // initialization of the game.
+			g = choice_config_rh(pieces_test, &n, choice, answer, size); // initialization of the game.
 			rush_hour(answer, size, g);
 		}
 		else{
@@ -430,7 +451,7 @@ int main(){
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
-			g = choice_config_ar(pieces_test, &n, choice); // initialization of the game.
+			g = choice_config_ar(pieces_test, &n, choice, answer, size); // initialization of the game.
 			ane_rouge(answer, size, g);
 		}
 		printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
