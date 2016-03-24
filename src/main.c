@@ -293,7 +293,7 @@ int input_distance(char * answer, int size, cgame g){
 	bool condition = true;
 	while(condition){
 		distance = atoi(scan(answer, size));
-		condition = (abs(distance)>=(game_height(g)-1) || abs(distance)>=(game_width(g)-1));
+		condition = (abs(distance)>(game_height(g)-1) || abs(distance)>(game_width(g)-1));
 		if(condition)
 			printf("Veuillez rentrer une distance valide.\n");
 	}
