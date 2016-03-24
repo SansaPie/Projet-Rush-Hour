@@ -218,6 +218,10 @@ game choice_config_rh(piece * pieces_test, int * n, int choice, char * answer, i
 			printf("choice_config : choice invalid\n");
 			break;
 	}
+	if (entree == NULL) {
+		fprintf(stderr, "Fichier not valid:");
+		exit(EXIT_FAILURE);
+	}
 	pieces_test = lecture(pieces_test, n, entree);
 	game g = new_game(6,6,*n, pieces_test); 
 	/*
@@ -234,7 +238,7 @@ game choice_config_rh(piece * pieces_test, int * n, int choice, char * answer, i
 game choice_config_ar(piece * pieces_test, int * n, int choice, char * answer, int size){
 	FILE *entree = NULL;
 	switch(choice){
-		case 0:;
+	case 0:;
 			char * config_user = input_config_user(answer, size);
 			entree = fopen(config_user, "r+");
 			free(config_user);
@@ -250,6 +254,10 @@ game choice_config_ar(piece * pieces_test, int * n, int choice, char * answer, i
 		case 4:
 			entree = fopen("../config/difficult_ar_2.txt", "r+");
 			break;
+	}
+	if (entree == NULL) {
+		fprintf(stderr, "Fichier not valid:");
+		exit(EXIT_FAILURE);
 	}
 	pieces_test = lecture(pieces_test, n, entree);
 	game g = new_game(4,5,*n, pieces_test); 
