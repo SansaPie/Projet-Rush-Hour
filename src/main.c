@@ -13,7 +13,7 @@
  */
 piece * lecture(piece * pieces_test, int * n, FILE * entree) {
 	if(pieces_test==NULL || n==NULL){
-		fprintf(stderr, "lecture : paramtres incorrects.\n");
+		fprintf(stderr, "lecture : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
 	/* 
@@ -28,7 +28,7 @@ piece * lecture(piece * pieces_test, int * n, FILE * entree) {
 	int h;		   // height.
 
 	if(entree == NULL){
-		printf("error when opening the file\n");
+		printf("Erreur durant l'ouverture du fichier\n");
 		exit(EXIT_FAILURE);
 	}  
 	fscanf(entree, "%d", &number_pieces);
@@ -36,8 +36,7 @@ piece * lecture(piece * pieces_test, int * n, FILE * entree) {
 	/* 
 	 * creation of the tab.
 	 */
-	for(int i=0; i<number_pieces; i++)
-	{
+	for(int i=0; i<number_pieces; i++){
 		fscanf(entree, "%d %d %d %d %d %d", &c_x, &c_y, &m_x, &m_y, &w, &h);
 		pieces_test[i] = new_piece(c_x, c_y, w, h, m_x, m_y);
 	}
@@ -95,7 +94,7 @@ void display_game(cgame g) {
 	 */
 	char ** grid = allocation_char_matrix(game_width(g), game_height(g)); 
 	/* 
-	 * initialisation of the tab with '.'.
+	 * initialization of the tab with '.'.
 	 */
 	for (int i = 0; i < game_width(g); i++) {
 		for (int j = 0; j < game_height(g); j++) {
@@ -103,7 +102,6 @@ void display_game(cgame g) {
 		}
 	}
 	for (int i = 0; i < game_nb_pieces(g); i++){
-
 		int xCoor = get_x(game_piece(g,i));
 		int yCoor = get_y(game_piece(g,i));
 
@@ -187,7 +185,7 @@ char * scan(char * buffer , int size) {
 		exit(EXIT_FAILURE);
 	}
 	char * result = fgets(buffer, size, stdin);
-	if ( result != NULL) {
+	if (result != NULL) {
 		char * lresult = strchr(buffer, '\n');
 		if (lresult != NULL)
 			*lresult = '\0';
@@ -250,11 +248,11 @@ game choice_config_rh(piece * pieces_test, int * n, int choice, char * answer, i
 			entree = fopen("../config/difficult_rh_2.txt", "r+");
 			break;
 		default:
-			printf("choice_config : choice invalid\n");
+			printf("choice_config : choice invalide.\n");
 			break;
 	}
 	if (entree == NULL) {
-		fprintf(stderr, "Fichier not valid:");
+		fprintf(stderr, "Fichier non valide.\n");
 		exit(EXIT_FAILURE);
 	}
 	pieces_test = lecture(pieces_test, n, entree);
@@ -277,7 +275,7 @@ game choice_config_ar(piece * pieces_test, int * n, int choice, char * answer, i
 	}
 	FILE *entree = NULL;
 	switch(choice){
-	case 0:;
+	case 0:; // This ; stands for the prevention of a bug, it's not a typo
 			char * config_user = input_config_user(answer, size);
 			entree = fopen(config_user, "r+");
 			free(config_user);
@@ -295,7 +293,7 @@ game choice_config_ar(piece * pieces_test, int * n, int choice, char * answer, i
 			break;
 	}
 	if (entree == NULL) {
-		fprintf(stderr, "Fichier not valid:");
+		fprintf(stderr, "Fichier non valide.\n");
 		exit(EXIT_FAILURE);
 	}
 	pieces_test = lecture(pieces_test, n, entree);
@@ -388,7 +386,7 @@ void rush_hour(char * answer, int size, game g){
 	}
 
 	/**
-	 *display the rules of the game.
+	 * display the rules of the game.
 	 */
 	printf("Ce jeu a ete code par Lucas, Lisa et Clement. \n"
 		"Le but de ce jeu est d'amener la voiture 0 toucher le cote droit du plateau.\n"

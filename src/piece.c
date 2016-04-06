@@ -176,7 +176,7 @@ bool is_horizontal(cpiece p){
 	return can_move_x(p);
 }
 
-bool is_small(cpiece p) {
+bool is_small(cpiece p){
 	if (p == NULL) {
 		fprintf(stderr, "is_small : p invalide\n");
 		exit(EXIT_FAILURE);
@@ -206,8 +206,7 @@ bool is_in_board(cpiece p, int width, int height){
 	return true;
 }
 
-bool can_move_x(cpiece p)
-{
+bool can_move_x(cpiece p){
 	if(p==NULL){
 		fprintf(stderr, "can_move_x : p invalide\n");
 		exit(EXIT_FAILURE);
@@ -215,8 +214,7 @@ bool can_move_x(cpiece p)
 	return p->move_x;
 }
 
-bool can_move_y(cpiece p)
-{
+bool can_move_y(cpiece p){
 	if(p==NULL){
 		fprintf(stderr, "can_move_y : p invalide\n");
 		exit(EXIT_FAILURE);

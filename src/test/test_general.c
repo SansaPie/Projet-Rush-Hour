@@ -16,7 +16,9 @@ bool test_equality_bool(bool expected, bool value, char * msg) {
 }
 
 bool test_equality_piece(cpiece expected, cpiece value, char *msg) {
-	if ((get_x(expected) != get_x(value)) || (get_y(expected) != get_y(value)) || (is_horizontal(expected) != is_horizontal(value)) || (is_small(expected) != is_small(value))) {
+	if ((get_x(expected) != get_x(value)) || (get_y(expected) != get_y(value)) || 
+		(is_horizontal(expected) != is_horizontal(value)) || 
+		(is_small(expected) != is_small(value))) {
 		fprintf(stderr, "%s expected piece is not equal to value piece\n", msg);
 		return false;
 	}
