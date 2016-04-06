@@ -6,11 +6,14 @@ A vérifier :
 - Fonction permettant à l'utilisateur de rentrer sa propre configuration via un fichier test importé (préciser dans quel dossier il doit mettre son .txt) (FAIT Lucas - a vérifier)
 
 Fini :
-- Tests unitaires (Clément)
 
 Obligatoire :
 
+- Sécurité sur entrées utilisateurs.
+
 - Gérer l'emplacement de fonctions globales dans de nouveaux .c (A demander en détails à la prof, ex:game_over_hr / game_over_ar, cf mail)
+
+- Différencier AneRouge.c et RushHour.c
 
 - Asserts, une fois le code terminé et débuggé
 

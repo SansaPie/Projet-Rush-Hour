@@ -8,6 +8,10 @@
 #define ERR_PIECE -1 
 
 piece * allocation_piece_tab(int nb_pieces, char * msg){
+	if(nb_pieces<0 || msg ==NULL){
+		fprintf(stderr, "allocation_piece_tab : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
 	piece * pieces = malloc(sizeof(piece)*nb_pieces);
 	if(pieces == NULL){
 		fprintf(stderr, "%s : pieces non alloue\n", msg);
@@ -43,6 +47,10 @@ game new_game_hr (int nb_pieces, piece *pieces){
 }
 
 game new_game(int width, int height, int nb_pieces, piece *pieces) {
+	if(width<0 || height<0){
+		fprintf(stderr, "new_game : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
 	game g = new_game_hr(nb_pieces, pieces);
 	g->height = height;
 	g->width = width;
@@ -50,15 +58,14 @@ game new_game(int width, int height, int nb_pieces, piece *pieces) {
 }
 
 void delete_pieces(int nb_pieces, piece * pieces){
-	if(pieces!=NULL){
-		for(int i=0 ; i<nb_pieces ; i++){
-			delete_piece(pieces[i]);		
-		}
-		free(pieces);
-	}else{
-		fprintf(stderr, "delete_pieces : pieces null\n");
+	if(nb_pieces<0 || pieces == NULL){
+		fprintf(stderr, "delete_pieces : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
+	for(int i=0 ; i<nb_pieces ; i++){
+		delete_piece(pieces[i]);		
+	}
+	free(pieces);
 }
 
 void delete_game(game g){
@@ -72,7 +79,6 @@ void delete_game(game g){
 }
 
 void copy_game (cgame src, game dst){
-	
 	if(src==NULL || dst==NULL){
 		fprintf(stderr, "copy_game : parametres invalides\n");
 		exit(EXIT_FAILURE);
@@ -191,10 +197,18 @@ bool game_valid(cgame g){
 }
 
 int game_width(cgame g) {
+	if(g==NULL){
+		fprintf(stderr, "game_width : g null.\n");
+		exit(EXIT_FAILURE);
+	}
 	return g->width;
 }
 
 int game_height(cgame g) {
+	if(g==NULL){
+		fprintf(stderr, "game_height : g null.\n");
+		exit(EXIT_FAILURE);
+	}
 	return g->height;
 }
 

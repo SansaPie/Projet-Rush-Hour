@@ -35,6 +35,10 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 }
 
 piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y){
+	if(width<0 || height<0){
+		fprintf(stderr, "new_piece : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
 	if(x<0 || y<0){
 		fprintf(stderr, "new_piece : hors tableau\n");
 		exit(EXIT_FAILURE);
@@ -81,7 +85,7 @@ void copy_piece (cpiece src, piece dst){
 }
 
 void move_piece (piece p, dir d, int distance){
-	if(p==NULL){
+	if(p==NULL || distance<0){
 		fprintf(stderr, "move_piece : parametres invalides\n");
 		exit(EXIT_FAILURE);
 	}
@@ -204,10 +208,18 @@ bool is_in_board(cpiece p, int width, int height){
 
 bool can_move_x(cpiece p)
 {
+	if(p==NULL){
+		fprintf(stderr, "can_move_x : p invalide\n");
+		exit(EXIT_FAILURE);
+	}
 	return p->move_x;
 }
 
 bool can_move_y(cpiece p)
 {
+	if(p==NULL){
+		fprintf(stderr, "can_move_y : p invalide\n");
+		exit(EXIT_FAILURE);
+	}
 	return p->move_y;
 }
