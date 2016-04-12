@@ -124,17 +124,6 @@ bool game_over_hr(cgame g){
 	return false;
 }
 
-bool game_over_ar(cgame g) {
-	if (g == NULL) {
-		fprintf(stderr, "game_over_ar : g invalide\n");
-		exit(EXIT_FAILURE);
-	}
-	if (get_x(game_piece(g, 0)) == 1 && get_y(game_piece(g, 0)) == 0)
-		return true;
-	return false;
-}
-
-
 bool play_move(game g, int piece_num, dir d, int distance){ 
 	if (g == NULL || piece_num >= game_nb_pieces(g) || piece_num <0){
 		fprintf(stderr, "play_move : parametres invalides\n");
