@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <ctype.h>
 #include "game.h"
 #include "game1.h"
 #include "piece.h"
@@ -11,7 +12,7 @@
  * @brief function allowing the reading of pieces features from an annexed file.
  */
 piece * lecture(piece * pieces_test, int * n, FILE * entree) {
-	if(pieces_test==NULL || n==NULL){
+	if(n==NULL){
 		fprintf(stderr, "lecture : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
@@ -196,6 +197,19 @@ char * scan(char * buffer , int size) {
 	return result;
 }
 
+bool expected_digit(char * s){
+	int c = *s;
+	if(c=='\n')
+		return false;
+	if(s[0]=='-' || s[0]=='+')
+		s++;
+	for(int i=0 ; i<strlen(s) ; i++){
+		if(isdigit(s[i])==0)
+			return false;
+	}
+	return true;
+}
+
 char * input_config_user(char * answer, int size){
 	if(answer==NULL || size<0){
 		fprintf(stderr, "input_config_user : parametres incorrects.\n");
@@ -217,7 +231,7 @@ char * input_config_user(char * answer, int size){
  * @param choice choice of the configuration by the user earlier in the program.
  */
 game choice_config_rh(piece * pieces_test, int * n, int choice, char * answer, int size){
-	if(pieces_test==NULL || n==NULL || answer==NULL || size<0){
+	if(n==NULL || answer==NULL || size<0){
 		fprintf(stderr, "choice_config_rh : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
@@ -247,7 +261,7 @@ game choice_config_rh(piece * pieces_test, int * n, int choice, char * answer, i
 			entree = fopen("../config/difficult_rh_2.txt", "r+");
 			break;
 		default:
-			printf("choice_config : choice invalide.\n");
+			printf("choice_config : choix invalide.\n");
 			break;
 	}
 	if (entree == NULL) {
@@ -268,7 +282,7 @@ game choice_config_rh(piece * pieces_test, int * n, int choice, char * answer, i
  * @brief same as choice_config_rh but with a game of ane_rouge.
  */
 game choice_config_ar(piece * pieces_test, int * n, int choice, char * answer, int size){
-	if(pieces_test==NULL || n==NULL || answer==NULL || size<0){
+	if(n==NULL || answer==NULL || size<0){
 		fprintf(stderr, "choice_config_ar : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
@@ -317,9 +331,10 @@ int input_piece_played(char * answer, int size, cgame g){
 	bool condition = true;
 	while(condition){
 		printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
-		int tmp = isdigit(scan(answer, size));
-		piece_played = atoi(tmp);
-		condition = (piece_played<0 || piece_played>=game_nb_pieces(g) || tmp==0);
+		char * test = malloc(size);
+		test = scan(answer, size);
+		piece_played = atoi(test);
+		condition = (!expected_digit(test) || piece_played<0 || piece_played>=game_nb_pieces(g));
 		if(condition)
 			printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g)-1);
 	}
@@ -337,9 +352,10 @@ int input_distance(char * answer, int size, cgame g){
 	int distance = game_height(g);
 	bool condition = true;
 	while(condition){
-		int tmp = isdigit(scan(answer, size));
-		distance = atoi(tmp);
-		condition = (abs(distance)>(game_height(g)-1) || abs(distance)>(game_width(g)-1) || tmp==0);
+		char * test = malloc(size);
+		test = scan(answer, size);
+		distance = atoi(test);
+		condition = (!expected_digit(test) || abs(distance)>(game_height(g)-1) || abs(distance)>(game_width(g)-1));
 		if(condition)
 			printf("Veuillez rentrer une distance valide.\n");
 	}
@@ -350,7 +366,7 @@ int input_distance(char * answer, int size, cgame g){
  * @brief asks the user in which direction the piece is to be moved.
  */
 dir input_direction(char * direction, int size){
-	if(distance==NULL || size<0){
+	if(direction==NULL || size<0){
 		fprintf(stderr, "input_distance : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
@@ -494,9 +510,8 @@ int main(){
 			choice = -1;
 			condition = true;
 			while(condition){
-				int tmp = isdigit(scan(answer, size));
-				choice = atoi(tmp);
-				condition = (choice<0 || choice>6 || tmp==0);
+				choice = atoi(scan(answer, size));
+				condition = (choice<0 || choice>6);
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
@@ -513,8 +528,10 @@ int main(){
 			choice = 0;
 			condition = true;
 			while(condition){
-				choice = atoi(scan(answer, size));
-				condition = (choice<1 || choice>4);
+				char * test = malloc(size);
+				test = scan(answer, size);
+				choice = atoi(test);
+				condition = (!expected_digit(test) || choice<1 || choice>4);
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
