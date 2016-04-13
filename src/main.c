@@ -6,7 +6,6 @@
 #include "game1.h"
 #include "piece.h"
 #include "piece1.h"
-#include <string.h>
 
 /**
  * @brief function allowing the reading of pieces features from an annexed file.
@@ -318,8 +317,9 @@ int input_piece_played(char * answer, int size, cgame g){
 	bool condition = true;
 	while(condition){
 		printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
-		piece_played = atoi(scan(answer, size));
-		condition = (piece_played<0 || piece_played>=game_nb_pieces(g));
+		int tmp = isdigit(scan(answer, size));
+		piece_played = atoi(tmp);
+		condition = (piece_played<0 || piece_played>=game_nb_pieces(g) || tmp==0);
 		if(condition)
 			printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g)-1);
 	}
@@ -337,8 +337,9 @@ int input_distance(char * answer, int size, cgame g){
 	int distance = game_height(g);
 	bool condition = true;
 	while(condition){
-		distance = atoi(scan(answer, size));
-		condition = (abs(distance)>(game_height(g)-1) || abs(distance)>(game_width(g)-1));
+		int tmp = isdigit(scan(answer, size));
+		distance = atoi(tmp);
+		condition = (abs(distance)>(game_height(g)-1) || abs(distance)>(game_width(g)-1) || tmp==0);
 		if(condition)
 			printf("Veuillez rentrer une distance valide.\n");
 	}
@@ -493,8 +494,9 @@ int main(){
 			choice = -1;
 			condition = true;
 			while(condition){
-				choice = atoi(scan(answer, size));
-				condition = (choice<0 || choice>6);
+				int tmp = isdigit(scan(answer, size));
+				choice = atoi(tmp);
+				condition = (choice<0 || choice>6 || tmp==0);
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
