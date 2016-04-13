@@ -75,7 +75,7 @@ void test_move_piece(void)
 	move_piece(test2, UP, 2); 
 	display_piece(test2); 
 	/**
-	 * display the piec in order to verify that move_piece(test2, UP, 2) happened 
+	 * display the piece in order to verify that move_piece(test2, UP, 2) happened 
 	 */
 	move_piece(test2, LEFT, 2); 
 	/**
@@ -87,7 +87,7 @@ void test_move_piece(void)
 	 */
 	display_piece(test2); 
 	/* 
-	 * display the piece in order to verify that the movement didn't occure
+	 * display the piece in order to verify that the movement didn't occur
 	 */
 	delete_piece(test2);
 }

@@ -5,29 +5,13 @@
 #include "piece1.h"
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){ 
-	if(x<0 || y<0){
-		fprintf(stderr, "new_piece_hr : hors tableau\n");
-		exit(EXIT_FAILURE);
-	}
-	piece p = malloc(sizeof(struct piece_s));
-	if(p==NULL){
-		fprintf(stderr, "new_piece_hr : p non alloue\n");
-		exit(EXIT_FAILURE);
-	}
-	p->x = x;
-	p->y = y;
+	piece p = new_piece(x, y, 1, 1, horizontal, !horizontal);
 	if(horizontal){
-		p->move_x = true;
-		p->move_y = false;
-		p->height = 1;
-		p->width = 2;
+		p->width ++;
 		if(!small)
 			p->width ++;
 	}else{
-		p->move_x = false;
-		p->move_y = true;
-		p->width = 1;
-		p->height = 2;
+		p->height ++;
 		if(!small)
 			p->height ++;
 	}
@@ -35,26 +19,25 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 }
 
 piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y){
+	if(width<0 || height<0){
+		fprintf(stderr, "new_piece : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
 	if(x<0 || y<0){
 		fprintf(stderr, "new_piece : hors tableau\n");
 		exit(EXIT_FAILURE);
 	}
-	piece p = NULL;
-	if(!move_x || !move_y)
-		p = new_piece_rh(x, y, ((height==1&&width==2)||(height==2&&width==1)), (height==1));
-	else{
-		p = malloc(sizeof(struct piece_s));
-		if(p==NULL){
-			fprintf(stderr, "new_piece : p non alloue\n");
-			exit(EXIT_FAILURE);
-		}
-		p->x = x;
-		p->y = y;
-		p->width = width;
-		p->height = height;
-		p->move_x = move_x;
-		p->move_y = move_y;
+	piece p = malloc(sizeof(struct piece_s));
+	if(p==NULL){
+		fprintf(stderr, "new_piece : p null\n");
+		exit(EXIT_FAILURE);
 	}
+	p->x = x;
+	p->y = y;
+	p->width = width;
+	p->height = height;
+	p->move_x = move_x;
+	p->move_y = move_y;
 	return p;
 }
 
@@ -81,7 +64,7 @@ void copy_piece (cpiece src, piece dst){
 }
 
 void move_piece (piece p, dir d, int distance){
-	if(p==NULL){
+	if(p==NULL || distance<0){
 		fprintf(stderr, "move_piece : parametres invalides\n");
 		exit(EXIT_FAILURE);
 	}
@@ -172,7 +155,7 @@ bool is_horizontal(cpiece p){
 	return can_move_x(p);
 }
 
-bool is_small(cpiece p) {
+bool is_small(cpiece p){
 	if (p == NULL) {
 		fprintf(stderr, "is_small : p invalide\n");
 		exit(EXIT_FAILURE);
@@ -202,12 +185,18 @@ bool is_in_board(cpiece p, int width, int height){
 	return true;
 }
 
-bool can_move_x(cpiece p)
-{
+bool can_move_x(cpiece p){
+	if(p==NULL){
+		fprintf(stderr, "can_move_x : p invalide\n");
+		exit(EXIT_FAILURE);
+	}
 	return p->move_x;
 }
 
-bool can_move_y(cpiece p)
-{
+bool can_move_y(cpiece p){
+	if(p==NULL){
+		fprintf(stderr, "can_move_y : p invalide\n");
+		exit(EXIT_FAILURE);
+	}
 	return p->move_y;
 }

@@ -150,14 +150,14 @@ bool test_play_move_rh() {
 
 	// tests of impossible movements.
 	for (int i = 1; i < HEIGHT_RH; i++) {
-		result = result && test_equality_bool(false, play_move(test, 3, UP, i), "play_move UP non autorise");
-		result = result && test_equality_bool(false, play_move(test, 1, DOWN, i), "play_move DOWN non autorise");
-		result = result && test_equality_bool(false, play_move(test, 2, RIGHT, i), "play_move RIGHT non autorise");
-		result = result && test_equality_bool(false, play_move(test, 4, LEFT, i), "play_move LEFT non autorise");
-		result = result && test_equality_bool(false, play_move(test, 5, UP, i), "play_move UP collision non autorise");
-		result = result && test_equality_bool(false, play_move(test, 6, DOWN, i), "play_move DOWN collision non autorise");
-		result = result && test_equality_bool(false, play_move(test, 0, RIGHT, i), "play_move RIGHT collision non autorise");
-		result = result && test_equality_bool(false, play_move(test, 2, LEFT, i), "play_move LEFT collision non autorise");
+		result = result && test_equality_bool(false, play_move(test, 3, UP, i), "play_move UP not authorized");
+		result = result && test_equality_bool(false, play_move(test, 1, DOWN, i), "play_move DOWN not authorized");
+		result = result && test_equality_bool(false, play_move(test, 2, RIGHT, i), "play_move RIGHT not authorized");
+		result = result && test_equality_bool(false, play_move(test, 4, LEFT, i), "play_move LEFT not authorized");
+		result = result && test_equality_bool(false, play_move(test, 5, UP, i), "play_move UP collision not authorized");
+		result = result && test_equality_bool(false, play_move(test, 6, DOWN, i), "play_move DOWN collision not authorized");
+		result = result && test_equality_bool(false, play_move(test, 0, RIGHT, i), "play_move RIGHT collision not authorized");
+		result = result && test_equality_bool(false, play_move(test, 2, LEFT, i), "play_move LEFT collision not authorized");
 		
 	}
 	// tests of possible movements on one case of distance.
@@ -189,6 +189,6 @@ int main(){
 		printf("Test_game KO!\n");
 		return EXIT_FAILURE;
 	}
-	printf("Test Game OK!\n");
+	printf("Test_game OK!\n");
 	return EXIT_SUCCESS;
 }

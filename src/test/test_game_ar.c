@@ -13,14 +13,14 @@
 /**
  * @brief Sets up a game in a winning state.
  */
-void set_up_win_ar() {
+void set_up_win_ar(){
 	pieces[0] = new_piece_rh(1, 0, true, true);
 }
 
 /**
  * @brief Deletes the game previously set up.
  */
-void tear_down_win_ar() {
+void tear_down_win_ar(){
 	delete_piece(pieces[0]);
 }
 
@@ -28,7 +28,7 @@ void tear_down_win_ar() {
  * @brief Tests the function game_square_piece.
  * @returns true if it works ; false otherwise.
  */
-bool test_game_square_piece_ar() {
+bool test_game_square_piece_ar(){
 	bool result = true;
 	set_up();
 	game test = new_game(WIDTH_AR, HEIGHT_AR, NB_PIECES, pieces);
@@ -43,7 +43,7 @@ bool test_game_square_piece_ar() {
  * @brief Tests the function copy_game.
  * @returns true if it works ; false otherwise.
  */
-bool test_copy_game_ar() {
+bool test_copy_game_ar(){
 	bool result = true;
 	set_up();
 	game test = new_game(WIDTH_AR, HEIGHT_AR, NB_PIECES, pieces);
@@ -67,7 +67,7 @@ bool test_copy_game_ar() {
  * @brief Tests the function game_over_ar.
  * @returns true if it works ; false otherwise.
  */
-bool test_game_over_ar() {
+bool test_game_over_ar(){
 	bool result = true;
 
 	set_up();
@@ -90,7 +90,7 @@ bool test_game_over_ar() {
  * @brief Tests the function new_game.
  * @returns true if it works ; false otherwise.
  */
-bool test_new_game() {
+bool test_new_game(){
 	bool result = true;
 	set_up();
 	game test = new_game(WIDTH_AR, HEIGHT_AR, NB_PIECES, pieces);
@@ -108,7 +108,7 @@ bool test_new_game() {
  * @brief Tests the function game_nb_pieces.
  * @returns true if it works ; false otherwise.
  */
-bool test_game_nb_pieces_ar() {
+bool test_game_nb_pieces_ar(){
 	bool result = true;
 	set_up();
 	game test = new_game(WIDTH_AR, HEIGHT_AR, NB_PIECES, pieces);
@@ -122,14 +122,14 @@ bool test_game_nb_pieces_ar() {
  * @brief main test.
  * @return exit_success.
  */
-int main() {
+int main(){
 	bool result = true;
 	result = result && test_equality_bool(true, test_new_game(), "new_game");
 	result = result && test_equality_bool(true, test_game_over_ar(), "game_over_ar");
 	result = result && test_equality_bool(true, test_game_square_piece_ar(), "game_square_piece_ar");
 	result = result && test_equality_bool(true, test_copy_game_ar(), "copy_game_ar");
 	result = result && test_equality_bool(true, test_game_nb_pieces_ar(), "game_nb_pieces_ar");
-	if (!result) {
+	if (!result){
 		printf("Test_game_ar failed!\n");
 		return EXIT_FAILURE;
 	}

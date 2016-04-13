@@ -8,6 +8,10 @@
 #define ERR_PIECE -1 
 
 piece * allocation_piece_tab(int nb_pieces, char * msg){
+	if(nb_pieces<0 || msg ==NULL){
+		fprintf(stderr, "allocation_piece_tab : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
 	piece * pieces = malloc(sizeof(piece)*nb_pieces);
 	if(pieces == NULL){
 		fprintf(stderr, "%s : pieces non alloue\n", msg);
@@ -17,48 +21,45 @@ piece * allocation_piece_tab(int nb_pieces, char * msg){
 }
 
 game new_game_hr (int nb_pieces, piece *pieces){
-	if(nb_pieces<0 || pieces==NULL){
-		fprintf(stderr, "new_game_hr : parametres incorrects\n");
+	return new_game(6, 6, nb_pieces, pieces);
+}
+
+game new_game(int width, int height, int nb_pieces, piece *pieces) {
+	if(width<0 || height<0 || nb_pieces<0 || pieces==NULL){
+		fprintf(stderr, "new_game : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
+
 	game g = malloc(sizeof(struct game_s));
 	if(g==NULL){
-		fprintf(stderr,"new_game_hr : g non alloue\n");
+		fprintf(stderr,"new_game : g non alloue\n");
 		exit(EXIT_FAILURE);
 	}
 	g->nb_pieces = nb_pieces;
-	g->pieces = allocation_piece_tab(nb_pieces, "new_game_hr");
+	g->pieces = allocation_piece_tab(nb_pieces, "new_game");
 	for(int i=0 ; i<nb_pieces ; i++){
 		g->pieces[i] = new_piece(0,0,1,1,true,true);
 		copy_piece(pieces[i],g->pieces[i]);
 	}
 	g->moves = 0;
-	g->width = 6;
-	g->height = 6;
+	g->width = width;
+	g->height = height;
 	if(!game_valid(g)){
-		fprintf(stderr, "new_game_hr : jeu non valide\n");
+		fprintf(stderr, "new_game : jeu non valide\n");
 		exit(EXIT_FAILURE);
 	}
-	return g;
-}
-
-game new_game(int width, int height, int nb_pieces, piece *pieces) {
-	game g = new_game_hr(nb_pieces, pieces);
-	g->height = height;
-	g->width = width;
 	return g;
 }
 
 void delete_pieces(int nb_pieces, piece * pieces){
-	if(pieces!=NULL){
-		for(int i=0 ; i<nb_pieces ; i++){
-			delete_piece(pieces[i]);		
-		}
-		free(pieces);
-	}else{
-		fprintf(stderr, "delete_pieces : pieces null\n");
+	if(nb_pieces<0 || pieces == NULL){
+		fprintf(stderr, "delete_pieces : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
+	for(int i=0 ; i<nb_pieces ; i++){
+		delete_piece(pieces[i]);		
+	}
+	free(pieces);
 }
 
 void delete_game(game g){
@@ -72,7 +73,6 @@ void delete_game(game g){
 }
 
 void copy_game (cgame src, game dst){
-	
 	if(src==NULL || dst==NULL){
 		fprintf(stderr, "copy_game : parametres invalides\n");
 		exit(EXIT_FAILURE);
@@ -191,10 +191,18 @@ bool game_valid(cgame g){
 }
 
 int game_width(cgame g) {
+	if(g==NULL){
+		fprintf(stderr, "game_width : g null.\n");
+		exit(EXIT_FAILURE);
+	}
 	return g->width;
 }
 
 int game_height(cgame g) {
+	if(g==NULL){
+		fprintf(stderr, "game_height : g null.\n");
+		exit(EXIT_FAILURE);
+	}
 	return g->height;
 }
 
