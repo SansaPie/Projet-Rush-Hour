@@ -47,7 +47,17 @@ tas creerTas(game g) {
 	tas t = malloc(sizeof(struct Tas));
 	t->capacite = SIZE_TAS;
 	t->index = INIT_INDEX_TAS;
-	t->tab = g;
+	Tas1->tab = malloc(sizeof(game)*Tas1->capacite);
+	t->tab[t->index] = g;
+	return t;
+}
+
+
+file creerFile(game gameG1) {
+	file f = malloc(sizeof(struct File));
+	f->gameG = gameG1;
+	f->next = NULL;
+	return f;
 }
 
 file enfiler(file f, game g) {
@@ -128,7 +138,7 @@ int solv(game g) {
 	
 	while (f != NULL) {
 		for (int i = 0; i < NB_PIECES; i++) {
-			for (dir d = UP; d < RIGHT; d++) {
+			for (dir d = UP; d <= RIGHT; d++) {
 
 				if (play_move(f->gameG, i, d, 1)) {
 					if (game_over_hr(f->gameG))
