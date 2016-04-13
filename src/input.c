@@ -2,7 +2,79 @@
 #include <stdlib.h>
 #include <string.h>
 #include "piece.h"
+#include "game.h"
 #include "game1.h"
+#include "input.h"
+
+/**
+ * @brief function displaying game in terminal.
+ * 
+ */
+void display_game(cgame g){
+	if(g==NULL){
+		fprintf(stderr, "display_game : g null.\n");
+		exit(EXIT_FAILURE);
+	}
+	/* 
+	 * creation of a char matrix representing our game's board.
+	 */
+	char ** grid = allocation_char_matrix(game_width(g), game_height(g)); 
+	/* 
+	 * initialization of the tab with '.'.
+	 */
+	for (int i = 0; i < game_width(g); i++){
+		for (int j = 0; j < game_height(g); j++){
+			grid[i][j] ='.';
+		}
+	}
+	for (int i = 0; i < game_nb_pieces(g); i++){
+		int xCoor = get_x(game_piece(g,i));
+		int yCoor = get_y(game_piece(g,i));
+
+		for(int x=xCoor ; x<xCoor+get_width(game_piece(g, i)) ; x++){
+			for(int y=yCoor ; y<yCoor+get_height(game_piece(g, i)) ; y++){
+				grid[x][y]=i+'0';
+			}
+		}
+	}
+	
+	/* 
+	 * display the game's board.
+	 */
+	for (int y = game_height(g)-1; y>=0; y--) {
+		for (int x = 0; x<game_width(g); x++) {
+			printf("%c ", grid[x][y]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+	delete_char_matrix(grid, game_width(g));
+}
+
+/**
+ * @brief tests if the movement is possible, and if so, execute it.
+ * @param piece_played index in the game of the piece we want to move.
+ * @param distance : number of cases we want to move the piece.
+ * @param d direction of the move.
+ */
+void display_success_movement(game g, int piece_played, int distance, dir d){
+	if(g==NULL || piece_played<0 || piece_played>=game_nb_pieces(g)){
+		fprintf(stderr, "display_success_movement : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
+	if(play_move(g, piece_played, d, abs(distance))){
+		printf("Vous avez bouge la piece %d de %d cases vers ", piece_played, abs(distance));
+		if(d==RIGHT)
+			printf("la droite.\n\n");
+		else if(d==LEFT)
+			printf("la gauche.\n\n");
+		else if(d==UP)
+			printf("le haut.\n\n");
+		else
+			printf("le bas.\n\n");
+	}else
+		printf("Mouvement impossible.\n");
+}
 
 /**
  * @brief function allowing the reading of pieces features from an annexed file.
@@ -157,8 +229,8 @@ int input_distance(char * answer, int size, cgame g){
  * @brief asks the user in which direction the piece is to be moved.
  */
 dir input_direction(char * direction, int size){
-	if(distance==NULL || size<0){
-		fprintf(stderr, "input_distance : parametres incorrects.\n");
+	if(direction==NULL || size<0){
+		fprintf(stderr, "input_direction : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
 	while(1){

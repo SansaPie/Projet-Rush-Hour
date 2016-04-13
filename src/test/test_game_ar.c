@@ -5,6 +5,7 @@
 #include "piece1.h"
 #include "game.h"
 #include "game1.h"
+#include "ane_rouge.h"
 #include "test_general.h"
 
 #define HEIGHT_AR 5

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(RUSH_HOUR)
 
+add_definitions(-std=c99)
+
 set(RUSH_HOUR_VERSION_MAJOR "1")
 set(RUSH_HOUR_VERSION_MINOR "1")
 set(RUSH_HOUR_VERSION_PATCH "2")

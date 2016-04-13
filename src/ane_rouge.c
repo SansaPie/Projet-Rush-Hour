@@ -6,6 +6,7 @@
 #include "game1.h"
 #include "piece.h"
 #include "piece1.h"
+#include "input.h"
 
 /**
  * @brief Tests if a game of ane_rouge is over.

@@ -6,6 +6,7 @@
 #include "game1.h"
 #include "piece.h"
 #include "piece1.h"
+#include "input.h"
 
 /**
  * @brief moves the piece in the direction and the distance chosen.
