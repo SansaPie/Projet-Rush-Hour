@@ -189,10 +189,9 @@ vraiFile new_file(){
 	vraiFile f = malloc(sizeof(struct VraiFile));
 	f->premier = NULL;
 	f->dernier = NULL;
-	return f;
 }
 
-void enfiler(vraiFile f, game g) {
+void enfiler(vraiFile f, game g){
 	file nouvelElement = malloc(sizeof(struct File));
 	if (nouvelElement == NULL){
 		fprintf(stderr, "enfiler : erreur allocation nouvelElement\n");
@@ -220,7 +219,7 @@ void enfiler(vraiFile f, game g) {
 	}
 }
 
-void defiler(vraiFile f) {
+void defiler(vraiFile f){
 	if (f != NULL){
 		if(f->premier==f->dernier){
 			delete_game(f->premier->gameG);
@@ -230,8 +229,8 @@ void defiler(vraiFile f) {
 		else{
 			file tmp = f->premier;
 			while(tmp->next != f->dernier){
-					tmp = tmp->next;
-				}
+				tmp = tmp->next;
+			}
 			delete_game(tmp->next->gameG);
 			f->dernier = tmp;
 			f->dernier->next = NULL;
@@ -246,7 +245,7 @@ void free_file(vraiFile f){
 	free(f);
 }
 
-bool equals(cgame g, cgame g1) {	
+bool equals(cgame g, cgame g1){	
 	if (game_nb_pieces(g) != game_nb_pieces(g1))
 		return false;
 	
@@ -262,7 +261,7 @@ bool equals(cgame g, cgame g1) {
 	return true;
 }
 
-bool existe_config(cgame g, tas t) {
+bool existe_config(cgame g, tas t){
 	for (int i = 0; i < t->index; i++) {
 		if (equals(g, t->tab[i]))
 			return true;
@@ -270,7 +269,7 @@ bool existe_config(cgame g, tas t) {
 	return false;
 }
 
-vraiFile solv(game g) {
+vraiFile solv(game g){
 	vraiFile f = new_file();
 	tas t = new_tas(SIZE_TAS);
 	enfiler(f, g); 
