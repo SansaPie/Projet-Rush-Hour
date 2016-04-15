@@ -4,7 +4,7 @@
 #include "game1.h"
 #include "piece.h"
 
-#define NB_PIECES 1
+#define NB_PIECES 2
 #define SIZE_TAS 15
 #define INIT_INDEX_TAS 0
 
@@ -13,14 +13,145 @@ typedef struct File {
 	struct File *next;
 }*file;
 
+typedef struct VraiFile{
+	file premier;
+	file dernier;
+}*vraiFile;
+
 typedef struct Tas {
 	int capacite;
 	int index;
 	game *tab;
 }*tas;
 
+// Temporaire
 
-void resizeTas(tas t) {
+/**
+ * @brief Allocates a char matrix.
+ */
+char ** allocation_char_matrix(int width, int height){
+	if(width<0 || height<0){
+		fprintf(stderr, "allocation_char_matrix : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
+	char ** grid = malloc(sizeof(char*)*width);
+	if(grid==NULL){
+		fprintf(stderr, "allocation_char_matrix : grid null\n");
+		exit(EXIT_FAILURE);
+	}
+	for(int i=0 ; i<width ; i++){
+		grid[i] = malloc(sizeof(char)*height);
+		if(grid[i]==NULL){
+			fprintf(stderr, "allocation_char_matrix : grid[%d] null\n", i);
+			exit(EXIT_FAILURE);
+		}
+	}
+	return grid;
+}
+
+/**
+ * @brief Deletes a char matrix.
+ */
+void delete_char_matrix(char ** grid, int width){
+	if(grid==NULL || width<0){
+		fprintf(stderr, "delete_char_matrix : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
+	for(int i=0 ; i<width ; i++)
+		free(grid[i]);
+	free(grid);
+}
+
+/**
+ * @brief function displaying game in terminal.
+ * 
+ */
+void display_game(cgame g) {
+	if(g==NULL){
+		fprintf(stderr, "display_game : g null.\n");
+		exit(EXIT_FAILURE);
+	}
+	/* 
+	 * creation of a char matrix representing our game's board.
+	 */
+	char ** grid = allocation_char_matrix(game_width(g), game_height(g)); 
+	/* 
+	 * initialization of the tab with '.'.
+	 */
+	for (int i = 0; i < game_width(g); i++) {
+		for (int j = 0; j < game_height(g); j++) {
+			grid[i][j] ='.';
+		}
+	}
+	for (int i = 0; i < game_nb_pieces(g); i++){
+		int xCoor = get_x(game_piece(g,i));
+		int yCoor = get_y(game_piece(g,i));
+
+		for(int x=xCoor ; x<xCoor+get_width(game_piece(g, i)) ; x++){
+			for(int y=yCoor ; y<yCoor+get_height(game_piece(g, i)) ; y++){
+				grid[x][y]=i+'0';
+			}
+		}
+	}
+	
+	/* 
+	 * display the game's board.
+	 */
+	for (int y = game_height(g)-1; y>=0; y--) {
+		for (int x = 0; x<game_width(g); x++) {
+			printf("%c ", grid[x][y]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+	delete_char_matrix(grid, game_width(g));
+}
+
+void display_game_in_file(vraiFile f){
+	int i=0;
+	file tmp = f->premier;
+	while(tmp!=NULL){
+		printf("\n\n\n%d : \n", i);
+		display_game(tmp->gameG);
+		i++;
+		tmp = tmp->next;
+	}
+}
+
+// Fin temporaire
+
+
+tas new_tas(int capacite) {
+	if(capacite<=0){
+		fprintf(stderr, "new_tas : capacite inferieur ou egal a 0\n");
+		exit(EXIT_FAILURE);
+	}
+	tas t = malloc(sizeof(struct Tas));
+	if(t==NULL){
+		fprintf(stderr, "new_tas : echec allocation t\n");
+		exit(EXIT_FAILURE);
+	}
+	t->capacite = capacite;
+	t->index = INIT_INDEX_TAS;
+	t->tab = malloc(sizeof(game)*capacite);
+	if(t->tab == NULL){
+		fprintf(stderr, "new_tas : echec allocation t-tab\n");
+		exit(EXIT_FAILURE);
+	}
+	return t;
+}
+
+void free_tas(tas t) {
+	if (t != NULL) {
+		for(int i=0 ; i<t->index ; i++){
+			delete_game(t->tab[i]);
+		}
+		free(t->tab);
+		free(t);
+	}
+}
+
+void resize_tas(tas t) { // A revoir
 	int newCapacite = 2 * t->capacite;
 	t->tab = realloc(t->tab, newCapacite * sizeof(game));
 	if (t->tab == NULL)
@@ -29,70 +160,94 @@ void resizeTas(tas t) {
 }
 
 void push(tas t, game g) {
+	piece * tmp = allocation_piece_tab(1, "push");
+	tmp[0] = new_piece(1,1,1,1,true,true);
+
 	if (t->capacite <= t->index)
-		resizeTas(t);
+		resize_tas(t);
+	t->tab[t->index] = new_game(game_width(g), game_height(g), 1, tmp);
+	copy_game(g, t->tab[t->index]);
 	t->index++;
-	t->tab[t->index] = g;
-	
+
+	delete_pieces(1, tmp);
 }
 
-void freeTas(tas t) {
-	if (t != NULL) {
-		free(t->tab);
-		free(t);
-	}
-}
-
-tas creerTas(game g) {
-	tas t = malloc(sizeof(struct Tas));
-	t->capacite = SIZE_TAS;
-	t->index = INIT_INDEX_TAS;
-	t->tab = g;
-}
-
-file enfiler(file f, game g) {
-	file nouvelElement = malloc(sizeof(struct File));
-	if (nouvelElement == NULL)
+tas copy_tas(tas src, tas dst){
+	if(src == NULL){
+		fprintf(stderr, "copy_tas : src null\n");
 		exit(EXIT_FAILURE);
-	piece * t_pieces = NULL;
-	t_pieces = allocation_piece_tab(1, "enfiler");
-	t_pieces[0] = new_piece_rh(0, 0, true, true);
-	
-	game gTmp = new_game_hr( 1, t_pieces);
+	}
+	free_tas(dst);
+	dst = new_tas(src->capacite);
+	for(int i=0 ; i<src->index ; i++){
+		push(dst, src->tab[i]);
+	}
+	return dst;
+}
 
-	copy_game(g, gTmp);
-	nouvelElement->gameG = gTmp;
+vraiFile new_file(){
+	vraiFile f = malloc(sizeof(struct VraiFile));
+	f->premier = NULL;
+	f->dernier = NULL;
+	return f;
+}
+
+void enfiler(vraiFile f, game g) {
+	file nouvelElement = malloc(sizeof(struct File));
+	if (nouvelElement == NULL){
+		fprintf(stderr, "enfiler : erreur allocation nouvelElement\n");
+		exit(EXIT_FAILURE);
+	}
+	piece * t_pieces = allocation_piece_tab(1, "enfiler");
+	t_pieces[0] = new_piece(1,1,1,1, true, true);
+	nouvelElement->gameG = new_game(game_width(g), game_height(g), 1, t_pieces);
+	delete_pieces(1, t_pieces);
+
+	copy_game(g, nouvelElement->gameG);
 	nouvelElement->next = NULL;
-	if (f == NULL) // si la liste est nulle on revoie seulement l'element insere.
-		return nouvelElement;
-	else {
-		file tmp = f;// pointeur temporaire pour parcourir la file.
-		
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		tmp->next = nouvelElement;
 
-		return f;
+	if (f->premier == NULL){
+		f->premier = nouvelElement;
+		f->dernier = f->premier;
+	}
+	else if(f->premier->next==NULL){
+		f->premier->next = nouvelElement;
+		f->dernier = nouvelElement;
+	}
+	else{
+		f->dernier->next = nouvelElement;
+		f->dernier = f->dernier->next;
 	}
 }
 
-
-file defiler(file f) {
-	if (f != NULL) {
-		file nouveauPremierElement = f->next;
-		free(f);
-		return nouveauPremierElement;
+void defiler(vraiFile f) {
+	if (f != NULL){
+		if(f->premier==f->dernier){
+			delete_game(f->premier->gameG);
+			f->premier = NULL;
+			f->dernier = NULL;
+		}
+		else{
+			file tmp = f->premier;
+			while(tmp->next != f->dernier){
+					tmp = tmp->next;
+				}
+			delete_game(tmp->next->gameG);
+			f->dernier = tmp;
+			f->dernier->next = NULL;
+		}
 	}
-	else
-		return NULL;
 }
 
+void free_file(vraiFile f){
+	while(f->premier != NULL){
+		defiler(f);
+	}
+	free(f);
+}
 
-bool equals(cgame g, cgame g1) {
-	int nbPiece_g = game_nb_pieces(g);
-	int nbPiece_g1 = game_nb_pieces(g1);
-	
-	if (nbPiece_g != nbPiece_g1)
+bool equals(cgame g, cgame g1) {	
+	if (game_nb_pieces(g) != game_nb_pieces(g1))
 		return false;
 	
 	for (int i = 0; i < game_nb_pieces(g); i++) {
@@ -107,55 +262,60 @@ bool equals(cgame g, cgame g1) {
 	return true;
 }
 
-
-
-bool existeConfig(cgame g, tas t) {
+bool existe_config(cgame g, tas t) {
 	for (int i = 0; i < t->index; i++) {
 		if (equals(g, t->tab[i]))
-			return false;
+			return true;
 	}
-	return true;
+	return false;
 }
 
-
-int solv(game g) {
-	if (game_over_hr(g))
-		return game_nb_moves(g);
-	file f = NULL;
-	tas t = NULL;
+vraiFile solv(game g) {
+	vraiFile f = new_file();
+	tas t = new_tas(SIZE_TAS);
 	enfiler(f, g); 
+	if (game_over_hr(g))
+		return f;
 	push(t, g);
+
+	piece * t_pieces = allocation_piece_tab(1, "solv");
+	t_pieces[0] = new_piece(1,1,1,1,true,true);
+	game tmp = new_game(game_width(g), game_height(g), 1, t_pieces);
 	
-	while (f != NULL) {
-		for (int i = 0; i < NB_PIECES; i++) {
-			for (dir d = UP; d < RIGHT; d++) {
+	file tmp_f = f->premier;
 
-				if (play_move(f->gameG, i, d, 1)) {
-					if (game_over_hr(f->gameG))
-						return game_nb_moves(f->gameG);
-					if (existeConfig(f->gameG, t)) {
-						push(t, f->gameG); // tester si la config n'existe pas deja.
-						enfiler(f, f->gameG);
-					}
-				}
-
+	while (tmp_f != NULL && !game_over_hr(f->dernier->gameG)) {
+		for (int i = 0; i < game_nb_pieces(g); i++) {
+			for (dir d = UP; d <= RIGHT; d++) {
+				enfiler(f, tmp_f->gameG);
+				copy_game(f->dernier->gameG, tmp);
+				if (play_move(f->dernier->gameG, i, d, 1) && !equals(f->dernier->gameG, tmp)) {
+					if (!existe_config(f->dernier->gameG, t))
+						push(t, f->dernier->gameG);
+					else
+						defiler(f);
+				}else
+					defiler(f);
 			}
-			
 		}
-		defiler(f);
+		tmp_f = tmp_f->next;
 	}
-	return game_nb_moves(g);// je sais pas
+	free_tas(t);
+	delete_pieces(1, t_pieces);
+	delete_game(tmp);
+	return f;
 }
-
-
 
 int main(void) {
-	piece pieces[NB_PIECES];
-	pieces[0] = new_piece_rh(2, 0, true, true);
-	
-	game jeuSolveur = new_game_hr(1, pieces);
-	printf("hello\n");
-	int nbmv = solv(jeuSolveur);
-	printf("Jeu en %d coup", nbmv);
+	piece * pieces = malloc(sizeof(piece)*NB_PIECES);
+	pieces[0] = new_piece_rh(0, 3, true, true);
+	pieces[1] = new_piece_rh(3, 3, true, false);
+	game jeuSolveur = new_game_hr(NB_PIECES, pieces);
+
+	vraiFile moves_to_display = solv(jeuSolveur);
+	display_game_in_file(moves_to_display);
+	free_file(moves_to_display);
+	delete_pieces(NB_PIECES, pieces);
+	delete_game(jeuSolveur);
 	return EXIT_SUCCESS;
 }
