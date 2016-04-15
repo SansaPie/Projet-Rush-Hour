@@ -26,37 +26,40 @@ typedef struct Tas{
 }*tas;
 
 void usage(char * commande){
-	fprintf(stderr, "usage : %s \nPremier argument : char 'a' ou 'r' \nSecond argument : char * (fichier .txt)\n"
+	fprintf(stderr, "usage : %s \npremier argument : char 'a' ou 'r' \nsecond argument : char * (fichier .txt)\n"
 		, commande);
 	exit(EXIT_FAILURE);
 }
 
 /**
- * @brief function allowing the reading of pieces features from an annexed maillon.
+ * @brief function allowing the reading of pieces features from an annexed file.
  */
-piece * lecture(piece * pieces_test, int * n, FILE * entree){
-	if(n==NULL){
+piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * entree){
+	if(n==NULL || width==NULL || height==NULL){
 		fprintf(stderr, "lecture : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
-	/* 
-	 * var used for the lecture of the maillon.
+	/**
+	 * var used for the lecture of the file.
 	 */
+	int board_width;
+	int board_height;
 	int number_pieces;
 	int c_x;	   // x-coor.
 	int c_y;	   // y-coor.
 	int m_x;	   // move_x.
 	int m_y;	   // move_y.
-	int w;		   // width.
-	int h;		   // height.
+	int w;		   // width of the piece.
+	int h;		   // height of the piece.
 
 	if(entree == NULL){
-		printf("Erreur durant l'ouverture du fichier\n");
+		printf("erreur durant l'ouverture du fichier\n");
 		exit(EXIT_FAILURE);
-	}  
+	}
+	fscanf(entree, "%d %d", &board_width, &board_height); // width and height of the game board
 	fscanf(entree, "%d", &number_pieces);
 	pieces_test = allocation_piece_tab(number_pieces, "main"); 
-	/* 
+	/**
 	 * creation of the tab.
 	 */
 	for(int i=0; i<number_pieces; i++){
@@ -64,11 +67,13 @@ piece * lecture(piece * pieces_test, int * n, FILE * entree){
 		pieces_test[i] = new_piece(c_x, c_y, w, h, m_x, m_y);
 	}
 	*n = number_pieces;
+	*width = board_width;
+	*height = board_height;
 	return pieces_test;
 }
 
 /**
- * @brief Allocates a char matrix.
+ * @brief allocates a char matrix.
  */
 char ** allocation_char_matrix(int width, int height){
 	if(width<0 || height<0){
@@ -91,7 +96,7 @@ char ** allocation_char_matrix(int width, int height){
 }
 
 /**
- * @brief Deletes a char matrix.
+ * @brief deletes a char matrix.
  */
 void delete_char_matrix(char ** grid, int width){
 	if(grid==NULL || width<0){
@@ -310,7 +315,18 @@ bool existe_config(cgame g, tas t){
 	return false;
 }
 
-file solv(game g){ // Argument a ou r pour type de game_over
+bool game_over(char game_type, file f){
+	if((game_type!='a' && game_type!='r') || f==NULL){
+		fprintf(stderr, "game_over : parametres incorrects\n");
+		exit(EXIT_FAILURE);
+	}
+	if(game_type=='a')
+		return game_over_ar(f->dernier->gameG);
+	else
+		return game_over_hr(f->dernier->gameG); 
+}
+
+file solv(game g, char game_type){
 	file f = new_file();
 	tas t = new_tas(SIZE_TAS);
 	enfiler(f, g); 
@@ -323,23 +339,33 @@ file solv(game g){ // Argument a ou r pour type de game_over
 	game tmp = new_game(game_width(g), game_height(g), 1, t_pieces);
 	
 	maillon tmp_f = f->premier;
+	bool move_played = false;
 
-	while (tmp_f != NULL && !game_over_hr(f->dernier->gameG)){
+	while (tmp_f != NULL && !game_over(game_type, f)){
 		for (int i = 0; i < game_nb_pieces(g); i++){
 			for (dir d = UP; d <= RIGHT; d++){
 				enfiler(f, tmp_f->gameG);
 				copy_game(f->dernier->gameG, tmp);
-				if (play_move(f->dernier->gameG, i, d, 1) && !equals(f->dernier->gameG, tmp)){
+				while(play_move(f->dernier->gameG, i, d, 1) && !equals(f->dernier->gameG, tmp)){
+					if(move_played){
+						enfiler(f, f->dernier->gameG);
+						copy_game(f->dernier->gameG, tmp);
+					}
 					if (!existe_config(f->dernier->gameG, t))
 						push(t, f->dernier->gameG);
 					else
 						defiler(f);
-				}else
+					move_played = true;
+				}
+				if(!move_played)
 					defiler(f);
+				else
+					move_played=false;
 			}
+			if(game_over(game_type, f))
+				break;
 		}
 		tmp_f = tmp_f->next;
-		// Ajout condition 'a' ou 'r' déterminant game_over_ar ou hr, booléen prend valeur
 	}
 	free_tas(t);
 	delete_pieces(1, t_pieces);
@@ -349,11 +375,9 @@ file solv(game g){ // Argument a ou r pour type de game_over
 
 int main(int argc, char * argv[]){
 
-	/**
-	if(argc!=3 && strlen(argv[1])!=1 && (argv[1][0]!='a' || argv[1][0]!='r')){
-		usage(agrv[0]);
+	if(argc!=3 || strlen(argv[1])!=1 || (argv[1][0]!='a' && argv[1][0]!='r')){
+		usage(argv[0]);
 	}
-	*/
 
 	/////////////////////////////////////
 
@@ -365,20 +389,20 @@ int main(int argc, char * argv[]){
 	/////////////////////////////////////
 
 // Penser à modifier lecture pour détermination taille tableau de jeu
-	int nb_pieces = 0;
-	int width = 6;
-	int height = 6;
-	FILE * entree = fopen("../config/easy_rh_1.txt", "r+");
+	int nb_pieces, width, height = 0;
+
+	FILE * entree = fopen(argv[2], "r+");
 	if(entree==NULL){
-		fprintf(stderr, "main : erreur lors ouverture entree\n");
+		fprintf(stderr, "main : erreur lors ouverture fichier\n");
 		exit(EXIT_FAILURE);
 	}
+
 	piece * pieces_from_file = NULL;
-	pieces_from_file = lecture(pieces_from_file, &nb_pieces, entree); // &width, &height, argv[2]
+	pieces_from_file = lecture(pieces_from_file, &nb_pieces, &width, &height, entree);
 	game game_for_solveur = new_game(width, height, nb_pieces, pieces_from_file);
 
 	//file moves_to_display = solv(jeuSolveur);
-	file moves_to_display = solv(game_for_solveur);
+	file moves_to_display = solv(game_for_solveur, argv[1][0]);
 	display_game_in_file(moves_to_display);
 	free_file(moves_to_display);
 

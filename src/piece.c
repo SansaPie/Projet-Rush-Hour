@@ -52,7 +52,7 @@ void delete_piece (piece p){
 
 void copy_piece (cpiece src, piece dst){
 	if(src==NULL || dst==NULL){
-		fprintf(stderr, "copy_piece : pieces invalides\n");
+		fprintf(stderr, "copy_piece : pieces incorrects\n");
 		exit(EXIT_FAILURE);
 	}
 	dst->x = src->x;
@@ -65,7 +65,7 @@ void copy_piece (cpiece src, piece dst){
 
 void move_piece (piece p, dir d, int distance){
 	if(p==NULL || distance<0){
-		fprintf(stderr, "move_piece : parametres invalides\n");
+		fprintf(stderr, "move_piece : parametres incorrects\n");
 		exit(EXIT_FAILURE);
 	}
 	switch(d){
@@ -90,7 +90,7 @@ void move_piece (piece p, dir d, int distance){
 
 bool intersect(cpiece p1, cpiece p2){
 	if (p1==NULL || p2==NULL){
-		fprintf(stderr, "intersect : pieces non valides\n");
+		fprintf(stderr, "intersect : parametres incorrects\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -109,7 +109,7 @@ bool intersect(cpiece p1, cpiece p2){
 
 int get_x(cpiece p){
 	if(p==NULL){
-		fprintf(stderr, "get_x : p invalide\n");
+		fprintf(stderr, "get_x : p null\n");
 		exit(EXIT_FAILURE);
 	}
 	return p->x;
@@ -118,7 +118,7 @@ int get_x(cpiece p){
 
 int get_y(cpiece p){
 	if(p==NULL){
-		fprintf(stderr, "get_y : p invalide\n");
+		fprintf(stderr, "get_y : p null\n");
 		exit(EXIT_FAILURE);
 	}
 	return p->y;
@@ -126,7 +126,7 @@ int get_y(cpiece p){
 
 int get_height(cpiece p){
 	if (p == NULL){
-		fprintf(stderr, "get_height : p invalide\n");
+		fprintf(stderr, "get_height : p null\n");
 		exit(EXIT_FAILURE);
 	}
 	return p->height;
@@ -134,7 +134,7 @@ int get_height(cpiece p){
 
 int get_width(cpiece p){
 	if(p==NULL){
-		fprintf(stderr, "get_width : p invalide\n");
+		fprintf(stderr, "get_width : p null\n");
 		exit(EXIT_FAILURE);
 	}
 	return p->width;
@@ -142,7 +142,7 @@ int get_width(cpiece p){
 
 bool is_horizontal(cpiece p){
 	if(p==NULL){
-		fprintf(stderr, "is_horizontal : p invalide\n");
+		fprintf(stderr, "is_horizontal : p null\n");
 		exit(EXIT_FAILURE);
 	}
 	if(can_move_x(p) && can_move_y(p)){
@@ -154,7 +154,7 @@ bool is_horizontal(cpiece p){
 
 bool is_small(cpiece p){
 	if (p == NULL) {
-		fprintf(stderr, "is_small : p invalide\n");
+		fprintf(stderr, "is_small : p null\n");
 		exit(EXIT_FAILURE);
 	}
 	if(get_width(p)>get_height(p))
@@ -165,7 +165,7 @@ bool is_small(cpiece p){
 
 bool is_in_board(cpiece p, int width, int height){
 	if(p==NULL){
-		fprintf(stderr, "is_in_board : p invalide\n");
+		fprintf(stderr, "is_in_board : p null\n");
 		exit(EXIT_FAILURE);
 	}
 	if(get_y(p) < 0 || get_x(p) <0)
@@ -184,7 +184,7 @@ bool is_in_board(cpiece p, int width, int height){
 
 bool can_move_x(cpiece p){
 	if(p==NULL){
-		fprintf(stderr, "can_move_x : p invalide\n");
+		fprintf(stderr, "can_move_x : p null\n");
 		exit(EXIT_FAILURE);
 	}
 	return p->move_x;
@@ -192,7 +192,7 @@ bool can_move_x(cpiece p){
 
 bool can_move_y(cpiece p){
 	if(p==NULL){
-		fprintf(stderr, "can_move_y : p invalide\n");
+		fprintf(stderr, "can_move_y : p null\n");
 		exit(EXIT_FAILURE);
 	}
 	return p->move_y;

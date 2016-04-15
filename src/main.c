@@ -11,29 +11,32 @@
 /**
  * @brief function allowing the reading of pieces features from an annexed file.
  */
-piece * lecture(piece * pieces_test, int * n, FILE * entree){
-	if(n==NULL){
+piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * entree){
+	if(n==NULL || width==NULL || height==NULL){
 		fprintf(stderr, "lecture : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
-	/* 
+	/**
 	 * var used for the lecture of the file.
 	 */
+	int board_width;
+	int board_height;
 	int number_pieces;
 	int c_x;	   // x-coor.
 	int c_y;	   // y-coor.
 	int m_x;	   // move_x.
 	int m_y;	   // move_y.
-	int w;		   // width.
-	int h;		   // height.
+	int w;		   // width of the piece.
+	int h;		   // height of the piece.
 
 	if(entree == NULL){
-		printf("Erreur durant l'ouverture du fichier\n");
+		printf("erreur durant l'ouverture du fichier\n");
 		exit(EXIT_FAILURE);
-	}  
+	}
+	fscanf(entree, "%d %d", &board_width, &board_height); // width and height of the game board
 	fscanf(entree, "%d", &number_pieces);
 	pieces_test = allocation_piece_tab(number_pieces, "main"); 
-	/* 
+	/**
 	 * creation of the tab.
 	 */
 	for(int i=0; i<number_pieces; i++){
@@ -41,11 +44,13 @@ piece * lecture(piece * pieces_test, int * n, FILE * entree){
 		pieces_test[i] = new_piece(c_x, c_y, w, h, m_x, m_y);
 	}
 	*n = number_pieces;
+	*width = board_width;
+	*height = board_height;
 	return pieces_test;
 }
 
 /**
- * @brief Allocates a char matrix.
+ * @brief allocates a char matrix.
  */
 char ** allocation_char_matrix(int width, int height){
 	if(width<0 || height<0){
@@ -68,7 +73,7 @@ char ** allocation_char_matrix(int width, int height){
 }
 
 /**
- * @brief Deletes a char matrix.
+ * @brief deletes a char matrix.
  */
 void delete_char_matrix(char ** grid, int width){
 	if(grid==NULL || width<0){
@@ -197,6 +202,9 @@ char * scan(char * buffer , int size){
 	return result;
 }
 
+/**
+ * @brief checks if the string s is a digital number
+ */
 bool expected_digit(char * s){
 	int c = *s;
 	if(c=='\n')
@@ -210,6 +218,9 @@ bool expected_digit(char * s){
 	return true;
 }
 
+/**
+ * @brief asks the user the name of the file he wants to play with.
+ */
 char * input_config_user(char * answer, int size){
 	if(answer==NULL || size<0){
 		fprintf(stderr, "input_config_user : parametres incorrects.\n");
@@ -230,11 +241,12 @@ char * input_config_user(char * answer, int size){
  * @param n number of pieces in the game.
  * @param choice choice of the configuration by the user earlier in the program.
  */
-game choice_config_rh(piece * pieces_test, int * n, int choice, char * answer, int size){
-	if(n==NULL || answer==NULL || size<0){
+game choice_config_rh(piece * pieces_test, int choice, char * answer, int size){
+	if(answer==NULL || size<0){
 		fprintf(stderr, "choice_config_rh : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
+	int n, width, height = 0;
 	FILE *entree = NULL;
 	switch(choice){
 		case 0:;
@@ -268,27 +280,28 @@ game choice_config_rh(piece * pieces_test, int * n, int choice, char * answer, i
 		fprintf(stderr, "Fichier non valide.\n");
 		exit(EXIT_FAILURE);
 	}
-	pieces_test = lecture(pieces_test, n, entree);
-	game g = new_game(6,6,*n, pieces_test); 
+	pieces_test = lecture(pieces_test, &n, &width, &height, entree);
+	game g = new_game(width, height, n, pieces_test); 
 	/*
 	 * the height and width are always the same for the rush hour game.
 	 */
 	fclose(entree);
-	delete_pieces(*n, pieces_test);
+	delete_pieces(n, pieces_test);
 	return g;
 }
 
 /**
  * @brief same as choice_config_rh but with a game of ane_rouge.
  */
-game choice_config_ar(piece * pieces_test, int * n, int choice, char * answer, int size){
-	if(n==NULL || answer==NULL || size<0){
+game choice_config_ar(piece * pieces_test, int choice, char * answer, int size){
+	if(answer==NULL || size<0){
 		fprintf(stderr, "choice_config_ar : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
+	int n, width, height = 0;
 	FILE *entree = NULL;
 	switch(choice){
-	case 0:; // This ; stands for the prevention of a bug, it's not a typo
+		case 0:; // This ; stands for the prevention of a bug, it's not a typo
 			char * config_user = input_config_user(answer, size);
 			entree = fopen(config_user, "r+");
 			free(config_user);
@@ -309,13 +322,13 @@ game choice_config_ar(piece * pieces_test, int * n, int choice, char * answer, i
 		fprintf(stderr, "Fichier non valide.\n");
 		exit(EXIT_FAILURE);
 	}
-	pieces_test = lecture(pieces_test, n, entree);
-	game g = new_game(4,5,*n, pieces_test); 
+	pieces_test = lecture(pieces_test, &n, &width, &height, entree);
+	game g = new_game(width, height, n, pieces_test); 
 	/*
 	 * the height and the width are always the same for this game.
 	 */
 	fclose(entree);
-	delete_pieces(*n, pieces_test);
+	delete_pieces(n, pieces_test);
 	return g;
 }
 
@@ -476,7 +489,6 @@ void ane_rouge(char * answer, int size, game g){
 
 int main(){
 	int size = 30;
-	int n = 0;
 	piece * pieces_test = NULL;
 	char * answer = malloc(sizeof(char)*size);
 	char playing_game = 'O';
@@ -515,7 +527,7 @@ int main(){
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
-			g = choice_config_rh(pieces_test, &n, choice, answer, size); // initialization of the game.
+			g = choice_config_rh(pieces_test, choice, answer, size); // initialization of the game.
 			rush_hour(answer, size, g);
 		}
 		else{
@@ -535,7 +547,7 @@ int main(){
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
-			g = choice_config_ar(pieces_test, &n, choice, answer, size); // initialization of the game.
+			g = choice_config_ar(pieces_test, choice, answer, size); // initialization of the game.
 			ane_rouge(answer, size, g);
 		}
 		printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);

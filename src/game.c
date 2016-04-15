@@ -45,7 +45,7 @@ game new_game(int width, int height, int nb_pieces, piece *pieces){
 	g->width = width;
 	g->height = height;
 	if(!game_valid(g)){
-		fprintf(stderr, "new_game : jeu non valide\n");
+		fprintf(stderr, "new_game : jeu invalide\n");
 		exit(EXIT_FAILURE);
 	}
 	return g;
@@ -53,7 +53,7 @@ game new_game(int width, int height, int nb_pieces, piece *pieces){
 
 void delete_pieces(int nb_pieces, piece * pieces){
 	if(nb_pieces<0 || pieces == NULL){
-		fprintf(stderr, "delete_pieces : parametres incorrects.\n");
+		fprintf(stderr, "delete_pieces : parametres incorrects\n");
 		exit(EXIT_FAILURE);
 	}
 	for(int i=0 ; i<nb_pieces ; i++){
@@ -74,7 +74,7 @@ void delete_game(game g){
 
 void copy_game (cgame src, game dst){
 	if(src==NULL || dst==NULL){
-		fprintf(stderr, "copy_game : parametres invalides\n");
+		fprintf(stderr, "copy_game : parametres incorrects\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -94,7 +94,7 @@ void copy_game (cgame src, game dst){
 
 int game_nb_pieces(cgame g){
 	if(g==NULL){
-		fprintf(stderr, "game_nb_pieces : g invalide\n");
+		fprintf(stderr, "game_nb_pieces : g null\n");
 		exit(EXIT_FAILURE);
 	}
 	return g->nb_pieces;
@@ -102,7 +102,7 @@ int game_nb_pieces(cgame g){
 
 cpiece game_piece(cgame g, int piece_num){
 	if(g==NULL || (piece_num<0 && piece_num>game_nb_pieces(g))){
-		fprintf(stderr, "game_piece : g invalide\n");
+		fprintf(stderr, "game_piece : parametres incorrects\n");
 		exit(EXIT_FAILURE);
 	}
 	return g->pieces[piece_num];
@@ -110,7 +110,7 @@ cpiece game_piece(cgame g, int piece_num){
 
 bool game_over_hr(cgame g){
 	if(g==NULL){
-		fprintf(stderr, "game_over_hr : g invalide\n");
+		fprintf(stderr, "game_over_hr : g null\n");
 		exit(EXIT_FAILURE);
 	}
 	if(get_x(game_piece(g, 0)) == 4 && get_y(game_piece(g,0)) == 3)
@@ -120,7 +120,7 @@ bool game_over_hr(cgame g){
 
 bool game_over_ar(cgame g){
 	if (g == NULL){
-		fprintf(stderr, "game_over_ar : g invalide\n");
+		fprintf(stderr, "game_over_ar : g null\n");
 		exit(EXIT_FAILURE);
 	}
 	if (get_x(game_piece(g, 0)) == 1 && get_y(game_piece(g, 0)) == 0)
@@ -131,7 +131,7 @@ bool game_over_ar(cgame g){
 
 bool play_move(game g, int piece_num, dir d, int distance){ 
 	if (g == NULL || piece_num >= game_nb_pieces(g) || piece_num <0){
-		fprintf(stderr, "play_move : parametres invalides\n");
+		fprintf(stderr, "play_move : parametres incorrects\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -162,7 +162,7 @@ bool play_move(game g, int piece_num, dir d, int distance){
 
 int game_nb_moves(cgame g){
 	if(g==NULL){
-		fprintf(stderr, "game_nb_moves : g invalide\n");
+		fprintf(stderr, "game_nb_moves : g null\n");
 		exit(EXIT_FAILURE);
 	}
 	return g->moves;
@@ -170,23 +170,17 @@ int game_nb_moves(cgame g){
 
 bool game_valid(cgame g){
 	if(g==NULL){
-		fprintf(stderr, "game_valid : g invalide\n");
+		fprintf(stderr, "game_valid : g null\n");
 		exit(EXIT_FAILURE);
 	}
-	for(int i=0 ; i<game_nb_pieces(g) ; i++){
-		if(!is_in_board(game_piece(g,i), game_width(g), game_height(g))){
-			printf("La piece %d se trouverait hors du tableau.\n", i);
+	for(int i=0 ; i<game_nb_pieces(g) ; i++)
+		if(!is_in_board(game_piece(g,i), game_width(g), game_height(g)))
 			return false;
-		}
-	}
-	for(int i=0 ; i<game_nb_pieces(g)-1 ; i++){
-		for(int j=i+1 ; j<game_nb_pieces(g) ; j++){
-			if(intersect(game_piece(g,i), game_piece(g,j))){
-				printf("La piece %d et la piece %d se chevaucheraient.\n", i, j);
+		
+	for(int i=0 ; i<game_nb_pieces(g)-1 ; i++)
+		for(int j=i+1 ; j<game_nb_pieces(g) ; j++)
+			if(intersect(game_piece(g,i), game_piece(g,j)))
 				return false;
-			}
-		}
-	}
 	return true;
 }
 
@@ -212,7 +206,7 @@ int game_square_piece(game g, int x, int y){
 		exit(EXIT_FAILURE);
 	}
 	if(x<0 || x>game_width(g) || y<0 || y>game_height(g)){
-		printf("game_square_piece : coordonnees non valides\n");
+		printf("game_square_piece : coordonnees invalides\n");
 		return ERR_PIECE;
 	}
 	for (int i = 0; i < game_nb_pieces(g); i++){
