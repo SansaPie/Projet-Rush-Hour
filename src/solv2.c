@@ -24,7 +24,41 @@ typedef struct Tas {
 	game *tab;
 }*tas;
 
-// Temporaire
+/**
+ * @brief function allowing the reading of pieces features from an annexed file.
+ */
+piece * lecture(piece * pieces_test, int * n, FILE * entree) {
+	if(n==NULL){
+		fprintf(stderr, "lecture : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
+	/* 
+	 * var used for the lecture of the file.
+	 */
+	int number_pieces;
+	int c_x;	   // x-coor.
+	int c_y;	   // y-coor.
+	int m_x;	   // move_x.
+	int m_y;	   // move_y.
+	int w;		   // width.
+	int h;		   // height.
+
+	if(entree == NULL){
+		printf("Erreur durant l'ouverture du fichier\n");
+		exit(EXIT_FAILURE);
+	}  
+	fscanf(entree, "%d", &number_pieces);
+	pieces_test = allocation_piece_tab(number_pieces, "main"); 
+	/* 
+	 * creation of the tab.
+	 */
+	for(int i=0; i<number_pieces; i++){
+		fscanf(entree, "%d %d %d %d %d %d", &c_x, &c_y, &m_x, &m_y, &w, &h);
+		pieces_test[i] = new_piece(c_x, c_y, w, h, m_x, m_y);
+	}
+	*n = number_pieces;
+	return pieces_test;
+}
 
 /**
  * @brief Allocates a char matrix.
@@ -118,9 +152,6 @@ void display_game_in_file(vraiFile f){
 	}
 }
 
-// Fin temporaire
-
-
 tas new_tas(int capacite) {
 	if(capacite<=0){
 		fprintf(stderr, "new_tas : capacite inferieur ou egal a 0\n");
@@ -189,6 +220,7 @@ vraiFile new_file(){
 	vraiFile f = malloc(sizeof(struct VraiFile));
 	f->premier = NULL;
 	f->dernier = NULL;
+	return f;
 }
 
 void enfiler(vraiFile f, game g){
@@ -223,6 +255,7 @@ void defiler(vraiFile f){
 	if (f != NULL){
 		if(f->premier==f->dernier){
 			delete_game(f->premier->gameG);
+			free(f->premier);
 			f->premier = NULL;
 			f->dernier = NULL;
 		}
@@ -232,6 +265,7 @@ void defiler(vraiFile f){
 				tmp = tmp->next;
 			}
 			delete_game(tmp->next->gameG);
+			free(tmp->next);
 			f->dernier = tmp;
 			f->dernier->next = NULL;
 		}
@@ -305,16 +339,44 @@ vraiFile solv(game g){
 	return f;
 }
 
-int main(void) {
+int main(int argc, char * args[]) {
+
+	/**
+	if(argc!=2 && strlen(args[0])!=1 && (args[0][0]!='a' || args[0][0]!='r')){
+		usage();
+	}
+	*/
+
 	piece * pieces = malloc(sizeof(piece)*NB_PIECES);
 	pieces[0] = new_piece_rh(0, 3, true, true);
 	pieces[1] = new_piece_rh(3, 3, true, false);
 	game jeuSolveur = new_game_hr(NB_PIECES, pieces);
 
-	vraiFile moves_to_display = solv(jeuSolveur);
+	/////////////////////////////////////
+// Penser à modifier lecture pour détermination taille tableau de jeu
+	int nb_pieces = 0;
+	int width = 6;
+	int height = 6;
+	FILE * entree = fopen("../config/easy_rh_1.txt", "r+");
+	if(entree==NULL){
+		fprintf(stderr, "main : erreur lors ouverture entree\n");
+		exit(EXIT_FAILURE);
+	}
+	piece * pieces_from_file = NULL;
+	pieces_from_file = lecture(pieces_from_file, &nb_pieces, entree); // &width, &height, args[1]
+	game game_for_solveur = new_game(width, height, nb_pieces, pieces_from_file);
+
+	//vraiFile moves_to_display = solv(jeuSolveur);
+	vraiFile moves_to_display = solv(game_for_solveur);
 	display_game_in_file(moves_to_display);
 	free_file(moves_to_display);
+
 	delete_pieces(NB_PIECES, pieces);
+	delete_pieces(nb_pieces, pieces_from_file);
+
 	delete_game(jeuSolveur);
+	delete_game(game_for_solveur);
+
+	fclose(entree);
 	return EXIT_SUCCESS;
 }
