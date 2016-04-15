@@ -107,8 +107,7 @@ bool intersect(cpiece p1, cpiece p2){
 	return false;
 }
 
-int get_x(cpiece p)
-{
+int get_x(cpiece p){
 	if(p==NULL){
 		fprintf(stderr, "get_x : p invalide\n");
 		exit(EXIT_FAILURE);
@@ -117,8 +116,7 @@ int get_x(cpiece p)
 }
 
 
-int get_y(cpiece p)
-{
+int get_y(cpiece p){
 	if(p==NULL){
 		fprintf(stderr, "get_y : p invalide\n");
 		exit(EXIT_FAILURE);
@@ -126,9 +124,8 @@ int get_y(cpiece p)
 	return p->y;
 }
 
-int get_height(cpiece p)
-{
-	if (p == NULL) {
+int get_height(cpiece p){
+	if (p == NULL){
 		fprintf(stderr, "get_height : p invalide\n");
 		exit(EXIT_FAILURE);
 	}

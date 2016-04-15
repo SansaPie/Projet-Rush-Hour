@@ -11,7 +11,7 @@
 /**
  * @brief function allowing the reading of pieces features from an annexed file.
  */
-piece * lecture(piece * pieces_test, int * n, FILE * entree) {
+piece * lecture(piece * pieces_test, int * n, FILE * entree){
 	if(n==NULL){
 		fprintf(stderr, "lecture : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
@@ -84,7 +84,7 @@ void delete_char_matrix(char ** grid, int width){
  * @brief function displaying game in terminal.
  * 
  */
-void display_game(cgame g) {
+void display_game(cgame g){
 	if(g==NULL){
 		fprintf(stderr, "display_game : g null.\n");
 		exit(EXIT_FAILURE);
@@ -96,8 +96,8 @@ void display_game(cgame g) {
 	/* 
 	 * initialization of the tab with '.'.
 	 */
-	for (int i = 0; i < game_width(g); i++) {
-		for (int j = 0; j < game_height(g); j++) {
+	for (int i = 0; i < game_width(g); i++){
+		for (int j = 0; j < game_height(g); j++){
 			grid[i][j] ='.';
 		}
 	}
@@ -115,8 +115,8 @@ void display_game(cgame g) {
 	/* 
 	 * display the game's board.
 	 */
-	for (int y = game_height(g)-1; y>=0; y--) {
-		for (int x = 0; x<game_width(g); x++) {
+	for (int y = game_height(g)-1; y>=0; y--){
+		for (int x = 0; x<game_width(g); x++){
 			printf("%c ", grid[x][y]);
 		}
 		printf("\n");
@@ -179,13 +179,13 @@ void move_rh(game g, int piece_played, int distance){
  * @param size width of the buffer.
  * @return string written.
  */
-char * scan(char * buffer , int size) {
+char * scan(char * buffer , int size){
 	if(buffer==NULL || size<0){
 		fprintf(stderr, "scan : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
 	char * result = fgets(buffer, size, stdin);
-	if (result != NULL) {
+	if (result != NULL){
 		char * lresult = strchr(buffer, '\n');
 		if (lresult != NULL)
 			*lresult = '\0';
@@ -264,7 +264,7 @@ game choice_config_rh(piece * pieces_test, int * n, int choice, char * answer, i
 			printf("choice_config : choix invalide.\n");
 			break;
 	}
-	if (entree == NULL) {
+	if (entree == NULL){
 		fprintf(stderr, "Fichier non valide.\n");
 		exit(EXIT_FAILURE);
 	}

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "game.h"
 #include "game1.h"
 #include "piece.h"
@@ -8,32 +9,38 @@
 #define SIZE_TAS 15
 #define INIT_INDEX_TAS 0
 
-typedef struct File {
+typedef struct Maillon{
 	game gameG;
-	struct File *next;
+	struct Maillon *next;
+}*maillon;
+
+typedef struct File{
+	maillon premier;
+	maillon dernier;
 }*file;
 
-typedef struct VraiFile{
-	file premier;
-	file dernier;
-}*vraiFile;
-
-typedef struct Tas {
+typedef struct Tas{
 	int capacite;
 	int index;
 	game *tab;
 }*tas;
 
+void usage(char * commande){
+	fprintf(stderr, "usage : %s \nPremier argument : char 'a' ou 'r' \nSecond argument : char * (fichier .txt)\n"
+		, commande);
+	exit(EXIT_FAILURE);
+}
+
 /**
- * @brief function allowing the reading of pieces features from an annexed file.
+ * @brief function allowing the reading of pieces features from an annexed maillon.
  */
-piece * lecture(piece * pieces_test, int * n, FILE * entree) {
+piece * lecture(piece * pieces_test, int * n, FILE * entree){
 	if(n==NULL){
 		fprintf(stderr, "lecture : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
 	/* 
-	 * var used for the lecture of the file.
+	 * var used for the lecture of the maillon.
 	 */
 	int number_pieces;
 	int c_x;	   // x-coor.
@@ -100,7 +107,7 @@ void delete_char_matrix(char ** grid, int width){
  * @brief function displaying game in terminal.
  * 
  */
-void display_game(cgame g) {
+void display_game(cgame g){
 	if(g==NULL){
 		fprintf(stderr, "display_game : g null.\n");
 		exit(EXIT_FAILURE);
@@ -112,8 +119,8 @@ void display_game(cgame g) {
 	/* 
 	 * initialization of the tab with '.'.
 	 */
-	for (int i = 0; i < game_width(g); i++) {
-		for (int j = 0; j < game_height(g); j++) {
+	for (int i = 0; i < game_width(g); i++){
+		for (int j = 0; j < game_height(g); j++){
 			grid[i][j] ='.';
 		}
 	}
@@ -131,8 +138,8 @@ void display_game(cgame g) {
 	/* 
 	 * display the game's board.
 	 */
-	for (int y = game_height(g)-1; y>=0; y--) {
-		for (int x = 0; x<game_width(g); x++) {
+	for (int y = game_height(g)-1; y>=0; y--){
+		for (int x = 0; x<game_width(g); x++){
 			printf("%c ", grid[x][y]);
 		}
 		printf("\n");
@@ -141,9 +148,9 @@ void display_game(cgame g) {
 	delete_char_matrix(grid, game_width(g));
 }
 
-void display_game_in_file(vraiFile f){
+void display_game_in_file(file f){
 	int i=0;
-	file tmp = f->premier;
+	maillon tmp = f->premier;
 	while(tmp!=NULL){
 		printf("\n\n\n%d : \n", i);
 		display_game(tmp->gameG);
@@ -152,7 +159,7 @@ void display_game_in_file(vraiFile f){
 	}
 }
 
-tas new_tas(int capacite) {
+tas new_tas(int capacite){
 	if(capacite<=0){
 		fprintf(stderr, "new_tas : capacite inferieur ou egal a 0\n");
 		exit(EXIT_FAILURE);
@@ -172,7 +179,7 @@ tas new_tas(int capacite) {
 	return t;
 }
 
-void free_tas(tas t) {
+void free_tas(tas t){
 	if (t != NULL) {
 		for(int i=0 ; i<t->index ; i++){
 			delete_game(t->tab[i]);
@@ -182,7 +189,7 @@ void free_tas(tas t) {
 	}
 }
 
-void resize_tas(tas t) { // A revoir
+void resize_tas(tas t){
 	int newCapacite = 2 * t->capacite;
 	t->tab = realloc(t->tab, newCapacite * sizeof(game));
 	if (t->tab == NULL)
@@ -190,7 +197,7 @@ void resize_tas(tas t) { // A revoir
 	t->capacite = newCapacite;
 }
 
-void push(tas t, game g) {
+void push(tas t, game g){
 	piece * tmp = allocation_piece_tab(1, "push");
 	tmp[0] = new_piece(1,1,1,1,true,true);
 
@@ -216,15 +223,15 @@ tas copy_tas(tas src, tas dst){
 	return dst;
 }
 
-vraiFile new_file(){
-	vraiFile f = malloc(sizeof(struct VraiFile));
+file new_file(){
+	file f = malloc(sizeof(struct File));
 	f->premier = NULL;
 	f->dernier = NULL;
 	return f;
 }
 
-void enfiler(vraiFile f, game g){
-	file nouvelElement = malloc(sizeof(struct File));
+void enfiler(file f, game g){
+	maillon nouvelElement = malloc(sizeof(struct Maillon));
 	if (nouvelElement == NULL){
 		fprintf(stderr, "enfiler : erreur allocation nouvelElement\n");
 		exit(EXIT_FAILURE);
@@ -251,7 +258,7 @@ void enfiler(vraiFile f, game g){
 	}
 }
 
-void defiler(vraiFile f){
+void defiler(file f){
 	if (f != NULL){
 		if(f->premier==f->dernier){
 			delete_game(f->premier->gameG);
@@ -260,7 +267,7 @@ void defiler(vraiFile f){
 			f->dernier = NULL;
 		}
 		else{
-			file tmp = f->premier;
+			maillon tmp = f->premier;
 			while(tmp->next != f->dernier){
 				tmp = tmp->next;
 			}
@@ -272,7 +279,7 @@ void defiler(vraiFile f){
 	}
 }
 
-void free_file(vraiFile f){
+void free_file(file f){
 	while(f->premier != NULL){
 		defiler(f);
 	}
@@ -283,7 +290,7 @@ bool equals(cgame g, cgame g1){
 	if (game_nb_pieces(g) != game_nb_pieces(g1))
 		return false;
 	
-	for (int i = 0; i < game_nb_pieces(g); i++) {
+	for (int i = 0; i < game_nb_pieces(g); i++){
 		if (!(get_x(game_piece(g, i)) == get_x(game_piece(g1, i)) && get_y(game_piece(g, i)) == get_y(game_piece(g1, i))))
 			return false;
 		if (!(can_move_x(game_piece(g, i)) == can_move_x(game_piece(g1, i)) && can_move_y(game_piece(g, i)) == can_move_y(game_piece(g1, i))))
@@ -296,15 +303,15 @@ bool equals(cgame g, cgame g1){
 }
 
 bool existe_config(cgame g, tas t){
-	for (int i = 0; i < t->index; i++) {
+	for (int i = 0; i < t->index; i++){
 		if (equals(g, t->tab[i]))
 			return true;
 	}
 	return false;
 }
 
-vraiFile solv(game g){
-	vraiFile f = new_file();
+file solv(game g){ // Argument a ou r pour type de game_over
+	file f = new_file();
 	tas t = new_tas(SIZE_TAS);
 	enfiler(f, g); 
 	if (game_over_hr(g))
@@ -315,14 +322,14 @@ vraiFile solv(game g){
 	t_pieces[0] = new_piece(1,1,1,1,true,true);
 	game tmp = new_game(game_width(g), game_height(g), 1, t_pieces);
 	
-	file tmp_f = f->premier;
+	maillon tmp_f = f->premier;
 
-	while (tmp_f != NULL && !game_over_hr(f->dernier->gameG)) {
-		for (int i = 0; i < game_nb_pieces(g); i++) {
-			for (dir d = UP; d <= RIGHT; d++) {
+	while (tmp_f != NULL && !game_over_hr(f->dernier->gameG)){
+		for (int i = 0; i < game_nb_pieces(g); i++){
+			for (dir d = UP; d <= RIGHT; d++){
 				enfiler(f, tmp_f->gameG);
 				copy_game(f->dernier->gameG, tmp);
-				if (play_move(f->dernier->gameG, i, d, 1) && !equals(f->dernier->gameG, tmp)) {
+				if (play_move(f->dernier->gameG, i, d, 1) && !equals(f->dernier->gameG, tmp)){
 					if (!existe_config(f->dernier->gameG, t))
 						push(t, f->dernier->gameG);
 					else
@@ -332,6 +339,7 @@ vraiFile solv(game g){
 			}
 		}
 		tmp_f = tmp_f->next;
+		// Ajout condition 'a' ou 'r' déterminant game_over_ar ou hr, booléen prend valeur
 	}
 	free_tas(t);
 	delete_pieces(1, t_pieces);
@@ -339,13 +347,15 @@ vraiFile solv(game g){
 	return f;
 }
 
-int main(int argc, char * args[]) {
+int main(int argc, char * argv[]){
 
 	/**
-	if(argc!=2 && strlen(args[0])!=1 && (args[0][0]!='a' || args[0][0]!='r')){
-		usage();
+	if(argc!=3 && strlen(argv[1])!=1 && (argv[1][0]!='a' || argv[1][0]!='r')){
+		usage(agrv[0]);
 	}
 	*/
+
+	/////////////////////////////////////
 
 	piece * pieces = malloc(sizeof(piece)*NB_PIECES);
 	pieces[0] = new_piece_rh(0, 3, true, true);
@@ -353,6 +363,7 @@ int main(int argc, char * args[]) {
 	game jeuSolveur = new_game_hr(NB_PIECES, pieces);
 
 	/////////////////////////////////////
+
 // Penser à modifier lecture pour détermination taille tableau de jeu
 	int nb_pieces = 0;
 	int width = 6;
@@ -363,11 +374,11 @@ int main(int argc, char * args[]) {
 		exit(EXIT_FAILURE);
 	}
 	piece * pieces_from_file = NULL;
-	pieces_from_file = lecture(pieces_from_file, &nb_pieces, entree); // &width, &height, args[1]
+	pieces_from_file = lecture(pieces_from_file, &nb_pieces, entree); // &width, &height, argv[2]
 	game game_for_solveur = new_game(width, height, nb_pieces, pieces_from_file);
 
-	//vraiFile moves_to_display = solv(jeuSolveur);
-	vraiFile moves_to_display = solv(game_for_solveur);
+	//file moves_to_display = solv(jeuSolveur);
+	file moves_to_display = solv(game_for_solveur);
 	display_game_in_file(moves_to_display);
 	free_file(moves_to_display);
 

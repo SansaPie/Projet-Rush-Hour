@@ -24,7 +24,7 @@ game new_game_hr (int nb_pieces, piece *pieces){
 	return new_game(6, 6, nb_pieces, pieces);
 }
 
-game new_game(int width, int height, int nb_pieces, piece *pieces) {
+game new_game(int width, int height, int nb_pieces, piece *pieces){
 	if(width<0 || height<0 || nb_pieces<0 || pieces==NULL){
 		fprintf(stderr, "new_game : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
@@ -118,8 +118,8 @@ bool game_over_hr(cgame g){
 	return false;
 }
 
-bool game_over_ar(cgame g) {
-	if (g == NULL) {
+bool game_over_ar(cgame g){
+	if (g == NULL){
 		fprintf(stderr, "game_over_ar : g invalide\n");
 		exit(EXIT_FAILURE);
 	}
@@ -143,9 +143,9 @@ bool play_move(game g, int piece_num, dir d, int distance){
 
 	piece piece_moved = gTmp->pieces[piece_num];
 	
-	for (int i = 0; i < distance; i++) {
+	for (int i = 0; i < distance; i++){
 		move_piece(piece_moved, d, 1);
-		if (!game_valid(gTmp)) {
+		if (!game_valid(gTmp)){
 			delete_game(gTmp);
 			delete_pieces(1,t_pieces);
 			return false;
@@ -190,7 +190,7 @@ bool game_valid(cgame g){
 	return true;
 }
 
-int game_width(cgame g) {
+int game_width(cgame g){
 	if(g==NULL){
 		fprintf(stderr, "game_width : g null.\n");
 		exit(EXIT_FAILURE);
@@ -198,7 +198,7 @@ int game_width(cgame g) {
 	return g->width;
 }
 
-int game_height(cgame g) {
+int game_height(cgame g){
 	if(g==NULL){
 		fprintf(stderr, "game_height : g null.\n");
 		exit(EXIT_FAILURE);
@@ -206,8 +206,8 @@ int game_height(cgame g) {
 	return g->height;
 }
 
-int game_square_piece(game g, int x, int y) {
-	if (g == NULL) {
+int game_square_piece(game g, int x, int y){
+	if (g == NULL){
 		fprintf(stderr, "game_square_piece: g null\n");
 		exit(EXIT_FAILURE);
 	}
@@ -215,7 +215,7 @@ int game_square_piece(game g, int x, int y) {
 		printf("game_square_piece : coordonnees non valides\n");
 		return ERR_PIECE;
 	}
-	for (int i = 0; i < game_nb_pieces(g); i++) {
+	for (int i = 0; i < game_nb_pieces(g); i++){
 		int xcoor = get_x(game_piece(g, i));
 		int ycoor = get_y(game_piece(g, i));
 		if (x == xcoor && y == ycoor)
