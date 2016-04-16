@@ -72,6 +72,8 @@ piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * 
 	return pieces_test;
 }
 
+// Temporaire
+
 /**
  * @brief allocates a char matrix.
  */
@@ -163,6 +165,8 @@ void display_game_in_file(file f){
 		tmp = tmp->next;
 	}
 }
+
+// Temporaire
 
 tas new_tas(int capacite){
 	if(capacite<=0){
@@ -307,7 +311,7 @@ bool equals(cgame g, cgame g1){
 	return true;
 }
 
-bool existe_config(cgame g, tas t){
+bool is_config(cgame g, tas t){
 	for (int i = 0; i < t->index; i++){
 		if (equals(g, t->tab[i]))
 			return true;
@@ -351,7 +355,7 @@ file solv(game g, char game_type){
 						enfiler(f, f->dernier->gameG);
 						copy_game(f->dernier->gameG, tmp);
 					}
-					if (!existe_config(f->dernier->gameG, t))
+					if (!is_config(f->dernier->gameG, t))
 						push(t, f->dernier->gameG);
 					else
 						defiler(f);
@@ -379,16 +383,6 @@ int main(int argc, char * argv[]){
 		usage(argv[0]);
 	}
 
-	/////////////////////////////////////
-
-	piece * pieces = malloc(sizeof(piece)*NB_PIECES);
-	pieces[0] = new_piece_rh(0, 3, true, true);
-	pieces[1] = new_piece_rh(3, 3, true, false);
-	game jeuSolveur = new_game_hr(NB_PIECES, pieces);
-
-	/////////////////////////////////////
-
-// Penser à modifier lecture pour détermination taille tableau de jeu
 	int nb_pieces, width, height = 0;
 
 	FILE * entree = fopen(argv[2], "r+");
@@ -401,15 +395,12 @@ int main(int argc, char * argv[]){
 	pieces_from_file = lecture(pieces_from_file, &nb_pieces, &width, &height, entree);
 	game game_for_solveur = new_game(width, height, nb_pieces, pieces_from_file);
 
-	//file moves_to_display = solv(jeuSolveur);
 	file moves_to_display = solv(game_for_solveur, argv[1][0]);
-	display_game_in_file(moves_to_display);
+	//display_game_in_file(moves_to_display); // temporaire
+	printf("Jeu termine en %d coups.\n", game_nb_moves(moves_to_display->dernier->gameG));
 	free_file(moves_to_display);
 
-	delete_pieces(NB_PIECES, pieces);
 	delete_pieces(nb_pieces, pieces_from_file);
-
-	delete_game(jeuSolveur);
 	delete_game(game_for_solveur);
 
 	fclose(entree);
