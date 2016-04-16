@@ -277,13 +277,14 @@ void defiler(file f){
 		}
 		else{
 			maillon tmp = f->premier;
-			while(tmp->next != f->dernier){
-				tmp = tmp->next;
-			}
-			delete_game(tmp->next->gameG);
-			free(tmp->next);
-			f->dernier = tmp;
-			f->dernier->next = NULL;
+			//while(tmp->next != f->dernier){
+			//	tmp = tmp->next;
+			//}
+			tmp = tmp->next;
+			delete_game(f->premier->gameG);
+			free(f->premier);
+			f->premier = tmp;
+			//f->dernier->next = NULL;
 		}
 	}
 }
@@ -312,7 +313,7 @@ bool equals(cgame g, cgame g1){
 }
 
 bool is_config(cgame g, tas t){
-	for (int i = 0; i < t->index; i++){
+	for (int i = index - 1 ; i >= 0; i++){
 		if (equals(g, t->tab[i]))
 			return true;
 	}
@@ -334,7 +335,7 @@ file solv(game g, char game_type){
 	file f = new_file();
 	tas t = new_tas(SIZE_TAS);
 	enfiler(f, g); 
-	if (game_over_hr(g))
+	if (game_over(game_type, f))
 		return f;
 	push(t, g);
 
@@ -342,34 +343,32 @@ file solv(game g, char game_type){
 	t_pieces[0] = new_piece(1,1,1,1,true,true);
 	game tmp = new_game(game_width(g), game_height(g), 1, t_pieces);
 	
-	maillon tmp_f = f->premier;
-	bool move_played = false;
+	//maillon tmp_f = f->premier;
+	//bool move_played = false;
 
-	while (tmp_f != NULL && !game_over(game_type, f)){
+	while (f->premier != NULL ){
 		for (int i = 0; i < game_nb_pieces(g); i++){
 			for (dir d = UP; d <= RIGHT; d++){
-				enfiler(f, tmp_f->gameG);
-				copy_game(f->dernier->gameG, tmp);
-				while(play_move(f->dernier->gameG, i, d, 1) && !equals(f->dernier->gameG, tmp)){
-					if(move_played){
-						enfiler(f, f->dernier->gameG);
-						copy_game(f->dernier->gameG, tmp);
+				//enfiler(f, tmp_f->gameG);
+				copy_game(f->premier->gameG, tmp);
+				
+				if(play_move(tmp, i, d, 1)){
+					if(game_over(game_type, f)){
+						enfiler(f, tmp);
+						free_tas(t);
+						delete_pieces(1, t_pieces);
+						delete_game(tmp);
+						return f;
 					}
-					if (!is_config(f->dernier->gameG, t))
-						push(t, f->dernier->gameG);
-					else
-						defiler(f);
-					move_played = true;
+					if (!is_config(tmp, t)){
+						push(t, tmp);
+						enfiler(f, tmp);
+					}
 				}
-				if(!move_played)
-					defiler(f);
-				else
-					move_played=false;
 			}
-			if(game_over(game_type, f))
-				break;
 		}
-		tmp_f = tmp_f->next;
+		defiler(f);
+		//tmp_f = tmp_f->next;
 	}
 	free_tas(t);
 	delete_pieces(1, t_pieces);
