@@ -16,7 +16,6 @@ typedef struct Maillon{
 
 typedef struct File{
 	maillon premier;
-	maillon dernier;
 }*file;
 
 typedef struct Tas{
@@ -71,102 +70,6 @@ piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * 
 	*height = board_height;
 	return pieces_test;
 }
-
-// Temporaire
-
-/**
- * @brief allocates a char matrix.
- */
-char ** allocation_char_matrix(int width, int height){
-	if(width<0 || height<0){
-		fprintf(stderr, "allocation_char_matrix : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	char ** grid = malloc(sizeof(char*)*width);
-	if(grid==NULL){
-		fprintf(stderr, "allocation_char_matrix : grid null\n");
-		exit(EXIT_FAILURE);
-	}
-	for(int i=0 ; i<width ; i++){
-		grid[i] = malloc(sizeof(char)*height);
-		if(grid[i]==NULL){
-			fprintf(stderr, "allocation_char_matrix : grid[%d] null\n", i);
-			exit(EXIT_FAILURE);
-		}
-	}
-	return grid;
-}
-
-/**
- * @brief deletes a char matrix.
- */
-void delete_char_matrix(char ** grid, int width){
-	if(grid==NULL || width<0){
-		fprintf(stderr, "delete_char_matrix : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	for(int i=0 ; i<width ; i++)
-		free(grid[i]);
-	free(grid);
-}
-
-/**
- * @brief function displaying game in terminal.
- * 
- */
-void display_game(cgame g){
-	if(g==NULL){
-		fprintf(stderr, "display_game : g null.\n");
-		exit(EXIT_FAILURE);
-	}
-	/* 
-	 * creation of a char matrix representing our game's board.
-	 */
-	char ** grid = allocation_char_matrix(game_width(g), game_height(g)); 
-	/* 
-	 * initialization of the tab with '.'.
-	 */
-	for (int i = 0; i < game_width(g); i++){
-		for (int j = 0; j < game_height(g); j++){
-			grid[i][j] ='.';
-		}
-	}
-	for (int i = 0; i < game_nb_pieces(g); i++){
-		int xCoor = get_x(game_piece(g,i));
-		int yCoor = get_y(game_piece(g,i));
-
-		for(int x=xCoor ; x<xCoor+get_width(game_piece(g, i)) ; x++){
-			for(int y=yCoor ; y<yCoor+get_height(game_piece(g, i)) ; y++){
-				grid[x][y]=i+'0';
-			}
-		}
-	}
-	
-	/* 
-	 * display the game's board.
-	 */
-	for (int y = game_height(g)-1; y>=0; y--){
-		for (int x = 0; x<game_width(g); x++){
-			printf("%c ", grid[x][y]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-	delete_char_matrix(grid, game_width(g));
-}
-
-void display_game_in_file(file f){
-	int i=0;
-	maillon tmp = f->premier;
-	while(tmp!=NULL){
-		printf("\n\n\n%d : \n", i);
-		display_game(tmp->gameG);
-		i++;
-		tmp = tmp->next;
-	}
-}
-
-// Temporaire
 
 tas new_tas(int capacite){
 	if(capacite<=0){
@@ -235,7 +138,6 @@ tas copy_tas(tas src, tas dst){
 file new_file(){
 	file f = malloc(sizeof(struct File));
 	f->premier = NULL;
-	f->dernier = NULL;
 	return f;
 }
 
@@ -253,38 +155,30 @@ void enfiler(file f, game g){
 	copy_game(g, nouvelElement->gameG);
 	nouvelElement->next = NULL;
 
-	if (f->premier == NULL){
+	if (f->premier == NULL)
 		f->premier = nouvelElement;
-		f->dernier = f->premier;
-	}
-	else if(f->premier->next==NULL){
-		f->premier->next = nouvelElement;
-		f->dernier = nouvelElement;
-	}
 	else{
-		f->dernier->next = nouvelElement;
-		f->dernier = f->dernier->next;
+		maillon tmp = f->premier;
+		while(tmp->next!=NULL){
+			tmp=tmp->next;
+		}
+		tmp->next = nouvelElement;
 	}
 }
 
 void defiler(file f){
 	if (f != NULL){
-		if(f->premier==f->dernier){
+		if(f->premier->next==NULL){
 			delete_game(f->premier->gameG);
 			free(f->premier);
 			f->premier = NULL;
-			f->dernier = NULL;
 		}
 		else{
 			maillon tmp = f->premier;
-			//while(tmp->next != f->dernier){
-			//	tmp = tmp->next;
-			//}
 			tmp = tmp->next;
 			delete_game(f->premier->gameG);
 			free(f->premier);
 			f->premier = tmp;
-			//f->dernier->next = NULL;
 		}
 	}
 }
@@ -313,7 +207,7 @@ bool equals(cgame g, cgame g1){
 }
 
 bool is_config(cgame g, tas t){
-	for (int i = index - 1 ; i >= 0; i++){
+	for (int i = t->index - 1 ; i >= 0; i--){
 		if (equals(g, t->tab[i]))
 			return true;
 	}
@@ -325,40 +219,44 @@ bool game_over(char game_type, file f){
 		fprintf(stderr, "game_over : parametres incorrects\n");
 		exit(EXIT_FAILURE);
 	}
+
+	maillon tmp = f->premier;
+	while (tmp->next!=NULL){
+		tmp = tmp->next;
+	}
+
 	if(game_type=='a')
-		return game_over_ar(f->dernier->gameG);
+		return game_over_ar(tmp->gameG);
 	else
-		return game_over_hr(f->dernier->gameG); 
+		return game_over_hr(tmp->gameG); 
 }
 
-file solv(game g, char game_type){
+int solv(game g, char game_type){
 	file f = new_file();
 	tas t = new_tas(SIZE_TAS);
+	int res = game_nb_moves(g);
 	enfiler(f, g); 
 	if (game_over(game_type, f))
-		return f;
+		return res;
 	push(t, g);
 
 	piece * t_pieces = allocation_piece_tab(1, "solv");
 	t_pieces[0] = new_piece(1,1,1,1,true,true);
 	game tmp = new_game(game_width(g), game_height(g), 1, t_pieces);
-	
-	//maillon tmp_f = f->premier;
-	//bool move_played = false;
+	delete_pieces(1, t_pieces);
 
 	while (f->premier != NULL ){
 		for (int i = 0; i < game_nb_pieces(g); i++){
 			for (dir d = UP; d <= RIGHT; d++){
-				//enfiler(f, tmp_f->gameG);
 				copy_game(f->premier->gameG, tmp);
 				
 				if(play_move(tmp, i, d, 1)){
 					if(game_over(game_type, f)){
-						enfiler(f, tmp);
+						res = game_nb_moves(tmp);
+						free_file(f);
 						free_tas(t);
-						delete_pieces(1, t_pieces);
 						delete_game(tmp);
-						return f;
+						return res;
 					}
 					if (!is_config(tmp, t)){
 						push(t, tmp);
@@ -368,12 +266,12 @@ file solv(game g, char game_type){
 			}
 		}
 		defiler(f);
-		//tmp_f = tmp_f->next;
 	}
+	res = -1;
 	free_tas(t);
-	delete_pieces(1, t_pieces);
+	free_file(f);
 	delete_game(tmp);
-	return f;
+	return res;
 }
 
 int main(int argc, char * argv[]){
@@ -394,10 +292,8 @@ int main(int argc, char * argv[]){
 	pieces_from_file = lecture(pieces_from_file, &nb_pieces, &width, &height, entree);
 	game game_for_solveur = new_game(width, height, nb_pieces, pieces_from_file);
 
-	file moves_to_display = solv(game_for_solveur, argv[1][0]);
-	//display_game_in_file(moves_to_display); // temporaire
-	printf("Jeu termine en %d coups.\n", game_nb_moves(moves_to_display->dernier->gameG));
-	free_file(moves_to_display);
+	int res = solv(game_for_solveur, argv[1][0]);
+	printf("%d\n", res);
 
 	delete_pieces(nb_pieces, pieces_from_file);
 	delete_game(game_for_solveur);
