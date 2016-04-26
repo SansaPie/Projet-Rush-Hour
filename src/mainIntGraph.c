@@ -207,7 +207,7 @@ game choice_config_ar(piece * pieces_test, int choice, char * answer, int size){
 int main(){
 	int size = 30;
 	piece * pieces_test = NULL;
-	char * answer = malloc(sizeof(char)*size);
+	char * answer = malloc(size);
 	if(answer == NULL){
 		fprintf(stderr, "main : answer null.\n");
 		exit(EXIT_FAILURE);
@@ -216,7 +216,7 @@ int main(){
 	if(test==NULL){
 		fprintf(stderr, "main : test null.\n");
 		exit(EXIT_FAILURE);
-	} // Changement
+	}
 	char playing_game = 'O';
 	char game_type = 'r';
 	
@@ -266,13 +266,13 @@ int main(){
 				"	4. difficult_ar_2.txt\n"
 				"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n"
 				"Si vous souhaitez utiliser votre propre configuration, tapez 0.\n
-				Veillez avant cela a bien avoir placer votre .txt dans le dossier config du jeu.\n"); // Changement
-			choice = 0;
+				Veillez avant cela a bien avoir placer votre .txt dans le dossier config du jeu.\n");
+			choice = -1;
 			condition = true;
 			while(condition){
 				test = scan(answer, size);
 				choice = atoi(test);
-				condition = (!expected_digit(test) || choice<1 || choice>4); // Changement
+				condition = (!expected_digit(test) || choice<0 || choice>4);
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
@@ -297,6 +297,6 @@ int main(){
 		}
 	}
 	free(answer);
-	free(test); // Changement
+	free(test);
 	return EXIT_SUCCESS;
 }
