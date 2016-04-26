@@ -30,10 +30,10 @@ int is_a_piece(cgame g, int nb){
 	return 0;
 }
 
-void display_piece_hovered(cgame g, SDL_Surface * screen, char game_type, piece piece_hovered){
+void display_piece_hovered(cgame g, SDL_Surface * screen, char game_type, int piece_hovered){
 	SDL_Rect position_piece_hovered;
-	position_piece_hovered.x = get_x(piece_hovered) * BLOC_SIZE;
-	position_piece_hovered.y = (game_height(g)-get_height(piece_hovered)-get_y(piece_hovered)) * BLOC_SIZE;
+	position_piece_hovered.x = get_x(game_piece(g, piece_hovered)) * BLOC_SIZE;
+	position_piece_hovered.y = (game_height(g)-get_height(game_piece(g, piece_hovered))-get_y(game_piece(g, piece_hovered))) * BLOC_SIZE;
 	
 	SDL_Surface *verticalPieceHovered = NULL, *horizontalPieceHovered = NULL;
 	verticalPieceHovered = IMG_Load("../img/verticalPieceHovered.png");
@@ -44,37 +44,37 @@ void display_piece_hovered(cgame g, SDL_Surface * screen, char game_type, piece 
 		squareHovered = IMG_Load("../img/squareHovered.png");
 		smallPieceHovered = IMG_Load("../img/smallPieceHovered.png");
 
-		if(i==0)
-			SDL_BlitSurface(squareHovered, NULL, screen, &position);
+		if(piece_hovered==0)
+			SDL_BlitSurface(squareHovered, NULL, screen, &position_piece_hovered);
 		else
-			if(get_width(piece_hovered)==1 && get_height(piece_hovered)==1)
-				SDL_BlitSurface(smallPieceHovered, NULL, screen, &position);
+			if(get_width(game_piece(g, piece_hovered))==1 && get_height(game_piece(g, piece_hovered))==1)
+				SDL_BlitSurface(smallPieceHovered, NULL, screen, &position_piece_hovered);
 	}else{
 		SDL_Surface *verticalTruckHovered = NULL, *horizontalTruckHovered = NULL;
 		verticalTruckHovered = IMG_Load("../img/verticalTruckHovered.png");
 		horizontalTruckHovered = IMG_Load("../img/horizontalTruckHovered.png");
 
-		if(!is_small(piece_hovered){
-			if(is_horizontal(piece_hovered)
-				SDL_BlitSurface(horizontalTruckHovered, NULL, screen, &position);
+		if(!is_small(game_piece(g, piece_hovered))){
+			if(is_horizontal(game_piece(g, piece_hovered)))
+				SDL_BlitSurface(horizontalTruckHovered, NULL, screen, &position_piece_hovered);
 			else
-				SDL_BlitSurface(verticalTruckHovered, NULL, screen, &position);
+				SDL_BlitSurface(verticalTruckHovered, NULL, screen, &position_piece_hovered);
 		}
 	}
-	if(is_small(piece_hovered)){
-		if(is_horizontal(piece_hovered))
-			SDL_BlitSurface(horizontalPieceHovered, NULL, screen, &position);
+	if(is_small(game_piece(g, piece_hovered))){
+		if(is_horizontal(game_piece(g, piece_hovered)))
+			SDL_BlitSurface(horizontalPieceHovered, NULL, screen, &position_piece_hovered);
 		else
-			SDL_BlitSurface(verticalPieceHovered, NULL, screen, &position);
+			SDL_BlitSurface(verticalPieceHovered, NULL, screen, &position_piece_hovered);
 	}
 }
 
-void display_piece_selected(cgame g, SDL_Surface * screen, char game_type, piece piece_selected){
+void display_piece_selected(cgame g, SDL_Surface * screen, char game_type, int piece_selected){
 	SDL_Rect position_piece_selected;
-	position_piece_selected.x = get_x(piece_selected) * BLOC_SIZE;
-	position_piece_selected.y = (game_height(g)-get_height(piece_selected)-get_y(piece_selected)) * BLOC_SIZE;
+	position_piece_selected.x = get_x(game_piece(g, piece_selected)) * BLOC_SIZE;
+	position_piece_selected.y = (game_height(g)-get_height(game_piece(g, piece_selected))-get_y(game_piece(g, piece_selected))) * BLOC_SIZE;
 	
-	SDL_Surface *verticalPieceSelected = NULL *horizontalPieceSelected = NULL;
+	SDL_Surface *verticalPieceSelected = NULL, *horizontalPieceSelected = NULL;
 	verticalPieceSelected = IMG_Load("../img/verticalPieceSelected.png");
 	horizontalPieceSelected = IMG_Load("../img/horizontalPieceSelected.png");
 
@@ -83,28 +83,28 @@ void display_piece_selected(cgame g, SDL_Surface * screen, char game_type, piece
 		squareSelected = IMG_Load("../img/squareSelected.png");
 		smallPieceSelected = IMG_Load("../img/smallPieceSelected.png");
 
-		if(i==0)
-			SDL_BlitSurface(squareSelected, NULL, screen, &position);
+		if(piece_selected==0)
+			SDL_BlitSurface(squareSelected, NULL, screen, &position_piece_selected);
 		else
-			if(get_width(piece_selected)==1 && get_height(piece_selected)==1)
-				SDL_BlitSurface(smallPieceSelected, NULL, screen, &position);
+			if(get_width(game_piece(g, piece_selected))==1 && get_height(game_piece(g, piece_selected))==1)
+				SDL_BlitSurface(smallPieceSelected, NULL, screen, &position_piece_selected);
 	}else{
 		SDL_Surface *verticalTruckSelected = NULL, *horizontalTruckSelected = NULL;
 		verticalTruckSelected = IMG_Load("../img/verticalTruckSelected.png");
 		horizontalTruckSelected = IMG_Load("../img/horizontalTruckSelected.png");
 
-		if(!is_small(piece_selected){
-			if(is_horizontal(piece_selected))
-				SDL_BlitSurface(horizontalTruckSelected, NULL, screen, &position);
+		if(!is_small(game_piece(g, piece_selected))){
+			if(is_horizontal(game_piece(g, piece_selected)))
+				SDL_BlitSurface(horizontalTruckSelected, NULL, screen, &position_piece_selected);
 			else
-				SDL_BlitSurface(verticalTruckSelected, NULL, screen, &position);
+				SDL_BlitSurface(verticalTruckSelected, NULL, screen, &position_piece_selected);
 		}
 	}
 	if(is_small(game_piece(g, piece_selected))){
 		if(is_horizontal(game_piece(g, piece_selected)))
-			SDL_BlitSurface(horizontalPieceSelected, NULL, screen, &position);
+			SDL_BlitSurface(horizontalPieceSelected, NULL, screen, &position_piece_selected);
 		else
-			SDL_BlitSurface(verticalPieceSelected, NULL, screen, &position);
+			SDL_BlitSurface(verticalPieceSelected, NULL, screen, &position_piece_selected);
 	}
 }
 
@@ -242,7 +242,7 @@ void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_t
 				break;
 		}
 		display_game(g, screen, game_type);
-		display_piece_selected(g, screen, game_type, game_piece(piece_selected));
+		display_piece_selected(g, screen, game_type, piece_selected);
 		SDL_Flip(screen);
 	}
 }
@@ -333,7 +333,7 @@ void graphic_game(game g, char game_type){
             	break;
 		}
 		display_game(g, screen, game_type);
-		display_piece_hovered(g, screen, game_type, game_piece(g, piece_selected));
+		display_piece_hovered(g, screen, game_type, piece_selected);
 		
 		SDL_Flip(screen);
 	}
