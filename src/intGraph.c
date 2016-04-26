@@ -8,7 +8,7 @@
 #include "piece.h"
 #include "piece1.h"
 
-#define BLOC_SIZE 50
+#define BLOC_SIZE 75
 
 bool game_over(cgame g, char game_type){
 	if(g==NULL || (game_type!='a' && game_type!='r')){
@@ -28,6 +28,84 @@ int is_a_piece(cgame g, int nb){
 	if(nb<game_nb_pieces(g))
 		return nb;
 	return 0;
+}
+
+void display_piece_hovered(cgame g, SDL_Surface * screen, char game_type, piece piece_hovered){
+	SDL_Rect position_piece_hovered;
+	position_piece_hovered.x = get_x(piece_hovered) * BLOC_SIZE;
+	position_piece_hovered.y = (game_height(g)-get_height(piece_hovered)-get_y(piece_hovered)) * BLOC_SIZE;
+	
+	SDL_Surface *verticalPieceHovered = NULL, *horizontalPieceHovered = NULL;
+	verticalPieceHovered = IMG_Load("../img/verticalPieceHovered.png");
+	horizontalPieceHovered = IMG_Load("../img/horizontalPieceHovered.png");
+
+	if(game_type=='a'){
+		SDL_Surface *squareHovered = NULL, *smallPieceHovered = NULL;
+		squareHovered = IMG_Load("../img/squareHovered.png");
+		smallPieceHovered = IMG_Load("../img/smallPieceHovered.png");
+
+		if(i==0)
+			SDL_BlitSurface(squareHovered, NULL, screen, &position);
+		else
+			if(get_width(piece_hovered)==1 && get_height(piece_hovered)==1)
+				SDL_BlitSurface(smallPieceHovered, NULL, screen, &position);
+	}else{
+		SDL_Surface *verticalTruckHovered = NULL, *horizontalTruckHovered = NULL;
+		verticalTruckHovered = IMG_Load("../img/verticalTruckHovered.png");
+		horizontalTruckHovered = IMG_Load("../img/horizontalTruckHovered.png");
+
+		if(!is_small(piece_hovered){
+			if(is_horizontal(piece_hovered)
+				SDL_BlitSurface(horizontalTruckHovered, NULL, screen, &position);
+			else
+				SDL_BlitSurface(verticalTruckHovered, NULL, screen, &position);
+		}
+	}
+	if(is_small(piece_hovered)){
+		if(is_horizontal(piece_hovered))
+			SDL_BlitSurface(horizontalPieceHovered, NULL, screen, &position);
+		else
+			SDL_BlitSurface(verticalPieceHovered, NULL, screen, &position);
+	}
+}
+
+void display_piece_selected(cgame g, SDL_Surface * screen, char game_type, piece piece_selected){
+	SDL_Rect position_piece_selected;
+	position_piece_selected.x = get_x(piece_selected) * BLOC_SIZE;
+	position_piece_selected.y = (game_height(g)-get_height(piece_selected)-get_y(piece_selected)) * BLOC_SIZE;
+	
+	SDL_Surface *verticalPieceSelected = NULL *horizontalPieceSelected = NULL;
+	verticalPieceSelected = IMG_Load("../img/verticalPieceSelected.png");
+	horizontalPieceSelected = IMG_Load("../img/horizontalPieceSelected.png");
+
+	if(game_type=='a'){
+		SDL_Surface *squareSelected = NULL, *smallPieceSelected = NULL;
+		squareSelected = IMG_Load("../img/squareSelected.png");
+		smallPieceSelected = IMG_Load("../img/smallPieceSelected.png");
+
+		if(i==0)
+			SDL_BlitSurface(squareSelected, NULL, screen, &position);
+		else
+			if(get_width(piece_selected)==1 && get_height(piece_selected)==1)
+				SDL_BlitSurface(smallPieceSelected, NULL, screen, &position);
+	}else{
+		SDL_Surface *verticalTruckSelected = NULL, *horizontalTruckSelected = NULL;
+		verticalTruckSelected = IMG_Load("../img/verticalTruckSelected.png");
+		horizontalTruckSelected = IMG_Load("../img/horizontalTruckSelected.png");
+
+		if(!is_small(piece_selected){
+			if(is_horizontal(piece_selected))
+				SDL_BlitSurface(horizontalTruckSelected, NULL, screen, &position);
+			else
+				SDL_BlitSurface(verticalTruckSelected, NULL, screen, &position);
+		}
+	}
+	if(is_small(game_piece(g, piece_selected))){
+		if(is_horizontal(game_piece(g, piece_selected)))
+			SDL_BlitSurface(horizontalPieceSelected, NULL, screen, &position);
+		else
+			SDL_BlitSurface(verticalPieceSelected, NULL, screen, &position);
+	}
 }
 
 void display_game_rh(cgame g, SDL_Surface * screen){
@@ -164,7 +242,7 @@ void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_t
 				break;
 		}
 		display_game(g, screen, game_type);
-		// Faire suivre contour de la piece sélectionnée. Problème de chargement d'image ?
+		display_piece_selected(g, screen, game_type, game_piece(piece_selected));
 		SDL_Flip(screen);
 	}
 }
@@ -179,10 +257,6 @@ void graphic_game(game g, char game_type){
 	SDL_Event event;
 	bool game_on = true;
 	int piece_selected = 0;
-
-	// position piece_selected : rectangle non rempli entourant voiture selectionnée (- quelques pixels sur x et y pour faire apparaître)
-	// Différents rectangles possibles ...
-	// Faire apparaître / disparaître rectangle ? Changement couleur ?
 
 	char * name = malloc(10);
 	if(game_type=='a')
@@ -259,7 +333,8 @@ void graphic_game(game g, char game_type){
             	break;
 		}
 		display_game(g, screen, game_type);
-		// Blit contour piece_selected
+		display_piece_hovered(g, screen, game_type, game_piece(g, piece_selected));
+		
 		SDL_Flip(screen);
 	}
 	free(name);

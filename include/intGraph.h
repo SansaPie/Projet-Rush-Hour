@@ -5,6 +5,8 @@
 
 bool game_over(cgame g, char game_type);
 int is_a_piece(cgame g, int nb);
+void display_piece_hovered(game g, SDL_Surface * screen, char game_type, piece piece_hovered);
+void display_piece_selected(game g, SDL_Surface * screen, char game_type, piece piece_selected);
 void display_game_ar(game g, SDL_Surface * screen);
 void display_game_rh(game g, SDL_Surface * screen);
 void display_game(game g, SDL_Surface * screen, char game_type);
