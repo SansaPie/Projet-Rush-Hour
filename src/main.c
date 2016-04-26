@@ -292,7 +292,7 @@ int main(){
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
 			g = choice_config_rh(pieces_test, choice, answer, size); // initialization of the game.
-			graphic_game(g);
+			graphic_game(g, Rush Hour);
 		}
 		else{
 			printf("La liste des configurations disponibles est : \n"
@@ -312,7 +312,7 @@ int main(){
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
 			g = choice_config_ar(pieces_test, choice, answer, size); // initialization of the game.
-			graphic_game(answer, size, g);
+			graphic_game(g, "Ane Rouge");
 		}
 		printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
 		delete_game(g);
