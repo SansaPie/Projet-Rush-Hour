@@ -209,11 +209,12 @@ int game_square_piece(game g, int x, int y){
 		printf("game_square_piece : coordonnees invalides\n");
 		return ERR_PIECE;
 	}
+
 	for (int i = 0; i < game_nb_pieces(g); i++){
-		int xcoor = get_x(game_piece(g, i));
-		int ycoor = get_y(game_piece(g, i));
-		if (x == xcoor && y == ycoor)
-			return i;
+		for(int j=0 ; j<get_width(game_piece(g, i)) ; j++)
+			for(int k=0 ; k<get_height(game_piece(g, i)) ; k++)
+				if(get_x(game_piece(g, i))+j==x && get_y(game_piece(g, i))+k==y)
+					return i;
 	}
 	return ERR_PIECE;
 }
