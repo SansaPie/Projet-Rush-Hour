@@ -175,7 +175,7 @@ void display_game_ar(cgame g, SDL_Surface * screen){
 	redArrow = IMG_Load("../img/redArrowAr.png");
 
 	position.x = BLOC_SIZE;
-	position.y = game_height(g)*BLOC_SIZE;
+	position.y = 4*BLOC_SIZE;
 	SDL_BlitSurface(redArrow, NULL, screen, &position);
 	for(int i=0 ; i<game_nb_pieces(g) ; i++){
 		position.x = get_x(game_piece(g, i)) * BLOC_SIZE;
