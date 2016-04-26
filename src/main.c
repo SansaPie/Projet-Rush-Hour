@@ -206,8 +206,12 @@ char * scan(char * buffer , int size){
  * @brief checks if the string s is a digital number
  */
 bool expected_digit(char * s){
+	if(s==NULL){
+		fprintf(stderr, "expected_digit : s null.\n");
+		exit(EXIT_FAILURE);
+	}
 	int c = *s;
-	if(c=='\n')
+	if(c=='\n' || strlen(s)==0)
 		return false;
 	if(s[0]=='-' || s[0]=='+')
 		s++;
@@ -344,10 +348,9 @@ int input_piece_played(char * answer, int size, cgame g){
 	bool condition = true;
 	while(condition){
 		printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
-		char * test = malloc(size);
-		test = scan(answer, size);
-		piece_played = atoi(test);
-		condition = (!expected_digit(test) || piece_played<0 || piece_played>=game_nb_pieces(g));
+		answer = scan(answer, size);
+		piece_played = atoi(answer);
+		condition = (!expected_digit(answer) || piece_played<0 || piece_played>=game_nb_pieces(g));
 		if(condition)
 			printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g)-1);
 	}
@@ -365,10 +368,9 @@ int input_distance(char * answer, int size, cgame g){
 	int distance = game_height(g);
 	bool condition = true;
 	while(condition){
-		char * test = malloc(size);
-		test = scan(answer, size);
-		distance = atoi(test);
-		condition = (!expected_digit(test) || abs(distance)>(game_height(g)-1) || abs(distance)>(game_width(g)-1));
+		answer = scan(answer, size);
+		distance = atoi(answer);
+		condition = (!expected_digit(answer) || abs(distance)>(game_height(g)-1) || abs(distance)>(game_width(g)-1));
 		if(condition)
 			printf("Veuillez rentrer une distance valide.\n");
 	}
@@ -490,14 +492,9 @@ void ane_rouge(char * answer, int size, game g){
 int main(){
 	int size = 30;
 	piece * pieces_test = NULL;
-	char * answer = malloc(size);
+	char * answer = malloc(sizeof(char)*size);
 	if(answer==NULL){
 		fprintf(stderr, "main : answer null.\n");
-		exit(EXIT_FAILURE);
-	}
-	char * test = malloc(size);
-	if(test==NULL){
-		fprintf(stderr, "main : test null.\n");
 		exit(EXIT_FAILURE);
 	}
 	char playing_game = 'O';
@@ -531,8 +528,9 @@ int main(){
 			choice = -1;
 			condition = true;
 			while(condition){
-				choice = atoi(scan(answer, size));
-				condition = (choice<0 || choice>6);
+				answer = scan(answer, size);
+				choice = atoi(answer);
+				condition = (!expected_digit(answer) || choice<0 || choice>6);
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
@@ -551,9 +549,9 @@ int main(){
 			choice = -1;
 			condition = true;
 			while(condition){
-				test = scan(answer, size);
-				choice = atoi(test);
-				condition = (!expected_digit(test) || choice<0 || choice>4);
+				answer = scan(answer, size);
+				choice = atoi(answer);
+				condition = (!expected_digit(answer) || choice<0 || choice>4);
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
@@ -574,6 +572,5 @@ int main(){
 		}
 	}
 	free(answer);
-	free(test);
 	return EXIT_SUCCESS;
 }

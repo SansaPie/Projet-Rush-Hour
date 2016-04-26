@@ -78,8 +78,12 @@ char * scan(char * buffer , int size){
  * @brief checks if the string s is a digital number
  */
 bool expected_digit(char * s){
+	if(s==NULL){
+		fprintf(stderr, "expected_digit : s null.\n");
+		exit(EXIT_FAILURE);
+	}
 	int c = *s;
-	if(c=='\n')
+	if(c=='\n' || strlen(s)==0)
 		return false;
 	if(s[0]=='-' || s[0]=='+')
 		s++;
@@ -212,11 +216,6 @@ int main(){
 		fprintf(stderr, "main : answer null.\n");
 		exit(EXIT_FAILURE);
 	}
-	char * test = malloc(size);
-	if(test==NULL){
-		fprintf(stderr, "main : test null.\n");
-		exit(EXIT_FAILURE);
-	}
 	char playing_game = 'O';
 	char game_type = 'r';
 	
@@ -249,9 +248,9 @@ int main(){
 			choice = -1;
 			condition = true;
 			while(condition){
-				test = scan(answer, size);
-				choice = atoi(test);
-				condition = (!expected_digit(test) || choice<0 || choice>6);
+				answer = scan(answer, size);
+				choice = atoi(answer);
+				condition = (!expected_digit(answer) || choice<0 || choice>6);
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
@@ -265,14 +264,14 @@ int main(){
 				"	3. difficult_ar_1.txt\n"
 				"	4. difficult_ar_2.txt\n"
 				"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n"
-				"Si vous souhaitez utiliser votre propre configuration, tapez 0.\n
-				Veillez avant cela a bien avoir placer votre .txt dans le dossier config du jeu.\n");
+				"Si vous souhaitez utiliser votre propre configuration, tapez 0.\n"
+				"Veillez avant cela a bien avoir placer votre .txt dans le dossier config du jeu.\n");
 			choice = -1;
 			condition = true;
 			while(condition){
-				test = scan(answer, size);
-				choice = atoi(test);
-				condition = (!expected_digit(test) || choice<0 || choice>4);
+				answer = scan(answer, size);
+				choice = atoi(answer);
+				condition = (!expected_digit(answer) || choice<0 || choice>4);
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
@@ -297,6 +296,5 @@ int main(){
 		}
 	}
 	free(answer);
-	free(test);
 	return EXIT_SUCCESS;
 }
