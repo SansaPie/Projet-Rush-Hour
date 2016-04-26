@@ -208,6 +208,15 @@ int main(){
 	int size = 30;
 	piece * pieces_test = NULL;
 	char * answer = malloc(sizeof(char)*size);
+	if(answer == NULL){
+		fprintf(stderr, "main : answer null.\n");
+		exit(EXIT_FAILURE);
+	}
+	char * test = malloc(size);
+	if(test==NULL){
+		fprintf(stderr, "main : test null.\n");
+		exit(EXIT_FAILURE);
+	} // Changement
 	char playing_game = 'O';
 	char game_type = 'r';
 	
@@ -240,8 +249,9 @@ int main(){
 			choice = -1;
 			condition = true;
 			while(condition){
-				choice = atoi(scan(answer, size));
-				condition = (choice<0 || choice>6);
+				test = scan(answer, size);
+				choice = atoi(test);
+				condition = (!expected_digit(test) || choice<0 || choice>6);
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
@@ -254,14 +264,15 @@ int main(){
 				"	2. normal_ar_1.txt\n"
 				"	3. difficult_ar_1.txt\n"
 				"	4. difficult_ar_2.txt\n"
-				"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n");
+				"\nEntrez le numero de la configuration que vous souhaitez utiliser.\n"
+				"Si vous souhaitez utiliser votre propre configuration, tapez 0.\n
+				Veillez avant cela a bien avoir placer votre .txt dans le dossier config du jeu.\n"); // Changement
 			choice = 0;
 			condition = true;
 			while(condition){
-				char * test = malloc(size);
 				test = scan(answer, size);
 				choice = atoi(test);
-				condition = (!expected_digit(test) || choice<1 || choice>4);
+				condition = (!expected_digit(test) || choice<1 || choice>4); // Changement
 				if(condition)
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
@@ -272,7 +283,7 @@ int main(){
 		if(game_over(g, game_type))
 			printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
 		else
-			printf("\nDommage, peut-etre une prochaine fois.\n");
+			printf("\nDommage, peut-etre la prochaine fois.\n");
 		delete_game(g);
 
 		printf("\nSouhaitez-vous rejouer ? (O/N)\n");
@@ -286,5 +297,6 @@ int main(){
 		}
 	}
 	free(answer);
+	free(test); // Changement
 	return EXIT_SUCCESS;
 }

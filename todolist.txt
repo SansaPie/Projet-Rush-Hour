@@ -1,23 +1,5 @@
 ﻿To do list :
 
-A vérifier :
-- Factorisation du main (FAIT par Lucas - à vérifier)
-- Rajouter enable_testing sur le Cmake (FAIT_Clément - a verifier)
-- Fonction permettant à l'utilisateur de rentrer sa propre configuration via un fichier test importé (préciser dans quel dossier il doit mettre son .txt) (FAIT Lucas - a vérifier)
-- Sécurité sur entrées utilisateurs. (FAIT Lucas - à vérifier)
-
-Fini :
-
-Obligatoire :
-
-- Interface graphique avec SDL.
-
-- Solveur.
-
-- Gérer l'emplacement de fonctions globales dans de nouveaux .c (A demander en détails à la prof, ex:game_over_hr / game_over_ar, cf mail)
-
-- Différencier AneRouge.c et RushHour.c
-
 - Asserts, une fois le code terminé et débuggé
 
 - Documentation avec le site de Clément ?
@@ -26,7 +8,3 @@ Optionnel :
 - Fonction permettant de revenir en arrière d'un coup
 
 - Highest score sur les configs pré-existantes. (Peut_être possible sur les importées aussi.) A écrire dans un fichier high_score.txt ?
-
-- Bel affichage ?
-
-- Rendre moins long ou chiant les entrées de direction. (ex: tout rentrer d'un coup : 1 DOWN 2 ou U/D/R/L pour les directions, voire 1/2/3/4 avec indications en printf. Toutes les implémentations en même temps serait cool).
