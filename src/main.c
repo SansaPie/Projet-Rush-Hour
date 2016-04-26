@@ -50,87 +50,6 @@ piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * 
 }
 
 /**
- * @brief allocates a char matrix.
- */
-char ** allocation_char_matrix(int width, int height){
-	if(width<0 || height<0){
-		fprintf(stderr, "allocation_char_matrix : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	char ** grid = malloc(sizeof(char*)*width);
-	if(grid==NULL){
-		fprintf(stderr, "allocation_char_matrix : grid null\n");
-		exit(EXIT_FAILURE);
-	}
-	for(int i=0 ; i<width ; i++){
-		grid[i] = malloc(sizeof(char)*height);
-		if(grid[i]==NULL){
-			fprintf(stderr, "allocation_char_matrix : grid[%d] null\n", i);
-			exit(EXIT_FAILURE);
-		}
-	}
-	return grid;
-}
-
-/**
- * @brief deletes a char matrix.
- */
-void delete_char_matrix(char ** grid, int width){
-	if(grid==NULL || width<0){
-		fprintf(stderr, "delete_char_matrix : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	for(int i=0 ; i<width ; i++)
-		free(grid[i]);
-	free(grid);
-}
-
-/**
- * @brief function displaying game in terminal.
- * 
- */
-void display_game(cgame g){
-	if(g==NULL){
-		fprintf(stderr, "display_game : g null.\n");
-		exit(EXIT_FAILURE);
-	}
-	/* 
-	 * creation of a char matrix representing our game's board.
-	 */
-	char ** grid = allocation_char_matrix(game_width(g), game_height(g)); 
-	/* 
-	 * initialization of the tab with '.'.
-	 */
-	for (int i = 0; i < game_width(g); i++){
-		for (int j = 0; j < game_height(g); j++){
-			grid[i][j] ='.';
-		}
-	}
-	for (int i = 0; i < game_nb_pieces(g); i++){
-		int xCoor = get_x(game_piece(g,i));
-		int yCoor = get_y(game_piece(g,i));
-
-		for(int x=xCoor ; x<xCoor+get_width(game_piece(g, i)) ; x++){
-			for(int y=yCoor ; y<yCoor+get_height(game_piece(g, i)) ; y++){
-				grid[x][y]=i+'0';
-			}
-		}
-	}
-	
-	/* 
-	 * display the game's board.
-	 */
-	for (int y = game_height(g)-1; y>=0; y--){
-		for (int x = 0; x<game_width(g); x++){
-			printf("%c ", grid[x][y]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-	delete_char_matrix(grid, game_width(g));
-}
-
-/**
  * @brief tests if the movement is possible, and if so, execute it.
  * @param piece_played index in the game of the piece we want to move.
  * @param distance : number of cases we want to move the piece.
@@ -332,161 +251,6 @@ game choice_config_ar(piece * pieces_test, int choice, char * answer, int size){
 	return g;
 }
 
-/**
- * @brief asks the user for which piece he wants to play.
- */
-int input_piece_played(char * answer, int size, cgame g){
-	if(g==NULL || answer==NULL || size<0){
-		fprintf(stderr, "input_piece_played : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	int piece_played = -1;
-	bool condition = true;
-	while(condition){
-		printf("Quelle piece voulez-vous jouer ? Rentrez son numero.\n");
-		char * test = malloc(size);
-		test = scan(answer, size);
-		piece_played = atoi(test);
-		condition = (!expected_digit(test) || piece_played<0 || piece_played>=game_nb_pieces(g));
-		if(condition)
-			printf("Veuillez rentrer un numero de piece existant. (0 a %d)\n", game_nb_pieces(g)-1);
-	}
-	return piece_played;
-}
-
-/**
- * @brief asks the user the distance he wants to move the piece chosen.
- */
-int input_distance(char * answer, int size, cgame g){
-	if(g==NULL || answer==NULL || size<0){
-		fprintf(stderr, "input_distance : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	int distance = game_height(g);
-	bool condition = true;
-	while(condition){
-		char * test = malloc(size);
-		test = scan(answer, size);
-		distance = atoi(test);
-		condition = (!expected_digit(test) || abs(distance)>(game_height(g)-1) || abs(distance)>(game_width(g)-1));
-		if(condition)
-			printf("Veuillez rentrer une distance valide.\n");
-	}
-	return distance;
-}
-
-/**
- * @brief asks the user in which direction the piece is to be moved.
- */
-dir input_direction(char * direction, int size){
-	if(direction==NULL || size<0){
-		fprintf(stderr, "input_distance : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	while(1){
-		if(!strcmp(direction, "RIGHT"))
-			return RIGHT;
-		else if(!strcmp(direction, "LEFT"))
-			return LEFT;
-		else if(!strcmp(direction, "UP"))
-			return UP;
-		else if(!strcmp(direction, "DOWN"))
-			return DOWN;
-		else{
-			printf("Direction invalide. Veuillez entrer UP, DOWN, RIGHT ou LEFT.\n");
-			direction = scan(direction, size);
-		}
-	}
-}
-
-/**
- * @brief proceeding of a rush-hour game.
- */
-void rush_hour(char * answer, int size, game g){
-	if(g==NULL || answer==NULL || size<0){
-		fprintf(stderr, "rush_hour : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	/**
-	 * tests if the game is valid.
-	 */
-	if(!game_valid(g)){
-		fprintf(stderr, "rush_hour : game invalid\n");
-		exit(EXIT_FAILURE);
-	}
-
-	/**
-	 * display the rules of the game.
-	 */
-	printf("Ce jeu a ete code par Lucas, Lisa et Clement. \n"
-		"Le but de ce jeu est d'amener la voiture 0 toucher le cote droit du plateau.\n"
-		"Vous ne pouvez bouger les pieces horizontales que de gauche a droite, "
-		"et les verticales que de haut en bas. \n"
-		"Un nombre negatif fera bouger une voiture horizontale a gauche, "
-		"un nombre positif la fera bouger a droite.\n"
-		"Un nombre negatif fera bouger une voiture verticale vers le bas, "
-		"et un nombre positif la fera bouger vers le haut.\n"
-		"Essayez de resoudre ce puzzle en un minimum de coups possible !\n\n");
-
-	/** 
-	 * while the game isn't over, asks the user what he wants to play.
-	 */
-	while(!game_over_hr(g)){
-		display_game(g);
-		int piece_played = input_piece_played(answer, size, g);
-		printf("Vous avez choisi la piece %d. De combien de cases voulez-vous la bouger ?\n"
-			, piece_played);
-		int distance = input_distance(answer, size, g);
-		move_rh(g, piece_played, distance);
-	}
-
-	display_game(g);
-}
-
-/**
- * @brief same as rush_hour but for an ane_rouge game.
- */
-void ane_rouge(char * answer, int size, game g){
-	if(g==NULL || answer==NULL || size<0){
-		fprintf(stderr, "ane_rouge : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	/**
-	 * tests if the game is valid.
-	 */
-	if(!game_valid(g)){
-		fprintf(stderr, "ane_rouge : game invalid\n");
-		exit(EXIT_FAILURE);
-	}
-
-	/**
-	 * display the rules of the game.
-	 */
-	printf("Ce jeu a ete code par Lucas, Lisa et Clement. \n"
-		"Le but de ce jeu est d'amener la piece 0 en bas du plateau.\n"
-		"Vous pouvez bouger les pieces horizontalement et verticalement.\n"
-		"Essayez de resoudre ce puzzle en un minimum de coups possible !\n\n");
-
-	/**
-	 * while the game isn't over, asks the user what he wants to play.
-	 */
-	while(!game_over_ar(g)){
-		display_game(g);
-		int piece_played = input_piece_played(answer, size, g);
-
-		printf("Vous avez choisi la piece %d. Dans quelle direction voulez-vous la bouger ?\n(UP, DOWN, RIGHT, LEFT)\n"
-			, piece_played);
-		char * s_direction = scan(answer, size);
-		dir direction = input_direction(s_direction, size);
-
-		printf("Et enfin de combien de cases va-t-elle se mouvoir ?\n");
-		int distance = input_distance(answer, size, g);
-		display_success_movement(g, piece_played, distance, direction);
-	}
-
-	display_game(g);
-}
-
 int main(){
 	int size = 30;
 	piece * pieces_test = NULL;
@@ -528,7 +292,7 @@ int main(){
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
 			g = choice_config_rh(pieces_test, choice, answer, size); // initialization of the game.
-			rush_hour(answer, size, g);
+			graphic_game(g);
 		}
 		else{
 			printf("La liste des configurations disponibles est : \n"
@@ -548,7 +312,7 @@ int main(){
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
 			g = choice_config_ar(pieces_test, choice, answer, size); // initialization of the game.
-			ane_rouge(answer, size, g);
+			graphic_game(answer, size, g);
 		}
 		printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
 		delete_game(g);
