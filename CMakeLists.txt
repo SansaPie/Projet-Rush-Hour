@@ -13,11 +13,21 @@ set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 set(NAME_ARCHIVE "A2_ARNEAU_BOUTET_GHIBERT.tar")
 #set(CMAKE_EXE_LINKER_FLAGS "-ftest-coverage -fprofile-arcs")
 
+#tmp sdl
+include(FindPkgConfig)
+
+PKG_SEARCH_MODULE(SDL REQUIRED sdl)
+PKG_SEARCH_MODULE(SDLIMAGE REQUIRED SDL_image)
+
+include_directories(${SDL_INCLUDE_DIRS} ${SDLIMAGE_INCLUDE_DIRS})
+#fin tmp
+
 include_directories(include)
 
 add_subdirectory(src)
 add_subdirectory(src/test)
 add_subdirectory(config)
+add_subdirectory(img)
 
 ENABLE_TESTING()
 add_test(test_game_ar bin/test/test_game_ar "TEST 1")

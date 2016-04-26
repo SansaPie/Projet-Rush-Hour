@@ -7,6 +7,7 @@
 #include "game1.h"
 #include "piece.h"
 #include "piece1.h"
+#include "intGraph.h"
 
 /**
  * @brief function allowing the reading of pieces features from an annexed file.
@@ -47,54 +48,6 @@ piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * 
 	*width = board_width;
 	*height = board_height;
 	return pieces_test;
-}
-
-/**
- * @brief tests if the movement is possible, and if so, execute it.
- * @param piece_played index in the game of the piece we want to move.
- * @param distance : number of cases we want to move the piece.
- * @param d direction of the move.
- */
-void display_success_movement(game g, int piece_played, int distance, dir d){
-	if(g==NULL || piece_played<0 || piece_played>=game_nb_pieces(g)){
-		fprintf(stderr, "display_success_movement : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	if(play_move(g, piece_played, d, abs(distance))){
-		printf("Vous avez bouge la piece %d de %d cases vers ", piece_played, abs(distance));
-		if(d==RIGHT)
-			printf("la droite.\n\n");
-		else if(d==LEFT)
-			printf("la gauche.\n\n");
-		else if(d==UP)
-			printf("le haut.\n\n");
-		else
-			printf("le bas.\n\n");
-	}else
-		printf("Mouvement impossible.\n");
-}
-
-/**
- * @brief moves the piece in the direction and the distance chosen.
- * @param piece_played index in the game of the piece we want to move.
- * @param distance number of cases we want to move the piece.
- */
-void move_rh(game g, int piece_played, int distance){
-	if(g==NULL || piece_played<0 || piece_played>=game_nb_pieces(g)){
-		fprintf(stderr, "move_rh : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	if(distance>0){
-		if(is_horizontal(game_piece(g, piece_played)))
-			display_success_movement(g, piece_played, distance, RIGHT);
-		else
-			display_success_movement(g, piece_played, distance, UP);
-	}else{
-		if(is_horizontal(game_piece(g, piece_played)))
-			display_success_movement(g, piece_played, distance, LEFT);
-		else
-			display_success_movement(g, piece_played, distance, DOWN);
-	}
 }
 
 /**
@@ -256,7 +209,8 @@ int main(){
 	piece * pieces_test = NULL;
 	char * answer = malloc(sizeof(char)*size);
 	char playing_game = 'O';
-
+	char game_type = 'r';
+	
 	/**
 	 * loop allowing the user to play as many game as he wants.
 	 */
@@ -292,7 +246,7 @@ int main(){
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
 			g = choice_config_rh(pieces_test, choice, answer, size); // initialization of the game.
-			graphic_game(g, Rush Hour);
+			game_type = 'r';
 		}
 		else{
 			printf("La liste des configurations disponibles est : \n"
@@ -312,9 +266,13 @@ int main(){
 					printf("Veuillez selectionner un numero de configuration correcte.\n");
 			}
 			g = choice_config_ar(pieces_test, choice, answer, size); // initialization of the game.
-			graphic_game(g, "Ane Rouge");
+			game_type = 'a';
 		}
-		printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
+		graphic_game(g, game_type);
+		if(game_over(g, game_type))
+			printf("\nFelicitations : vous avez battu le jeu en %d coups !\n", g->moves);
+		else
+			printf("\nDommage, peut-etre une prochaine fois.\n");
 		delete_game(g);
 
 		printf("\nSouhaitez-vous rejouer ? (O/N)\n");

@@ -1,16 +1,17 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <SDL/SDL.h> // A modifier avec le makefile
-#include <SDL/SDL_image.h> // Pour IMG_Load
+#include <string.h>
+#include "SDL.h" // A modifier avec le makefile
+#include "SDL_image.h" // Pour IMG_Load
 #include "game.h"
 #include "game1.h"
+#include "piece.h"
+#include "piece1.h"
 
-#define BLOC_SIZE 50// Constante à placer dans un header
-
-// Header à faire
+#define BLOC_SIZE 50
 
 bool game_over(cgame g, char game_type){
-	if(g==NULL || game_type!='a' || game_type!='r'){
+	if(g==NULL || (game_type!='a' && game_type!='r')){
 		fprintf(stderr, "game_over : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
@@ -29,24 +30,12 @@ int is_a_piece(cgame g, int nb){
 	return 0;
 }
 
-void display_game(cgame g, SDL_Surface * screen, char game_type){
-	if(g==NULL || screen == NULL || game_type!='a' || game_type!='r'){
-		fprintf(stderr, "display_game : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	SDL_FillRect(screen, NULL, SDL_MapRGB(ecran->format, 255,255,255));
-	if(game_type=='r')
-		display_game_rh(g, screen);
-	else
-		display_game_ar(g, screen);
-}
-
 void display_game_rh(cgame g, SDL_Surface * screen){
 	if(g==NULL || screen==NULL){
 		fprintf(stderr, "display_game_rh : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
-	SDL_Rect position = NULL;
+	SDL_Rect position;
 
 	SDL_Surface *verticalCar = NULL, *horizontalCar = NULL, *verticalTruck = NULL, *horizontalTruck = NULL, *redCar = NULL, *redArrow = NULL;
 	verticalCar = IMG_Load("../img/verticalCar.png");
@@ -56,9 +45,12 @@ void display_game_rh(cgame g, SDL_Surface * screen){
 	redCar = IMG_Load("../img/redCar.png");
 	redArrow = IMG_Load("../img/redArrowRh.png");
 
+	position.x = 5 * BLOC_SIZE;
+	position.y = 2 * BLOC_SIZE;
+	SDL_BlitSurface(redArrow, NULL, screen, &position);
 	for(int i=0 ; i<game_nb_pieces(g) ; i++){
 		position.x = get_x(game_piece(g, i)) * BLOC_SIZE;
-		position.y = get_y(game_piece(g, i)) * BLOC_SIZE;
+		position.y = (game_height(g)-get_height(game_piece(g, i))-get_y(game_piece(g, i))) * BLOC_SIZE;
 		
 		if(i==0)
 			SDL_BlitSurface(redCar, NULL, screen, &position);
@@ -76,9 +68,6 @@ void display_game_rh(cgame g, SDL_Surface * screen){
 			}
 		}
 	}
-	position.x = 4 * BLOC_SIZE;
-	position.y = 3 * BLOC_SIZE;
-	SDL_BlitSurface(redArrow, NULL, screen, &position);
 }
 
 void display_game_ar(cgame g, SDL_Surface * screen){
@@ -86,7 +75,7 @@ void display_game_ar(cgame g, SDL_Surface * screen){
 		fprintf(stderr, "display_game_ar : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
-	SDL_Rect position = NULL;
+	SDL_Rect position;
 
 	SDL_Surface *square = NULL, *smallPiece = NULL, *largeHorizontalPiece = NULL, *largeVerticalPiece = NULL, *redArrow = NULL;
 	square = IMG_Load("../img/square.png");
@@ -95,9 +84,12 @@ void display_game_ar(cgame g, SDL_Surface * screen){
 	largeVerticalPiece = IMG_Load("../img/largeVerticalPiece.png");
 	redArrow = IMG_Load("../img/redArrowAr.png");
 
+	position.x = BLOC_SIZE;
+	position.y = game_height(g)*BLOC_SIZE;
+	SDL_BlitSurface(redArrow, NULL, screen, &position);
 	for(int i=0 ; i<game_nb_pieces(g) ; i++){
 		position.x = get_x(game_piece(g, i)) * BLOC_SIZE;
-		position.y = get_y(game_piece(g, i)) * BLOC_SIZE;
+		position.y = (game_height(g)-get_height(game_piece(g, i))-get_y(game_piece(g, i))) * BLOC_SIZE;
 		
 		if(i==0)
 			SDL_BlitSurface(square, NULL, screen, &position);
@@ -112,23 +104,32 @@ void display_game_ar(cgame g, SDL_Surface * screen){
 			}
 		}
 	}
-	position.x = BLOC_SIZE;
-	position.y = 0;
-	SDL_BlitSurface(redArrow, NULL, screen, &position);
+}
+
+void display_game(cgame g, SDL_Surface * screen, char game_type){
+	if(g==NULL || screen == NULL || (game_type!='a' && game_type!='r')){
+		fprintf(stderr, "display_game : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
+	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255,255,255));
+	if(game_type=='r')
+		display_game_rh(g, screen);
+	else
+		display_game_ar(g, screen);
 }
 
 void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_type){
-	if(g==NULL || piece_selected<0 || piece_selected>=game_nb_pieces(g) || screen==NULL || game_type!='a' || game_type!='r'){
+	if(g==NULL || piece_selected<0 || piece_selected>=game_nb_pieces(g) || screen==NULL || (game_type!='a' && game_type!='r')){
 		fprintf(stderr, "playing_piece : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
 
 	bool piece_on = true;
-	SDL_Event event = NULL;
+	SDL_Event event;
 	dir d = RIGHT;
 
 	while(!game_over(g, game_type) && piece_on){
-		SDL_WaitEvent()
+		SDL_WaitEvent(&event);
 		switch(event.type){
 			case SDL_QUIT:
 				piece_on = false;
@@ -150,7 +151,7 @@ void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_t
 					case SDLK_DOWN:
 						d = DOWN;
 						break;
-					case SDLK_ENTER:
+					case SDLK_RETURN: // enter key main keyboard
 						piece_on = false;
 						break;
 					default:
@@ -168,14 +169,14 @@ void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_t
 	}
 }
 
-void graphic_game(game g, char * name){
-	if(g==NULL || name == NULL){
+void graphic_game(game g, char game_type){
+	if(g==NULL || (game_type!='a' && game_type!='r')){
 		fprintf(stderr, "graphic_game : parametres incorrects.\n");
 		exit(EXIT_FAILURE);
 	}
 
 	SDL_Surface * screen = NULL;
-	SDL_Event event = NULL;
+	SDL_Event event;
 	bool game_on = true;
 	int piece_selected = 0;
 
@@ -183,9 +184,11 @@ void graphic_game(game g, char * name){
 	// Différents rectangles possibles ...
 	// Faire apparaître / disparaître rectangle ? Changement couleur ?
 
-	char game_type = 'a';
-	if(game_width(g)==6)
-		game_type = 'r';
+	char * name = malloc(10);
+	if(game_type=='a')
+		strcpy(name,"Ane Rouge");
+	else
+		strcpy(name,"Rush Hour");
 
 	if(SDL_Init(SDL_INIT_VIDEO)==-1){
 		fprintf(stderr, "graphic_game : erreur chargement SDL : %s.\n", SDL_GetError());
@@ -193,7 +196,7 @@ void graphic_game(game g, char * name){
 	}
 
 	screen = SDL_SetVideoMode(BLOC_SIZE*game_width(g), BLOC_SIZE*game_height(g), 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-	SDL_SetCaption(name, NULL);
+	SDL_WM_SetCaption(name, NULL);
 
 	while(!game_over(g, game_type) && game_on){
 		SDL_WaitEvent(&event);
@@ -245,7 +248,7 @@ void graphic_game(game g, char * name){
                   	case SDLK_KP9:
                   		piece_selected = is_a_piece(g, 9);
                   		break;
-                    case SDLK_ENTER:
+                    case SDLK_RETURN: // enter key main keyboard
                     	playing_piece(g, piece_selected, screen, game_type);
                     	break;
                     default:
@@ -259,6 +262,7 @@ void graphic_game(game g, char * name){
 		// Blit contour piece_selected
 		SDL_Flip(screen);
 	}
+	free(name);
 	SDL_FreeSurface(screen);
 	SDL_Quit();
 }

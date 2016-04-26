@@ -145,11 +145,7 @@ bool is_horizontal(cpiece p){
 		fprintf(stderr, "is_horizontal : p null\n");
 		exit(EXIT_FAILURE);
 	}
-	if(can_move_x(p) && can_move_y(p)){
-		fprintf(stderr, "is_horizontal : p n'est pas une piece de rush hour\n");
-		exit(EXIT_FAILURE);
-	}
-	return can_move_x(p);
+	return get_height(p)<get_width(p);
 }
 
 bool is_small(cpiece p){
