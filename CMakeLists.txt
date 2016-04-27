@@ -29,14 +29,10 @@ else ( enable_debug )
   set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 endif( enable_debug )
 
-#tmp sdl
 include(FindPkgConfig)
-
 PKG_SEARCH_MODULE(SDL REQUIRED sdl)
 PKG_SEARCH_MODULE(SDLIMAGE REQUIRED SDL_image)
-
 include_directories(${SDL_INCLUDE_DIRS} ${SDLIMAGE_INCLUDE_DIRS})
-#fin tmp
 
 include_directories(include)
 

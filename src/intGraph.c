@@ -236,6 +236,36 @@ void display_game(cgame g, SDL_Surface * screen, char game_type){
 		display_game_ar(g, screen);
 }
 
+void display_rules(cgame g, SDL_Surface * screen, char game_type){
+	if(g==NULL || screen==NULL || (game_type!='a' && game_type!='r')){
+		fprintf(stderr, "display_rules : parametres incorrects.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	SDL_Surface * rules = IMG_Load("../img/rules.png");
+	SDL_Rect position_rules;
+	position_rules.x = (screen.x/2)-(rules.x/2);
+	position_rules.y = (screen.y/2)-(rules.y/2);
+
+	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255,255,255));
+	SDL_BlitSurface(rules, NULL, screen, &position_rules);
+	SDL_Flip(screen);
+
+	bool rules_on = true;
+	while(rules_on){
+		SDL_WaitEvent(&event);
+		switch(event.type){
+			case SDL_Quit:
+				rules_on = false;
+				break;
+			case SDL_KEYDOWN:
+				rules_on = false;
+				break;
+		}
+	}
+	SDL_FreeSurface(rules);
+}
+
 void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_type, SDL_Rect * position_cursor){
 	if(g==NULL || piece_selected<0 || piece_selected>=game_nb_pieces(g) || screen==NULL || (game_type!='a' && game_type!='r')){
 		fprintf(stderr, "playing_piece : parametres incorrects.\n");
@@ -321,6 +351,8 @@ void graphic_game(game g, char game_type){
 	}
 	SDL_WM_SetCaption(name, NULL);
 
+	display_rules(g, screen, game_type);
+
 	while(!game_over(g, game_type) && game_on){
 		SDL_WaitEvent(&event);
 		switch(event.type){
@@ -385,6 +417,9 @@ void graphic_game(game g, char game_type){
                     case SDLK_RETURN: // Enter key on the main keyboard
                     	if(piece_selected!=-1)
                     		playing_piece(g, piece_selected, screen, game_type, &position_cursor);
+                    	break;
+                    case SDLK_I:
+                    	display_rules(g, screen, game_type);
                     	break;
                     default:
                     	break;
