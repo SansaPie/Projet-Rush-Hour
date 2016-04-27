@@ -13,7 +13,7 @@
  * @brief function allowing the reading of pieces features from an annexed file.
  */
 piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * entree){
-	assert(n==NULL || width==NULL || height==NULL);
+	assert(n!=NULL && width!=NULL && height!=NULL);
 	/**
 	 * var used for the lecture of the file.
 	 */
@@ -54,7 +54,7 @@ piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * 
  * @return string written.
  */
 char * scan(char * buffer , int size){
-	assert(buffer==NULL || size<0);
+	assert(buffer!=NULL && size>=0);
 	char * result = fgets(buffer, size, stdin);
 	if (result != NULL){
 		char * lresult = strchr(buffer, '\n');
@@ -72,7 +72,7 @@ char * scan(char * buffer , int size){
  * @brief checks if the string s is a digital number
  */
 bool expected_digit(char * s){
-	assert(s==NULL);
+	assert(s!=NULL);
 	int c = *s;
 	if(c=='\n' || strlen(s)==0)
 		return false;
@@ -89,7 +89,7 @@ bool expected_digit(char * s){
  * @brief asks the user the name of the file he wants to play with.
  */
 char * input_config_user(char * answer, int size){
-	assert(answer==NULL || size<0);
+	assert(answer!=NULL && size>=0);
 	char * config_user = malloc(strlen("../config/"));
 	strcat(config_user, "../config/");	
 	printf("Entrez le nom complet de votre fichier y compris son extension.\n");
@@ -106,7 +106,7 @@ char * input_config_user(char * answer, int size){
  * @param choice choice of the configuration by the user earlier in the program.
  */
 game choice_config_rh(piece * pieces_test, int choice, char * answer, int size){
-	assert(answer==NULL || size<0);
+	assert(!(answer==NULL || size<0));
 	int n, width, height = 0;
 	FILE *entree = NULL;
 	switch(choice){
@@ -155,7 +155,7 @@ game choice_config_rh(piece * pieces_test, int choice, char * answer, int size){
  * @brief same as choice_config_rh but with a game of ane_rouge.
  */
 game choice_config_ar(piece * pieces_test, int choice, char * answer, int size){
-	assert(answer==NULL || size<0);
+	assert(!(answer==NULL || size<0));
 	int n, width, height = 0;
 	FILE *entree = NULL;
 	switch(choice){
@@ -194,7 +194,7 @@ int main(){
 	int size = 30;
 	piece * pieces_test = NULL;
 	char * answer = malloc(size);
-	assert(answer == NULL);
+	assert(answer != NULL);
 	char playing_game = 'O';
 	char game_type = 'r';
 	
