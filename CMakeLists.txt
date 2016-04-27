@@ -6,12 +6,28 @@ set(RUSH_HOUR_VERSION_MAJOR "1")
 set(RUSH_HOUR_VERSION_MINOR "1")
 set(RUSH_HOUR_VERSION_PATCH "2")
 set(RUSH_HOUR_VERSION "${RUSH_HOUR_VERSION_MAJOR}.${RUSH_HOUR_VERSION_MINOR}.${RUSH_HOUR_VERSION_PATCH}")
-
 set(CMAKE_INSTALL_PREFIX ../build)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 set(NAME_ARCHIVE "A2_ARNEAU_BOUTET_GHIBERT.tar")
-#set(CMAKE_EXE_LINKER_FLAGS "-ftest-coverage -fprofile-arcs")
+
+#code coverage
+#set(CMAKE_VERBOSE_MAKEFILE on)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+#code coverage
+
+option(enable_debug "debug option" on)
+ENABLE_TESTING()
+
+if( enable_debug )
+  find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
+  set(CMAKE_C_FLAGS "-std=c99 -g -O0 -fprofile-arcs -ftest-coverage -Wall")
+  set(CMAKE_LD_FLAGS " -fprofile-arcs -ftest-coverage")
+  include(CodeCoverage)
+  include(Dart)
+  setup_target_for_coverage(${PROJECT_NAME}_coverage ctest coverage)
+else ( enable_debug )
+  set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
+endif( enable_debug )
 
 include(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL REQUIRED sdl)
@@ -25,7 +41,6 @@ add_subdirectory(src/test)
 add_subdirectory(config)
 add_subdirectory(img)
 
-ENABLE_TESTING()
 add_test(test_game_ar bin/test/test_game_ar "TEST 1")
 add_test(test_game_rh bin/test/test_game1 "TEST 2")
 add_test(test_piece_rh bin/test/test_piece1 "TEST 3")
