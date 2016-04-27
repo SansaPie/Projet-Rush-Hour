@@ -12,10 +12,7 @@
  * @brief function allowing the reading of pieces features from an annexed file.
  */
 piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * entree){
-	if(n==NULL || width==NULL || height==NULL){
-		fprintf(stderr, "lecture : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(n==NULL || width==NULL || height==NULL);
 	/**
 	 * var used for the lecture of the file.
 	 */
@@ -30,7 +27,7 @@ piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * 
 	int h;		   // height of the piece.
 
 	if(entree == NULL){
-		printf("erreur durant l'ouverture du fichier\n");
+		fprintf(stderr, "erreur durant l'ouverture du fichier\n");
 		exit(EXIT_FAILURE);
 	}
 	fscanf(entree, "%d %d", &board_width, &board_height); // width and height of the game board
@@ -53,21 +50,12 @@ piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * 
  * @brief allocates a char matrix.
  */
 char ** allocation_char_matrix(int width, int height){
-	if(width<0 || height<0){
-		fprintf(stderr, "allocation_char_matrix : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(width<0 || height<0);
 	char ** grid = malloc(sizeof(char*)*width);
-	if(grid==NULL){
-		fprintf(stderr, "allocation_char_matrix : grid null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(grid==NULL);
 	for(int i=0 ; i<width ; i++){
 		grid[i] = malloc(sizeof(char)*height);
-		if(grid[i]==NULL){
-			fprintf(stderr, "allocation_char_matrix : grid[%d] null\n", i);
-			exit(EXIT_FAILURE);
-		}
+		assert(grid[i]==NULL);
 	}
 	return grid;
 }
@@ -76,10 +64,7 @@ char ** allocation_char_matrix(int width, int height){
  * @brief deletes a char matrix.
  */
 void delete_char_matrix(char ** grid, int width){
-	if(grid==NULL || width<0){
-		fprintf(stderr, "delete_char_matrix : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(grid==NULL || width<0);
 	for(int i=0 ; i<width ; i++)
 		free(grid[i]);
 	free(grid);
@@ -137,10 +122,7 @@ void display_game(cgame g){
  * @param d direction of the move.
  */
 void display_success_movement(game g, int piece_played, int distance, dir d){
-	if(g==NULL || piece_played<0 || piece_played>=game_nb_pieces(g)){
-		fprintf(stderr, "display_success_movement : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(g==NULL || piece_played<0 || piece_played>=game_nb_pieces(g));
 	if(play_move(g, piece_played, d, abs(distance))){
 		printf("Vous avez bouge la piece %d de %d cases vers ", piece_played, abs(distance));
 		if(d==RIGHT)
@@ -161,10 +143,7 @@ void display_success_movement(game g, int piece_played, int distance, dir d){
  * @param distance number of cases we want to move the piece.
  */
 void move_rh(game g, int piece_played, int distance){
-	if(g==NULL || piece_played<0 || piece_played>=game_nb_pieces(g)){
-		fprintf(stderr, "move_rh : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(g==NULL || piece_played<0 || piece_played>=game_nb_pieces(g));
 	if(distance>0){
 		if(is_horizontal(game_piece(g, piece_played)))
 			display_success_movement(g, piece_played, distance, RIGHT);
@@ -185,10 +164,7 @@ void move_rh(game g, int piece_played, int distance){
  * @return string written.
  */
 char * scan(char * buffer , int size){
-	if(buffer==NULL || size<0){
-		fprintf(stderr, "scan : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(buffer==NULL || size<0);
 	char * result = fgets(buffer, size, stdin);
 	if (result != NULL){
 		char * lresult = strchr(buffer, '\n');
@@ -206,10 +182,7 @@ char * scan(char * buffer , int size){
  * @brief checks if the string s is a digital number
  */
 bool expected_digit(char * s){
-	if(s==NULL){
-		fprintf(stderr, "expected_digit : s null.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(s==NULL);
 	int c = *s;
 	if(c=='\n' || strlen(s)==0)
 		return false;
@@ -226,10 +199,7 @@ bool expected_digit(char * s){
  * @brief asks the user the name of the file he wants to play with.
  */
 char * input_config_user(char * answer, int size){
-	if(answer==NULL || size<0){
-		fprintf(stderr, "input_config_user : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(answer==NULL || size<0);
 	char * config_user = malloc(strlen("../config/"));
 	strcat(config_user, "../config/");	
 	printf("Entrez le nom complet de votre fichier y compris son extension.\n");
@@ -246,10 +216,7 @@ char * input_config_user(char * answer, int size){
  * @param choice choice of the configuration by the user earlier in the program.
  */
 game choice_config_rh(piece * pieces_test, int choice, char * answer, int size){
-	if(answer==NULL || size<0){
-		fprintf(stderr, "choice_config_rh : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(answer==NULL || size<0);
 	int n, width, height = 0;
 	FILE *entree = NULL;
 	switch(choice){
@@ -298,10 +265,7 @@ game choice_config_rh(piece * pieces_test, int choice, char * answer, int size){
  * @brief same as choice_config_rh but with a game of ane_rouge.
  */
 game choice_config_ar(piece * pieces_test, int choice, char * answer, int size){
-	if(answer==NULL || size<0){
-		fprintf(stderr, "choice_config_ar : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(answer==NULL || size<0);
 	int n, width, height = 0;
 	FILE *entree = NULL;
 	switch(choice){
@@ -340,10 +304,7 @@ game choice_config_ar(piece * pieces_test, int choice, char * answer, int size){
  * @brief asks the user for which piece he wants to play.
  */
 int input_piece_played(char * answer, int size, cgame g){
-	if(g==NULL || answer==NULL || size<0){
-		fprintf(stderr, "input_piece_played : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(g==NULL || answer==NULL || size<0);
 	int piece_played = -1;
 	bool condition = true;
 	while(condition){
@@ -361,10 +322,7 @@ int input_piece_played(char * answer, int size, cgame g){
  * @brief asks the user the distance he wants to move the piece chosen.
  */
 int input_distance(char * answer, int size, cgame g){
-	if(g==NULL || answer==NULL || size<0){
-		fprintf(stderr, "input_distance : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(g==NULL || answer==NULL || size<0);
 	int distance = game_height(g);
 	bool condition = true;
 	while(condition){
@@ -381,10 +339,7 @@ int input_distance(char * answer, int size, cgame g){
  * @brief asks the user in which direction the piece is to be moved.
  */
 dir input_direction(char * direction, int size){
-	if(direction==NULL || size<0){
-		fprintf(stderr, "input_distance : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(direction==NULL || size<0);
 	while(1){
 		if(!strcmp(direction, "RIGHT"))
 			return RIGHT;
@@ -405,17 +360,7 @@ dir input_direction(char * direction, int size){
  * @brief proceeding of a rush-hour game.
  */
 void rush_hour(char * answer, int size, game g){
-	if(g==NULL || answer==NULL || size<0){
-		fprintf(stderr, "rush_hour : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	/**
-	 * tests if the game is valid.
-	 */
-	if(!game_valid(g)){
-		fprintf(stderr, "rush_hour : game invalid\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(g==NULL || answer==NULL || size<0 || !game_valid(g));
 
 	/**
 	 * display the rules of the game.
@@ -449,17 +394,7 @@ void rush_hour(char * answer, int size, game g){
  * @brief same as rush_hour but for an ane_rouge game.
  */
 void ane_rouge(char * answer, int size, game g){
-	if(g==NULL || answer==NULL || size<0){
-		fprintf(stderr, "ane_rouge : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	/**
-	 * tests if the game is valid.
-	 */
-	if(!game_valid(g)){
-		fprintf(stderr, "ane_rouge : game invalid\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(g==NULL || answer==NULL || size<0 || !game_valid(g));
 
 	/**
 	 * display the rules of the game.
@@ -493,10 +428,7 @@ int main(){
 	int size = 30;
 	piece * pieces_test = NULL;
 	char * answer = malloc(sizeof(char)*size);
-	if(answer==NULL){
-		fprintf(stderr, "main : answer null.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(answer==NULL);
 	char playing_game = 'O';
 
 	/**

@@ -13,10 +13,7 @@
  * @brief function allowing the reading of pieces features from an annexed file.
  */
 piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * entree){
-	if(n==NULL || width==NULL || height==NULL){
-		fprintf(stderr, "lecture : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(n==NULL || width==NULL || height==NULL);
 	/**
 	 * var used for the lecture of the file.
 	 */
@@ -31,7 +28,7 @@ piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * 
 	int h;		   // height of the piece.
 
 	if(entree == NULL){
-		printf("erreur durant l'ouverture du fichier\n");
+		fprintf(stderr, "erreur durant l'ouverture du fichier\n");
 		exit(EXIT_FAILURE);
 	}
 	fscanf(entree, "%d %d", &board_width, &board_height); // width and height of the game board
@@ -57,10 +54,7 @@ piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * 
  * @return string written.
  */
 char * scan(char * buffer , int size){
-	if(buffer==NULL || size<0){
-		fprintf(stderr, "scan : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(buffer==NULL || size<0);
 	char * result = fgets(buffer, size, stdin);
 	if (result != NULL){
 		char * lresult = strchr(buffer, '\n');
@@ -78,10 +72,7 @@ char * scan(char * buffer , int size){
  * @brief checks if the string s is a digital number
  */
 bool expected_digit(char * s){
-	if(s==NULL){
-		fprintf(stderr, "expected_digit : s null.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(s==NULL);
 	int c = *s;
 	if(c=='\n' || strlen(s)==0)
 		return false;
@@ -98,10 +89,7 @@ bool expected_digit(char * s){
  * @brief asks the user the name of the file he wants to play with.
  */
 char * input_config_user(char * answer, int size){
-	if(answer==NULL || size<0){
-		fprintf(stderr, "input_config_user : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(answer==NULL || size<0);
 	char * config_user = malloc(strlen("../config/"));
 	strcat(config_user, "../config/");	
 	printf("Entrez le nom complet de votre fichier y compris son extension.\n");
@@ -118,10 +106,7 @@ char * input_config_user(char * answer, int size){
  * @param choice choice of the configuration by the user earlier in the program.
  */
 game choice_config_rh(piece * pieces_test, int choice, char * answer, int size){
-	if(answer==NULL || size<0){
-		fprintf(stderr, "choice_config_rh : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(answer==NULL || size<0);
 	int n, width, height = 0;
 	FILE *entree = NULL;
 	switch(choice){
@@ -170,10 +155,7 @@ game choice_config_rh(piece * pieces_test, int choice, char * answer, int size){
  * @brief same as choice_config_rh but with a game of ane_rouge.
  */
 game choice_config_ar(piece * pieces_test, int choice, char * answer, int size){
-	if(answer==NULL || size<0){
-		fprintf(stderr, "choice_config_ar : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(answer==NULL || size<0);
 	int n, width, height = 0;
 	FILE *entree = NULL;
 	switch(choice){
@@ -212,10 +194,7 @@ int main(){
 	int size = 30;
 	piece * pieces_test = NULL;
 	char * answer = malloc(size);
-	if(answer == NULL){
-		fprintf(stderr, "main : answer null.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(answer == NULL);
 	char playing_game = 'O';
 	char game_type = 'r';
 	

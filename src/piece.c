@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 #include "piece.h"
 #include "piece1.h"
 
@@ -19,19 +20,9 @@ piece new_piece_rh (int x, int y, bool small, bool horizontal){
 }
 
 piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y){
-	if(width<0 || height<0){
-		fprintf(stderr, "new_piece : parametres incorrects.\n");
-		exit(EXIT_FAILURE);
-	}
-	if(x<0 || y<0){
-		fprintf(stderr, "new_piece : hors tableau\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(width<0 || height<0 || x<0 || y<0);
 	piece p = malloc(sizeof(struct piece_s));
-	if(p==NULL){
-		fprintf(stderr, "new_piece : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
 	p->x = x;
 	p->y = y;
 	p->width = width;
@@ -42,19 +33,12 @@ piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y){
 }
 
 void delete_piece (piece p){
-	if(p!=NULL)
-		free(p);
-	else{
-		fprintf(stderr, "delete_piece : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
+	free(p);
 }
 
 void copy_piece (cpiece src, piece dst){
-	if(src==NULL || dst==NULL){
-		fprintf(stderr, "copy_piece : pieces incorrects\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(src==NULL || dst==NULL);
 	dst->x = src->x;
 	dst->y = src->y;
 	dst->width = src->width;
@@ -64,10 +48,7 @@ void copy_piece (cpiece src, piece dst){
 }
 
 void move_piece (piece p, dir d, int distance){
-	if(p==NULL || distance<0){
-		fprintf(stderr, "move_piece : parametres incorrects\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL || distance<0);
 	switch(d){
 		case RIGHT:
 			if(can_move_x(p))
@@ -89,10 +70,7 @@ void move_piece (piece p, dir d, int distance){
 }
 
 bool intersect(cpiece p1, cpiece p2){
-	if (p1==NULL || p2==NULL){
-		fprintf(stderr, "intersect : parametres incorrects\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p1==NULL || p2==NULL);
 
 	for(int i=get_x(p1) ; i<get_x(p1)+get_width(p1) ; i++){
 		for(int j=get_y(p1) ; j<get_y(p1)+get_height(p1) ; j++){
@@ -108,51 +86,33 @@ bool intersect(cpiece p1, cpiece p2){
 }
 
 int get_x(cpiece p){
-	if(p==NULL){
-		fprintf(stderr, "get_x : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
 	return p->x;
 }
 
 
 int get_y(cpiece p){
-	if(p==NULL){
-		fprintf(stderr, "get_y : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
 	return p->y;
 }
 
 int get_height(cpiece p){
-	if (p == NULL){
-		fprintf(stderr, "get_height : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
 	return p->height;
 }
 
 int get_width(cpiece p){
-	if(p==NULL){
-		fprintf(stderr, "get_width : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
 	return p->width;
 }
 
 bool is_horizontal(cpiece p){
-	if(p==NULL){
-		fprintf(stderr, "is_horizontal : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
 	return get_height(p)<get_width(p);
 }
 
 bool is_small(cpiece p){
-	if (p == NULL) {
-		fprintf(stderr, "is_small : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
 	if(get_width(p)>get_height(p))
 		return get_width(p)==2;
 	else
@@ -160,10 +120,7 @@ bool is_small(cpiece p){
 }
 
 bool is_in_board(cpiece p, int width, int height){
-	if(p==NULL){
-		fprintf(stderr, "is_in_board : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
 	if(get_y(p) < 0 || get_x(p) <0)
 		return false;
 
@@ -179,17 +136,11 @@ bool is_in_board(cpiece p, int width, int height){
 }
 
 bool can_move_x(cpiece p){
-	if(p==NULL){
-		fprintf(stderr, "can_move_x : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
 	return p->move_x;
 }
 
 bool can_move_y(cpiece p){
-	if(p==NULL){
-		fprintf(stderr, "can_move_y : p null\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(p==NULL);
 	return p->move_y;
 }
