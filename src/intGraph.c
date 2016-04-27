@@ -56,6 +56,8 @@ void display_piece_hovered(cgame g, SDL_Surface * screen, char game_type, int pi
 			else
 				if(get_width(game_piece(g, piece_hovered))==1 && get_height(game_piece(g, piece_hovered))==1)
 					SDL_BlitSurface(smallPieceHovered, NULL, screen, &position_piece_hovered);
+
+			SDL_FreeSurface(squareHovered);
 		}else{
 			SDL_Surface *verticalTruckHovered = NULL, *horizontalTruckHovered = NULL;
 			verticalTruckHovered = IMG_Load("../img/verticalTruckHovered.png");
@@ -67,6 +69,9 @@ void display_piece_hovered(cgame g, SDL_Surface * screen, char game_type, int pi
 				else
 					SDL_BlitSurface(verticalTruckHovered, NULL, screen, &position_piece_hovered);
 			}
+
+			SDL_FreeSurface(verticalTruckHovered);
+			SDL_FreeSurface(horizontalTruckHovered);
 		}
 		if(is_small(game_piece(g, piece_hovered)) && get_width(game_piece(g, piece_hovered))!=get_height(game_piece(g, piece_hovered))){
 			if(is_horizontal(game_piece(g, piece_hovered)))
@@ -76,7 +81,11 @@ void display_piece_hovered(cgame g, SDL_Surface * screen, char game_type, int pi
 		}
 		position_cursor->x = get_x(game_piece(g, piece_hovered));
 		position_cursor->y = get_y(game_piece(g, piece_hovered));
+
+		SDL_FreeSurface(verticalPieceHovered);
+		SDL_FreeSurface(horizontalPieceHovered);
 	}
+	SDL_FreeSurface(smallPieceHovered);
 }
 
 void display_piece_selected(cgame g, SDL_Surface * screen, char game_type, int piece_selected, SDL_Rect * position_cursor){
@@ -98,6 +107,9 @@ void display_piece_selected(cgame g, SDL_Surface * screen, char game_type, int p
 		else
 			if(get_width(game_piece(g, piece_selected))==1 && get_height(game_piece(g, piece_selected))==1)
 				SDL_BlitSurface(smallPieceSelected, NULL, screen, &position_piece_selected);
+
+		SDL_FreeSurface(squareSelected);
+		SDL_FreeSurface(smallPieceSelected);
 	}else{
 		SDL_Surface *verticalTruckSelected = NULL, *horizontalTruckSelected = NULL;
 		verticalTruckSelected = IMG_Load("../img/verticalTruckSelected.png");
@@ -109,6 +121,9 @@ void display_piece_selected(cgame g, SDL_Surface * screen, char game_type, int p
 			else
 				SDL_BlitSurface(verticalTruckSelected, NULL, screen, &position_piece_selected);
 		}
+
+		SDL_FreeSurface(verticalTruckSelected);
+		SDL_FreeSurface(horizontalTruckSelected);
 	}
 	if(is_small(game_piece(g, piece_selected)) && get_width(game_piece(g, piece_selected))!=get_height(game_piece(g, piece_selected))){
 		if(is_horizontal(game_piece(g, piece_selected)))
@@ -118,6 +133,8 @@ void display_piece_selected(cgame g, SDL_Surface * screen, char game_type, int p
 	}
 	position_cursor->x = get_x(game_piece(g, piece_selected));
 	position_cursor->y = get_y(game_piece(g, piece_selected));
+	SDL_FreeSurface(horizontalPieceSelected);
+	SDL_FreeSurface(verticalPieceSelected);
 }
 
 void display_game_rh(cgame g, SDL_Surface * screen){
@@ -158,6 +175,12 @@ void display_game_rh(cgame g, SDL_Surface * screen){
 			}
 		}
 	}
+	SDL_FreeSurface(verticalCar);
+	SDL_FreeSurface(horizontalCar);
+	SDL_FreeSurface(verticalTruck);
+	SDL_FreeSurface(horizontalTruck);
+	SDL_FreeSurface(redCar);
+	SDL_FreeSurface(redArrow);
 }
 
 void display_game_ar(cgame g, SDL_Surface * screen){
@@ -194,6 +217,11 @@ void display_game_ar(cgame g, SDL_Surface * screen){
 			}
 		}
 	}
+	SDL_FreeSurface(square);
+	SDL_FreeSurface(smallPiece);
+	SDL_FreeSurface(largeHorizontalPiece);
+	SDL_FreeSurface(largeVerticalPiece);
+	SDL_FreeSurface(redArrow);
 }
 
 void display_game(cgame g, SDL_Surface * screen, char game_type){
@@ -227,7 +255,7 @@ void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_t
 			case SDL_KEYDOWN:
 				switch(event.key.keysym.sym){
 					case SDLK_ESCAPE:
-						piece_on = false; // Peut-être une fonctionnalité permettant d'annuler son coup ? Copie de game, lorsqu'on presse échap, on retrouve celle-ci
+						piece_on = false;
 						break;
 					case SDLK_RIGHT:
 						d = RIGHT;
@@ -241,7 +269,7 @@ void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_t
 					case SDLK_DOWN:
 						d = DOWN;
 						break;
-					case SDLK_RETURN: // enter key main keyboard
+					case SDLK_RETURN: // Enter key main keyboard
 						piece_on = false;
 						break;
 					default:
@@ -271,6 +299,12 @@ void graphic_game(game g, char game_type){
 	bool game_on = true;
 	int piece_selected = -1;
 
+	if(SDL_Init(SDL_INIT_VIDEO)==-1){
+		fprintf(stderr, "graphic_game : erreur chargement SDL : %s.\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
+	IMG_Init(IMG_INIT_PNG);
+
 	position_cursor.x = 0;
 	position_cursor.y = 0;
 
@@ -280,12 +314,11 @@ void graphic_game(game g, char game_type){
 	else
 		strcpy(name,"Rush Hour");
 
-	if(SDL_Init(SDL_INIT_VIDEO)==-1){
-		fprintf(stderr, "graphic_game : erreur chargement SDL : %s.\n", SDL_GetError());
+	screen = SDL_SetVideoMode(BLOC_SIZE*game_width(g), BLOC_SIZE*game_height(g), 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	if(screen==NULL){
+		fprintf(stderr, "graphic_game : screen null.\n");
 		exit(EXIT_FAILURE);
 	}
-
-	screen = SDL_SetVideoMode(BLOC_SIZE*game_width(g), BLOC_SIZE*game_height(g), 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 	SDL_WM_SetCaption(name, NULL);
 
 	while(!game_over(g, game_type) && game_on){
@@ -349,7 +382,7 @@ void graphic_game(game g, char game_type){
                   	case SDLK_KP9:
                   		is_a_piece(g, &piece_selected, 9);
                   		break;
-                    case SDLK_RETURN: // enter key main keyboard
+                    case SDLK_RETURN: // Enter key on the main keyboard
                     	if(piece_selected!=-1)
                     		playing_piece(g, piece_selected, screen, game_type, &position_cursor);
                     	break;
@@ -367,5 +400,6 @@ void graphic_game(game g, char game_type){
 	}
 	free(name);
 	SDL_FreeSurface(screen);
+	IMG_Quit();
 	SDL_Quit();
 }
