@@ -332,6 +332,7 @@ void graphic_game(game g, char game_type){
 	SDL_Event event;
 	SDL_Rect position_cursor;
 	bool game_on = true;
+	bool cursor_moved = true;
 	int piece_selected = -1;
 
 	if(SDL_Init(SDL_INIT_VIDEO)==-1){
@@ -370,22 +371,26 @@ void graphic_game(game g, char game_type){
                         game_on = false;
                         break;
                     case SDLK_RIGHT:
+                    	cursor_moved = true;
                     	if(piece_selected==-1 && position_cursor.x+1<game_width(g))
                     		position_cursor.x ++;
                     	else if(piece_selected!=-1 && position_cursor.x+get_width(game_piece(g, piece_selected))<game_width(g))
                     		position_cursor.x += get_width(game_piece(g, piece_selected));
                     	break;
                     case SDLK_LEFT:
+                    	cursor_moved = true;
                     	if(position_cursor.x-1>=0)
                     		position_cursor.x --;
                         break;
                     case SDLK_UP:
+                    	cursor_moved = true;
                     	if(piece_selected==-1 && position_cursor.y+1<game_height(g))
                     		position_cursor.y ++;
                     	else if (piece_selected!=-1 && position_cursor.y+get_height(game_piece(g, piece_selected))<game_height(g))
                     		position_cursor.y += get_height(game_piece(g, piece_selected));
                     	break;
                   	case SDLK_DOWN:
+                    	cursor_moved = true;
                   		if(position_cursor.y-1>=0)
                   			position_cursor.y --;
                   		break;
@@ -433,7 +438,10 @@ void graphic_game(game g, char game_type){
             default:
             	break;
 		}
-		piece_selected = game_square_piece(g, position_cursor.x, position_cursor.y);
+		if(cursor_moved){
+			piece_selected = game_square_piece(g, position_cursor.x, position_cursor.y);
+			cursor_moved=false;
+		}
 		display_game(g, screen, game_type);
 		display_piece_hovered(g, screen, game_type, piece_selected, &position_cursor);
 		SDL_Flip(screen);
