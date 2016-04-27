@@ -216,7 +216,7 @@ void display_game_ar(cgame g, SDL_Surface * screen){
 }
 
 void display_game(cgame g, SDL_Surface * screen, char game_type){
-	assert(g==NULL || screen == NULL || (game_type!='a' && game_type!='r')){;
+	assert(g==NULL || screen == NULL || (game_type!='a' && game_type!='r'));
 	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255,255,255));
 	if(game_type=='r')
 		display_game_rh(g, screen);
