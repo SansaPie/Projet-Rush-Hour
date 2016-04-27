@@ -244,22 +244,25 @@ void display_rules(cgame g, SDL_Surface * screen, char game_type){
 
 	SDL_Surface * rules = IMG_Load("../img/rules.png");
 	SDL_Rect position_rules;
-	position_rules.x = (screen.x/2)-(rules.x/2);
-	position_rules.y = (screen.y/2)-(rules.y/2);
+	position_rules.x = (screen->w/2)-(rules->w/2);
+	position_rules.y = (screen->h/2)-(rules->h/2);
 
 	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255,255,255));
 	SDL_BlitSurface(rules, NULL, screen, &position_rules);
 	SDL_Flip(screen);
 
+	SDL_Event event;
 	bool rules_on = true;
 	while(rules_on){
 		SDL_WaitEvent(&event);
 		switch(event.type){
-			case SDL_Quit:
+			case SDL_QUIT:
 				rules_on = false;
 				break;
 			case SDL_KEYDOWN:
 				rules_on = false;
+				break;
+			default:
 				break;
 		}
 	}
@@ -302,6 +305,8 @@ void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_t
 					case SDLK_RETURN: // Enter key main keyboard
 						piece_on = false;
 						break;
+					case SDLK_i:
+						display_rules(g, screen, game_type);
 					default:
 						break;
 				}
@@ -418,7 +423,7 @@ void graphic_game(game g, char game_type){
                     	if(piece_selected!=-1)
                     		playing_piece(g, piece_selected, screen, game_type, &position_cursor);
                     	break;
-                    case SDLK_I:
+                    case SDLK_i:
                     	display_rules(g, screen, game_type);
                     	break;
                     default:
