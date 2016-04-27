@@ -242,14 +242,13 @@ void display_rules(cgame g, SDL_Surface * screen, char game_type){
 		exit(EXIT_FAILURE);
 	}
 
-	SDL_Surface * rules = NULL;
-	if(game_type=='a')
-		rules = IMG_Load("../img/rules_ar.png");
-	else
-		rules = IMG_Load("../img/rules_rh.png");
+	SDL_Surface * rules = IMG_Load("../img/rules.png");
+	SDL_Rect position_rules;
+	position_rules.x = (screen.x/2)-(rules.x/2);
+	position_rules.y = (screen.y/2)-(rules.y/2);
 
 	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255,255,255));
-	SDL_BlitSurface(rules, NULL, screen, NULL);
+	SDL_BlitSurface(rules, NULL, screen, &position_rules);
 	SDL_Flip(screen);
 
 	bool rules_on = true;
