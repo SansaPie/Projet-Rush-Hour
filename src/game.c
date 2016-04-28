@@ -9,7 +9,7 @@
 #define ERR_PIECE -1 
 
 piece * allocation_piece_tab(int nb_pieces, char * msg){
-	assert(nb_pieces<0 || msg ==NULL);
+	assert(!(nb_pieces<0 || msg ==NULL));
 	piece * pieces = malloc(sizeof(piece)*nb_pieces);
 	if(pieces == NULL){
 		fprintf(stderr, "%s : pieces non alloue\n", msg);
@@ -23,10 +23,10 @@ game new_game_hr (int nb_pieces, piece *pieces){
 }
 
 game new_game(int width, int height, int nb_pieces, piece *pieces){
-	assert(width<0 || height<0 || nb_pieces<0 || pieces==NULL);
+	assert(!(width<0 || height<0 || nb_pieces<0 || pieces==NULL));
 
 	game g = malloc(sizeof(struct game_s));
-	assert(g==NULL);
+	assert(g!=NULL);
 	g->nb_pieces = nb_pieces;
 	g->pieces = allocation_piece_tab(nb_pieces, "new_game");
 	for(int i=0 ; i<nb_pieces ; i++){
@@ -36,12 +36,12 @@ game new_game(int width, int height, int nb_pieces, piece *pieces){
 	g->moves = 0;
 	g->width = width;
 	g->height = height;
-	assert(!game_valid(g));
+	assert(game_valid(g));
 	return g;
 }
 
 void delete_pieces(int nb_pieces, piece * pieces){
-	assert(nb_pieces<0 || pieces == NULL);
+	assert(!(nb_pieces<0 || pieces == NULL));
 	for(int i=0 ; i<nb_pieces ; i++){
 		delete_piece(pieces[i]);		
 	}
@@ -49,13 +49,13 @@ void delete_pieces(int nb_pieces, piece * pieces){
 }
 
 void delete_game(game g){
-	assert(g==NULL);
+	assert(g!=NULL);
 	delete_pieces(game_nb_pieces(g), g->pieces);
 	free(g);
 }
 
 void copy_game (cgame src, game dst){
-	assert(src==NULL || dst==NULL);
+	assert(!(src==NULL || dst==NULL));
 
 	delete_pieces(game_nb_pieces(dst), dst->pieces);
 	
@@ -72,24 +72,24 @@ void copy_game (cgame src, game dst){
 }
 
 int game_nb_pieces(cgame g){
-	assert(g==NULL);
+	assert(g!=NULL);
 	return g->nb_pieces;
 }
 
 cpiece game_piece(cgame g, int piece_num){
-	assert(g==NULL || (piece_num<0 && piece_num>game_nb_pieces(g)));
+	assert(!(g==NULL || (piece_num<0 && piece_num>game_nb_pieces(g))));
 	return g->pieces[piece_num];
 }
 
 bool game_over_hr(cgame g){
-	assert(g==NULL);
+	assert(g!=NULL);
 	if(get_x(game_piece(g, 0)) == 4 && get_y(game_piece(g,0)) == 3)
 		return true;
 	return false;
 }
 
 bool game_over_ar(cgame g){
-	assert(g==NULL);
+	assert(g!=NULL);
 	if (get_x(game_piece(g, 0)) == 1 && get_y(game_piece(g, 0)) == 0)
 		return true;
 	return false;
@@ -97,7 +97,7 @@ bool game_over_ar(cgame g){
 
 
 bool play_move(game g, int piece_num, dir d, int distance){ 
-	assert(g == NULL || piece_num >= game_nb_pieces(g) || piece_num <0);
+	assert(!(g == NULL || piece_num >= game_nb_pieces(g) || piece_num <0));
 
 	piece * t_pieces = NULL;
 	t_pieces = allocation_piece_tab(1, "play_move");
@@ -125,12 +125,12 @@ bool play_move(game g, int piece_num, dir d, int distance){
 }
 
 int game_nb_moves(cgame g){
-	assert(g==NULL);
+	assert(g!=NULL);
 	return g->moves;
 }
 
 bool game_valid(cgame g){
-	assert(g==NULL);
+	assert(g!=NULL);
 	for(int i=0 ; i<game_nb_pieces(g) ; i++)
 		if(!is_in_board(game_piece(g,i), game_width(g), game_height(g)))
 			return false;
@@ -143,17 +143,17 @@ bool game_valid(cgame g){
 }
 
 int game_width(cgame g){
-	assert(g==NULL);
+	assert(g!=NULL);
 	return g->width;
 }
 
 int game_height(cgame g){
-	assert(g==NULL);
+	assert(g!=NULL);
 	return g->height;
 }
 
 int game_square_piece(game g, int x, int y){
-	assert(g==NULL || x<0 || x>game_width(g) || y<0 || y>game_height(g));
+	assert(!(g==NULL || x<0 || x>game_width(g) || y<0 || y>game_height(g)));
 
 	for (int i = 0; i < game_nb_pieces(g); i++){
 		for(int j=0 ; j<get_width(game_piece(g, i)) ; j++)

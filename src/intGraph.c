@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include "SDL.h" // A modifier avec le makefile
-#include "SDL_image.h" // Pour IMG_Load
+#include "SDL.h"
+#include "SDL_image.h"
 #include "game.h"
 #include "game1.h"
 #include "piece.h"
@@ -12,20 +12,20 @@
 #define BLOC_SIZE 75
 
 bool game_over(cgame g, char game_type){
-	assert(g==NULL || (game_type!='a' && game_type!='r'));
+	assert(!(g==NULL || (game_type!='a' && game_type!='r')));
 	if(game_type=='r')
 		return game_over_hr(g);
 	return game_over_ar(g);
 }
 
 void is_a_piece(cgame g, int * piece_selected, int nb){
-	assert(g==NULL || piece_selected==NULL || nb<0);
+	assert(!(g==NULL || piece_selected==NULL || nb<0));
 	if(nb<game_nb_pieces(g))
 		*piece_selected = nb;
 }
 
 void display_piece_hovered(cgame g, SDL_Surface * screen, char game_type, int piece_hovered, SDL_Rect * position_cursor){
-	assert(g==NULL || screen ==NULL || (game_type!='r' && game_type!='a') || position_cursor==NULL);
+	assert(!(g==NULL || screen ==NULL || (game_type!='r' && game_type!='a') || position_cursor==NULL));
 	SDL_Surface *smallPieceHovered = NULL;
 	smallPieceHovered = IMG_Load("../img/smallPieceHovered.png");
 	if(piece_hovered==-1){
@@ -85,7 +85,7 @@ void display_piece_hovered(cgame g, SDL_Surface * screen, char game_type, int pi
 }
 
 void display_piece_selected(cgame g, SDL_Surface * screen, char game_type, int piece_selected, SDL_Rect * position_cursor){
-	assert(g==NULL || screen ==NULL || (game_type!='r' && game_type!='a') || position_cursor==NULL);
+	assert(!(g==NULL || screen ==NULL || (game_type!='r' && game_type!='a') || position_cursor==NULL));
 	SDL_Rect position_piece_selected;
 	position_piece_selected.x = get_x(game_piece(g, piece_selected)) * BLOC_SIZE;
 	position_piece_selected.y = (game_height(g)-get_height(game_piece(g, piece_selected))-get_y(game_piece(g, piece_selected))) * BLOC_SIZE;
@@ -135,7 +135,7 @@ void display_piece_selected(cgame g, SDL_Surface * screen, char game_type, int p
 }
 
 void display_game_rh(cgame g, SDL_Surface * screen){
-	assert(g==NULL || screen==NULL);
+	assert(!(g==NULL || screen==NULL));
 	SDL_Rect position;
 
 	SDL_Surface *verticalCar = NULL, *horizontalCar = NULL, *verticalTruck = NULL, *horizontalTruck = NULL, *redCar = NULL, *redArrow = NULL;
@@ -178,7 +178,7 @@ void display_game_rh(cgame g, SDL_Surface * screen){
 }
 
 void display_game_ar(cgame g, SDL_Surface * screen){
-	assert(g==NULL || screen==NULL);
+	assert(!(g==NULL || screen==NULL));
 	SDL_Rect position;
 
 	SDL_Surface *square = NULL, *smallPiece = NULL, *largeHorizontalPiece = NULL, *largeVerticalPiece = NULL, *redArrow = NULL;
@@ -216,7 +216,7 @@ void display_game_ar(cgame g, SDL_Surface * screen){
 }
 
 void display_game(cgame g, SDL_Surface * screen, char game_type){
-	assert(g==NULL || screen == NULL || (game_type!='a' && game_type!='r')){;
+	assert(!(g==NULL || screen == NULL || (game_type!='a' && game_type!='r')));
 	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255,255,255));
 	if(game_type=='r')
 		display_game_rh(g, screen);
@@ -225,7 +225,7 @@ void display_game(cgame g, SDL_Surface * screen, char game_type){
 }
 
 void display_rules(cgame g, SDL_Surface * screen, char game_type){
-	assert(g==NULL || screen==NULL || (game_type!='a' && game_type!='r'));
+	assert(!(g==NULL || screen==NULL || (game_type!='a' && game_type!='r')));
 
 	SDL_Surface * rules = IMG_Load("../img/rules.png");
 	SDL_Rect position_rules;
@@ -255,7 +255,7 @@ void display_rules(cgame g, SDL_Surface * screen, char game_type){
 }
 
 void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_type, SDL_Rect * position_cursor){
-	assert(g==NULL || piece_selected<0 || piece_selected>=game_nb_pieces(g) || screen==NULL || (game_type!='a' && game_type!='r'));
+	assert(!(g==NULL || piece_selected<0 || piece_selected>=game_nb_pieces(g) || screen==NULL || (game_type!='a' && game_type!='r')));
 
 	bool piece_on = true;
 	SDL_Event event;
@@ -305,7 +305,7 @@ void playing_piece(game g, int piece_selected, SDL_Surface * screen, char game_t
 }
 
 void graphic_game(game g, char game_type){
-	assert(g==NULL || (game_type!='a' && game_type!='r'));
+	assert(!(g==NULL || (game_type!='a' && game_type!='r')));
 
 	SDL_Surface * screen = NULL;
 	SDL_Event event;
@@ -330,7 +330,7 @@ void graphic_game(game g, char game_type){
 		strcpy(name,"Rush Hour");
 
 	screen = SDL_SetVideoMode(BLOC_SIZE*game_width(g), BLOC_SIZE*game_height(g), 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-	assert(screen==NULL);
+	assert(screen!=NULL);
 	SDL_WM_SetCaption(name, NULL);
 
 	display_rules(g, screen, game_type);
