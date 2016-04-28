@@ -1,0 +1,41 @@
+\hypertarget{structgame__s}{}\section{game\+\_\+s Struct Reference}
+\label{structgame__s}\index{game\+\_\+s@{game\+\_\+s}}
+
+
+The state of the game is described by the position of the pieces (i.\+e. vehicles) on the board and the number of moves since the beginning of the game.  
+
+
+
+
+{\ttfamily \#include $<$game.\+h$>$}
+
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+int {\bfseries nb\+\_\+pieces}\hypertarget{structgame__s_aa8b2314c65c18bbfb755a8241c6171c4}{}\label{structgame__s_aa8b2314c65c18bbfb755a8241c6171c4}
+
+\item 
+\hyperlink{structpiece__s}{piece} $\ast$ {\bfseries pieces}\hypertarget{structgame__s_a89abd692d28dfc7f68a3037e20846c02}{}\label{structgame__s_a89abd692d28dfc7f68a3037e20846c02}
+
+\item 
+int {\bfseries moves}\hypertarget{structgame__s_a750943ec425a1b8104d0ed4a6f4073d3}{}\label{structgame__s_a750943ec425a1b8104d0ed4a6f4073d3}
+
+\item 
+int {\bfseries width}\hypertarget{structgame__s_a2474a5474cbff19523a51eb1de01cda4}{}\label{structgame__s_a2474a5474cbff19523a51eb1de01cda4}
+
+\item 
+int {\bfseries height}\hypertarget{structgame__s_ad12fc34ce789bce6c8a05d8a17138534}{}\label{structgame__s_ad12fc34ce789bce6c8a05d8a17138534}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The state of the game is described by the position of the pieces (i.\+e. vehicles) on the board and the number of moves since the beginning of the game. 
+
+The game board is a 6$\ast$6 grid. The lower left corner has coordinates (0,0). The piece number 0 represents the \char`\"{}red car\char`\"{} that needs to be moved away from the parking. Its initial position is (0,3). A winning game (state) is when the red car touches the right border of the game board (i.\+e. when its position is (4,3)).
+
+cgame is a pointer toward a constant game. That means that it is not possible to modify the game thanks to this pointer. See also\+: \href{http://www.geeksforgeeks.org/const-qualifier-in-c/}{\tt http\+://www.\+geeksforgeeks.\+org/const-\/qualifier-\/in-\/c/} See also this more technical discussion\+: \href{http://stackoverflow.com/questions/8504411/typedef-pointer-const-weirdness}{\tt http\+://stackoverflow.\+com/questions/8504411/typedef-\/pointer-\/const-\/weirdness} 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{game_8h}{game.\+h}\end{DoxyCompactItemize}
