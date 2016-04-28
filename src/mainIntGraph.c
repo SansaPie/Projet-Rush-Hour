@@ -90,8 +90,9 @@ bool expected_digit(char * s){
  */
 char * input_config_user(char * answer, int size){
 	assert(answer!=NULL && size>=0);
-	char * config_user = malloc(strlen("../config/"));
-	strcat(config_user, "../config/");	
+	char * config_user = NULL;
+	config_user = malloc(strlen("../config/"));
+	strcpy(config_user, "../config/");	
 	printf("Entrez le nom complet de votre fichier y compris son extension.\n");
 	answer = scan(answer, size);
 	config_user = realloc(config_user, strlen(config_user)+strlen(answer));
