@@ -76,10 +76,7 @@ void delete_char_matrix(char ** grid, int width){
  * 
  */
 void display_game(cgame g){
-	if(g!=NULL){
-		fprintf(stderr, "display_game : g null.\n");
-		exit(EXIT_FAILURE);
-	}
+	assert(g!=NULL);
 	/* 
 	 * creation of a char matrix representing our game's board.
 	 */
