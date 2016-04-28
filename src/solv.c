@@ -1,28 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include "game.h"
 #include "game1.h"
 #include "piece.h"
+#include "solv.h"
 
 #define NB_PIECES 2
 #define SIZE_TAS 15
 #define INIT_INDEX_TAS 0
 
-typedef struct Maillon{
-	game gameG;
-	struct Maillon *next;
-}*maillon;
-
-typedef struct File{
-	maillon premier;
-}*file;
-
-typedef struct Tas{
-	int capacite;
-	int index;
-	game *tab;
-}*tas;
 
 void usage(char * commande){
 	fprintf(stderr, "usage : %s \npremier argument : char 'a' ou 'r' \nsecond argument : char * (fichier .txt)\n"
@@ -30,9 +18,6 @@ void usage(char * commande){
 	exit(EXIT_FAILURE);
 }
 
-/**
- * @brief function allowing the reading of pieces features from an annexed file.
- */
 piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * entree){
 	if(n==NULL || width==NULL || height==NULL){
 		fprintf(stderr, "lecture : parametres incorrects.\n");
