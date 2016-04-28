@@ -1,0 +1,224 @@
+\hypertarget{game_8h}{}\section{include/game.h File Reference}
+\label{game_8h}\index{include/game.\+h@{include/game.\+h}}
+
+
+This file describes the board of a rush-\/our game, the state of a game and all functions needed to manipulate it.  
+
+
+{\ttfamily \#include $<$stdbool.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}piece.\+h\char`\"{}}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structgame__s}{game\+\_\+s}
+\begin{DoxyCompactList}\small\item\em The state of the game is described by the position of the pieces (i.\+e. vehicles) on the board and the number of moves since the beginning of the game. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structgame__s}{game\+\_\+s} $\ast$ {\bfseries game}\hypertarget{game_8h_aa9ad922c443aa18d14949301b96c453c}{}\label{game_8h_aa9ad922c443aa18d14949301b96c453c}
+
+\item 
+typedef const struct \hyperlink{structgame__s}{game\+\_\+s} $\ast$ {\bfseries cgame}\hypertarget{game_8h_aa593d9745d861794dde8f808e750457b}{}\label{game_8h_aa593d9745d861794dde8f808e750457b}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structgame__s}{game} \hyperlink{game_8h_af940f80ca2e7ea78c671bacac5faf5fd}{new\+\_\+game\+\_\+hr} (int nb\+\_\+pieces, \hyperlink{structpiece__s}{piece} $\ast$pieces)
+\begin{DoxyCompactList}\small\item\em Creates a new game given a starting position defined by a set of pieces. The pieces of the created game are copies of the ones given as argument. The number of moves of the game is set to 0. \end{DoxyCompactList}\item 
+void \hyperlink{game_8h_a46eb61834d6cd2ff48d3c0ddaa2d9e91}{delete\+\_\+game} (\hyperlink{structgame__s}{game} g)
+\begin{DoxyCompactList}\small\item\em Destroys the game and free allocated memory. \end{DoxyCompactList}\item 
+void \hyperlink{game_8h_a8e05e660605fad74be567a36a6775c6d}{copy\+\_\+game} (\hyperlink{structgame__s}{cgame} src, \hyperlink{structgame__s}{game} dst)
+\begin{DoxyCompactList}\small\item\em Clone the game dst into the game dst. \end{DoxyCompactList}\item 
+int \hyperlink{game_8h_a866579ef70222861f622b41c0625ec75}{game\+\_\+nb\+\_\+pieces} (\hyperlink{structgame__s}{cgame} g)\hypertarget{game_8h_a866579ef70222861f622b41c0625ec75}{}\label{game_8h_a866579ef70222861f622b41c0625ec75}
+
+\begin{DoxyCompactList}\small\item\em Return the number of pieces on the game board g. \end{DoxyCompactList}\item 
+\hyperlink{structpiece__s}{cpiece} \hyperlink{game_8h_afa0b7903e807dd56c08b5b99a4302450}{game\+\_\+piece} (\hyperlink{structgame__s}{cgame} g, int piece\+\_\+num)
+\begin{DoxyCompactList}\small\item\em Return the piece of g with number bum. \end{DoxyCompactList}\item 
+bool \hyperlink{game_8h_a80768a76295a641bb53d8941133b15b6}{game\+\_\+over\+\_\+hr} (\hyperlink{structgame__s}{cgame} g)
+\begin{DoxyCompactList}\small\item\em Tests if the game is over (i.\+e. if the piece 0 has reached the exit). \end{DoxyCompactList}\item 
+bool \hyperlink{game_8h_a10a25eb8a5523f674cdc5f7fe219804b}{play\+\_\+move} (\hyperlink{structgame__s}{game} g, int piece\+\_\+num, dir d, int distance)
+\begin{DoxyCompactList}\small\item\em Tries to move the piece of number piece\+\_\+num in direction d for distance cells. \end{DoxyCompactList}\item 
+int \hyperlink{game_8h_ab893822a447c1c9173dc3fb44c0c8ba4}{game\+\_\+nb\+\_\+moves} (\hyperlink{structgame__s}{cgame} g)\hypertarget{game_8h_ab893822a447c1c9173dc3fb44c0c8ba4}{}\label{game_8h_ab893822a447c1c9173dc3fb44c0c8ba4}
+
+\begin{DoxyCompactList}\small\item\em Returns the number of moves this the beginning of the game g. Remind that move of a single piece of k cells in a single direction counts for k. \end{DoxyCompactList}\item 
+\hyperlink{structgame__s}{game} \hyperlink{game_8h_af3b2914d6023cc0bcd449dbb633182b1}{new\+\_\+game} (int width, int height, int nb\+\_\+pieces, \hyperlink{structpiece__s}{piece} $\ast$pieces)
+\begin{DoxyCompactList}\small\item\em Creates a new game the same way that new\+\_\+game\+\_\+hr but with a changeable size of board. \end{DoxyCompactList}\item 
+int \hyperlink{game_8h_a115b94e30832cb465b506c66924b5a00}{game\+\_\+width} (\hyperlink{structgame__s}{cgame} g)\hypertarget{game_8h_a115b94e30832cb465b506c66924b5a00}{}\label{game_8h_a115b94e30832cb465b506c66924b5a00}
+
+\begin{DoxyCompactList}\small\item\em returns the width of the grid. \end{DoxyCompactList}\item 
+int \hyperlink{game_8h_a24b12e1e4f28d63e7a3904ab35760bed}{game\+\_\+height} (\hyperlink{structgame__s}{cgame} g)\hypertarget{game_8h_a24b12e1e4f28d63e7a3904ab35760bed}{}\label{game_8h_a24b12e1e4f28d63e7a3904ab35760bed}
+
+\begin{DoxyCompactList}\small\item\em returns the height of the grid. \end{DoxyCompactList}\item 
+int \hyperlink{game_8h_a83b470e7b2e63b08d8cf9ffec8519e64}{game\+\_\+square\+\_\+piece} (\hyperlink{structgame__s}{game} g, int x, int y)
+\begin{DoxyCompactList}\small\item\em returns the number of the piece located on this square (-\/1 if no piece is present). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file describes the board of a rush-\/our game, the state of a game and all functions needed to manipulate it. 
+
+
+
+\subsection{Function Documentation}
+\index{game.\+h@{game.\+h}!copy\+\_\+game@{copy\+\_\+game}}
+\index{copy\+\_\+game@{copy\+\_\+game}!game.\+h@{game.\+h}}
+\subsubsection[{\texorpdfstring{copy\+\_\+game(cgame src, game dst)}{copy_game(cgame src, game dst)}}]{\setlength{\rightskip}{0pt plus 5cm}void copy\+\_\+game (
+\begin{DoxyParamCaption}
+\item[{{\bf cgame}}]{src, }
+\item[{{\bf game}}]{dst}
+\end{DoxyParamCaption}
+)}\hypertarget{game_8h_a8e05e660605fad74be567a36a6775c6d}{}\label{game_8h_a8e05e660605fad74be567a36a6775c6d}
+
+
+Clone the game dst into the game dst. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & the game to copy. \\
+\hline
+{\em dst} & the copied game. \\
+\hline
+\end{DoxyParams}
+\index{game.\+h@{game.\+h}!delete\+\_\+game@{delete\+\_\+game}}
+\index{delete\+\_\+game@{delete\+\_\+game}!game.\+h@{game.\+h}}
+\subsubsection[{\texorpdfstring{delete\+\_\+game(game g)}{delete_game(game g)}}]{\setlength{\rightskip}{0pt plus 5cm}void delete\+\_\+game (
+\begin{DoxyParamCaption}
+\item[{{\bf game}}]{g}
+\end{DoxyParamCaption}
+)}\hypertarget{game_8h_a46eb61834d6cd2ff48d3c0ddaa2d9e91}{}\label{game_8h_a46eb61834d6cd2ff48d3c0ddaa2d9e91}
+
+
+Destroys the game and free allocated memory. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & the game to destroy. \\
+\hline
+\end{DoxyParams}
+\index{game.\+h@{game.\+h}!game\+\_\+over\+\_\+hr@{game\+\_\+over\+\_\+hr}}
+\index{game\+\_\+over\+\_\+hr@{game\+\_\+over\+\_\+hr}!game.\+h@{game.\+h}}
+\subsubsection[{\texorpdfstring{game\+\_\+over\+\_\+hr(cgame g)}{game_over_hr(cgame g)}}]{\setlength{\rightskip}{0pt plus 5cm}bool game\+\_\+over\+\_\+hr (
+\begin{DoxyParamCaption}
+\item[{{\bf cgame}}]{g}
+\end{DoxyParamCaption}
+)}\hypertarget{game_8h_a80768a76295a641bb53d8941133b15b6}{}\label{game_8h_a80768a76295a641bb53d8941133b15b6}
+
+
+Tests if the game is over (i.\+e. if the piece 0 has reached the exit). 
+
+\begin{DoxyReturn}{Returns}
+true if the piece number 0 has coordinates (4,3) 
+\end{DoxyReturn}
+\index{game.\+h@{game.\+h}!game\+\_\+piece@{game\+\_\+piece}}
+\index{game\+\_\+piece@{game\+\_\+piece}!game.\+h@{game.\+h}}
+\subsubsection[{\texorpdfstring{game\+\_\+piece(cgame g, int piece\+\_\+num)}{game_piece(cgame g, int piece_num)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf cpiece} game\+\_\+piece (
+\begin{DoxyParamCaption}
+\item[{{\bf cgame}}]{g, }
+\item[{int}]{piece\+\_\+num}
+\end{DoxyParamCaption}
+)}\hypertarget{game_8h_afa0b7903e807dd56c08b5b99a4302450}{}\label{game_8h_afa0b7903e807dd56c08b5b99a4302450}
+
+
+Return the piece of g with number bum. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em piece\+\_\+num} & the num of the piece. This value must be between 0 and game\+\_\+nb\+\_\+pieces(g)-\/1. \\
+\hline
+\end{DoxyParams}
+\index{game.\+h@{game.\+h}!game\+\_\+square\+\_\+piece@{game\+\_\+square\+\_\+piece}}
+\index{game\+\_\+square\+\_\+piece@{game\+\_\+square\+\_\+piece}!game.\+h@{game.\+h}}
+\subsubsection[{\texorpdfstring{game\+\_\+square\+\_\+piece(game g, int x, int y)}{game_square_piece(game g, int x, int y)}}]{\setlength{\rightskip}{0pt plus 5cm}int game\+\_\+square\+\_\+piece (
+\begin{DoxyParamCaption}
+\item[{{\bf game}}]{g, }
+\item[{int}]{x, }
+\item[{int}]{y}
+\end{DoxyParamCaption}
+)}\hypertarget{game_8h_a83b470e7b2e63b08d8cf9ffec8519e64}{}\label{game_8h_a83b470e7b2e63b08d8cf9ffec8519e64}
+
+
+returns the number of the piece located on this square (-\/1 if no piece is present). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em game.} & \\
+\hline
+{\em x-\/coor} & of the square. \\
+\hline
+{\em y-\/coor} & of the square. \\
+\hline
+\end{DoxyParams}
+\index{game.\+h@{game.\+h}!new\+\_\+game@{new\+\_\+game}}
+\index{new\+\_\+game@{new\+\_\+game}!game.\+h@{game.\+h}}
+\subsubsection[{\texorpdfstring{new\+\_\+game(int width, int height, int nb\+\_\+pieces, piece $\ast$pieces)}{new_game(int width, int height, int nb_pieces, piece *pieces)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf game} new\+\_\+game (
+\begin{DoxyParamCaption}
+\item[{int}]{width, }
+\item[{int}]{height, }
+\item[{int}]{nb\+\_\+pieces, }
+\item[{{\bf piece} $\ast$}]{pieces}
+\end{DoxyParamCaption}
+)}\hypertarget{game_8h_af3b2914d6023cc0bcd449dbb633182b1}{}\label{game_8h_af3b2914d6023cc0bcd449dbb633182b1}
+
+
+Creates a new game the same way that new\+\_\+game\+\_\+hr but with a changeable size of board. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & width of the board. \\
+\hline
+{\em height} & height of the board. \\
+\hline
+{\em nb\+\_\+pieces} & number of pieces g. \\
+\hline
+{\em pieces} & array of pieces. The pieces given here are not modified by this function. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer toward the generated game. 
+\end{DoxyReturn}
+\index{game.\+h@{game.\+h}!new\+\_\+game\+\_\+hr@{new\+\_\+game\+\_\+hr}}
+\index{new\+\_\+game\+\_\+hr@{new\+\_\+game\+\_\+hr}!game.\+h@{game.\+h}}
+\subsubsection[{\texorpdfstring{new\+\_\+game\+\_\+hr(int nb\+\_\+pieces, piece $\ast$pieces)}{new_game_hr(int nb_pieces, piece *pieces)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf game} new\+\_\+game\+\_\+hr (
+\begin{DoxyParamCaption}
+\item[{int}]{nb\+\_\+pieces, }
+\item[{{\bf piece} $\ast$}]{pieces}
+\end{DoxyParamCaption}
+)}\hypertarget{game_8h_af940f80ca2e7ea78c671bacac5faf5fd}{}\label{game_8h_af940f80ca2e7ea78c671bacac5faf5fd}
+
+
+Creates a new game given a starting position defined by a set of pieces. The pieces of the created game are copies of the ones given as argument. The number of moves of the game is set to 0. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nb\+\_\+pieces} & number of pieces g \\
+\hline
+{\em pieces} & array of pieces. The pieces given here are not modified by this function. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer toward the generated game 
+\end{DoxyReturn}
+\index{game.\+h@{game.\+h}!play\+\_\+move@{play\+\_\+move}}
+\index{play\+\_\+move@{play\+\_\+move}!game.\+h@{game.\+h}}
+\subsubsection[{\texorpdfstring{play\+\_\+move(game g, int piece\+\_\+num, dir d, int distance)}{play_move(game g, int piece_num, dir d, int distance)}}]{\setlength{\rightskip}{0pt plus 5cm}bool play\+\_\+move (
+\begin{DoxyParamCaption}
+\item[{{\bf game}}]{g, }
+\item[{int}]{piece\+\_\+num, }
+\item[{dir}]{d, }
+\item[{int}]{distance}
+\end{DoxyParamCaption}
+)}\hypertarget{game_8h_a10a25eb8a5523f674cdc5f7fe219804b}{}\label{game_8h_a10a25eb8a5523f674cdc5f7fe219804b}
+
+
+Tries to move the piece of number piece\+\_\+num in direction d for distance cells. 
+
+If the move is valid, then corresponding piece is moved, the number of moves of the game is incremented by distance and the returned value is true. If the move is not valid, the game g remains unchanged and the function returns false. A move is valid if\+: 1) the piece stays in the game board, 2) the direction is compatible is the type of the piece, 3) the piece do not cross any other piece during its movement. 
+\begin{DoxyParams}{Parameters}
+{\em distance} & length of the move. This value must be strictly positive. \\
+\hline
+{\em piece\+\_\+num} & the number of the piece to move. This value must be between 0 and game\+\_\+nb\+\_\+pieces(g)-\/1. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the move is valid, false otherwise. 
+\end{DoxyReturn}
