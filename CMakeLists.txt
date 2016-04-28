@@ -47,13 +47,13 @@ add_test(test_piece_rh bin/test/test_piece1 "TEST 3")
 
 if (WIN32)
 add_custom_target(tar
-	COMMAND	mkdir ..\\..\\Projet
-	COMMAND 7z a -ttar ../../Projet/${NAME_ARCHIVE} ../Projet-rush-hour -mx0 -xr!.git 
-	COMMAND 7z a ../${NAME_ARCHIVE}.gz ../../Projet/${NAME_ARCHIVE}
-	COMMAND rmdir /s /q ..\\..\\Projet)
+	COMMAND	mkdir ..\\Projet
+	COMMAND 7z a -ttar ../Projet/${NAME_ARCHIVE} ../Projet-rush-hour -mx0 -xr!.git 
+	COMMAND 7z a ../${NAME_ARCHIVE}.gz ../Projet/${NAME_ARCHIVE}
+	COMMAND rmdir /s /q ..\\Projet)
 else (WIN32)
 add_custom_target(tar
 	#COMMAND rm ../Projet-Rush-Hour/${NAME_ARCHIVE}.gz
-	COMMAND mkdir ../../Projet
-	COMMAND tar --exclude="build" --exclude=".git" --exclude="*.tar" -zcvf ../../Projet/${NAME_ARCHIVE}.gz ../)
+	COMMAND mkdir ../Projet
+	COMMAND tar --exclude="build" --exclude=".git" --exclude="*.tar" -zcvf ../Projet/${NAME_ARCHIVE}.gz)
 endif(WIN32)

@@ -146,8 +146,8 @@ void display_game_rh(cgame g, SDL_Surface * screen){
 	redCar = IMG_Load("../img/redCar.png");
 	redArrow = IMG_Load("../img/redArrowRh.png");
 
-	position.x = 5 * BLOC_SIZE;
-	position.y = 2 * BLOC_SIZE;
+	position.x = (game_width(g)-1) * BLOC_SIZE;
+	position.y = (game_height(g)-1-get_y(game_piece(g,0))) * BLOC_SIZE;
 	SDL_BlitSurface(redArrow, NULL, screen, &position);
 	for(int i=0 ; i<game_nb_pieces(g) ; i++){
 		position.x = get_x(game_piece(g, i)) * BLOC_SIZE;

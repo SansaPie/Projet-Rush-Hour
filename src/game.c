@@ -83,15 +83,20 @@ cpiece game_piece(cgame g, int piece_num){
 
 bool game_over_hr(cgame g){
 	assert(g!=NULL);
-	if(get_x(game_piece(g, 0)) == 4 && get_y(game_piece(g,0)) == 3)
-		return true;
+	if(is_horizontal(game_piece(g,0))){
+	  if(get_x(game_piece(g, 0))==game_width(g)-get_width(game_piece(g,0)))
+	    return true;
+	}else{
+	  if(get_y(game_piece(g, 0))==game_height(g)-get_height(game_piece(g,0)))
+	    return true;
+	}
 	return false;
 }
 
 bool game_over_ar(cgame g){
 	assert(g!=NULL);
-	if (get_x(game_piece(g, 0)) == 1 && get_y(game_piece(g, 0)) == 0)
-		return true;
+	if(get_y(game_piece(g, 0))==0 && get_x(game_piece(g,0))==1)
+	  return true;
 	return false;
 }
 
