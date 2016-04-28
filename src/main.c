@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +38,7 @@ piece * lecture(piece * pieces_test, int * n, int * width, int * height, FILE * 
 	 * creation of the tab.
 	 */
 	for(int i=0; i<number_pieces; i++){
-		fscanf(entree, "%d %d %d %d %d %d", &c_x, &c_y, &m_x, &m_y, &w, &h);
+		fscanf(entree, "%d %d %d %d %d %d", &c_x, &c_y, &w, &h, &m_x, &m_y);
 		pieces_test[i] = new_piece(c_x, c_y, w, h, m_x, m_y);
 	}
 	*n = number_pieces;
