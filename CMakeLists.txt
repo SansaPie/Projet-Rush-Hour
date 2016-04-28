@@ -52,7 +52,8 @@ add_custom_target(tar
 	COMMAND 7z a ../${NAME_ARCHIVE}.gz ../Projet/${NAME_ARCHIVE}
 	COMMAND rmdir /s /q ..\\Projet)
 else (WIN32)
-add_custom_target(tar 
-	COMMAND mkdir Projet
+add_custom_target(tar
+	#COMMAND rm ../Projet-Rush-Hour/${NAME_ARCHIVE}.gz
+	COMMAND mkdir ../Projet
 	COMMAND tar --exclude="build" --exclude=".git" --exclude="*.tar" -zcvf ../Projet/${NAME_ARCHIVE}.gz ../)
 endif(WIN32)
